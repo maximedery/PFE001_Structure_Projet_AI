@@ -23,7 +23,7 @@ export default function RootLayout({
             <div className="flex items-center px-2">
               <MainNav />
             </div>
-          </div>
+          </div> 
           <main>
             {children}
           </main>
