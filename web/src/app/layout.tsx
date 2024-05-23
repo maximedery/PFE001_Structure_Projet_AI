@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { MainNav } from "@/components/app/main-nav";
+
 import "./globals.css";
-import { MainNav } from "@/components/main-nav";
+import "gantt-task-react/dist/index.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
