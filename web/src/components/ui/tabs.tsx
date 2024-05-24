@@ -21,14 +21,18 @@ const TabsList: React.ForwardRefExoticComponent<
 ));
 TabsList.displayName = TabsPrimitive.List.displayName;
 
+interface TabsTriggerProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
+  cyanLabel?: boolean;
+}
+
 const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, color, ...props }, ref) => (<TabsPrimitive.Trigger
+  React.ElementRef<typeof TabsPrimitive.Trigger & {cyanLabel: boolean}>,
+  TabsTriggerProps
+>(({ className, cyanLabel = false, ...props }, ref) => (<TabsPrimitive.Trigger
     ref={ref}
     className={cn(
       "inline-flex items-center justify-center whitespace-nowrap rounded-full px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:shadow-sm",
-      color ? `data-[state=active]:text-${color}` : "data-[state=active]:text-foreground",
+      cyanLabel ? `data-[state=active]:text-cyan-500` : "data-[state=active]:text-foreground",
       className
     )}
     {...props}
