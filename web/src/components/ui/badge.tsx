@@ -9,6 +9,8 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
+          "border-transparent bg-cyan-100 text-cyan-700 font-medium text-foreground rounded-full",
+        label:
           "border-transparent bg-cyan-50 text-cyan-700",
         outline: "text-foreground",
       },

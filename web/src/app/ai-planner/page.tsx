@@ -24,7 +24,7 @@ export default function AiPlanner() {
         <TabsContent value="basic">
           <Tabs defaultValue="cost" className="flex flex-col">
             <div className="border-b pb-2 px-2 flex items-center">
-              <Badge variant="default" size='lg'>Compare the scenarios according to their priority.</Badge>
+              <Badge variant="label" size='lg'>Compare the scenarios according to their priority.</Badge>
               <TabsList className="ml-2">
                 <TabsTrigger value="cost">Costs</TabsTrigger>
                 <TabsTrigger value="equipment">Equipments</TabsTrigger>
@@ -38,6 +38,12 @@ export default function AiPlanner() {
                 Save this scenario
               </Button>
             </div>
+            <TabsContent value="cost" className="flex pb-2 pl-2">
+              <div className="flex flex-col items-start border-r px-2 text-sm">
+                <h3 className="font-medium mb-1">Global Score</h3>
+                <Badge variant="default" size='lg'>65%</Badge>
+              </div>
+            </TabsContent>
           </Tabs>
         </TabsContent>
         <TabsContent value="advanced">Advanced</TabsContent>
