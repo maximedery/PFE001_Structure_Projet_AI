@@ -55,6 +55,9 @@ export default function AiPlanner() {
         </Tabs>
       </TabsContent>
       <TabsContent value="advanced">Advanced</TabsContent>
+      <div className="border-t text-slate-700 bg-slate-50 text-xs pl-2 py-1">
+        Timeline
+      </div>
       <Gantt />
     </Tabs>
   );
