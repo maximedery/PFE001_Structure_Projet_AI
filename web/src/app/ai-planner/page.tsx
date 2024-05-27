@@ -1,11 +1,12 @@
 'use client';
 
 import Gantt from '@/components/app/gantt';
+import ScoreHeader from '@/components/app/score-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, Circle } from 'lucide-react';
 
 export default function AiPlanner() {
   return (
@@ -48,13 +49,8 @@ export default function AiPlanner() {
               Save this scenario
             </Button>
           </div>
-          <TabsContent value="cost" className="flex pb-2 pl-2">
-            <div className="flex flex-col items-start border-r px-2 text-sm">
-              <h3 className="font-medium mb-1">Global Score</h3>
-              <Badge variant="default" size="lg">
-                65%
-              </Badge>
-            </div>
+          <TabsContent value="cost" className="flex pb-2">
+            <ScoreHeader />
           </TabsContent>
         </Tabs>
       </TabsContent>
