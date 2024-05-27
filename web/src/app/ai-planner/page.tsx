@@ -64,7 +64,7 @@ export default function AiPlanner() {
         </Tabs>
       </TabsContent>
       <TabsContent value="advanced">Advanced</TabsContent>
-      <div className="border-t text-slate-700 bg-slate-50 text-xs px-2 py-1">
+      <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
         Timeline
       </div>
       <div className="flex p-2 gap-2">
@@ -102,6 +102,9 @@ export default function AiPlanner() {
         </Button>
       </div>
       <Gantt />
+      <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
+        Workload
+      </div>
     </Tabs>
   );
 }
