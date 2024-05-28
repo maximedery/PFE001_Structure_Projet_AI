@@ -2,6 +2,7 @@
 
 import Gantt from '@/components/app/gantt';
 import ScoreHeader from '@/components/app/score-header';
+import Workload from '@/components/app/workload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,7 +20,7 @@ import {
 
 export default function AiPlanner() {
   return (
-    <Tabs defaultValue="basic" className="flex flex-col">
+    <Tabs defaultValue="basic" className="flex flex-col h-full">
       <div className="border-b py-2 px-2 flex items-center">
         <TabsList>
           <TabsTrigger value="basic" cyanLabel>
@@ -105,6 +106,24 @@ export default function AiPlanner() {
       <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
         Workload
       </div>
+      <Tabs defaultValue="employee" className="flex flex-col overflow-hidden">
+        <div className="p-2 border-b border-slate-200">
+          <TabsList>
+            <TabsTrigger value="employee">Employees</TabsTrigger>
+            <TabsTrigger value="equipment">Equipments</TabsTrigger>
+            <TabsTrigger value="cost">Cost</TabsTrigger>
+          </TabsList>
+        </div>
+        <TabsContent value="employee" className="m-0 overflow-auto">
+          <Workload />
+        </TabsContent>
+        <TabsContent value="equipment" className="m-0 overflow-auto">
+          equipment
+        </TabsContent>
+        <TabsContent value="cost" className="m-0 overflow-auto">
+          cost
+        </TabsContent>
+      </Tabs>
     </Tabs>
   );
 }
