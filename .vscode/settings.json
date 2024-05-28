@@ -19,5 +19,13 @@
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["Civalgo", "clsx", "gantt", "lucide", "tailwindcss"]
+  "cSpell.words": [
+    "chartjs",
+    "Civalgo",
+    "clsx",
+    "datalabels",
+    "gantt",
+    "lucide",
+    "tailwindcss"
+  ]
 }

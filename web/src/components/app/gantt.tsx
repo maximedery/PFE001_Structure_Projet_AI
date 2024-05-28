@@ -1,7 +1,8 @@
 'use client';
 
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { Gantt as GanttComponent, Task } from 'gantt-task-react';
+import { COLUMN_WIDTH } from '@/helpers/global';
+import { Gantt as GanttComponent, Task, ViewMode } from 'gantt-task-react';
 import { ChevronDown, Square } from 'lucide-react';
 
 let tasks: Task[] = initTasks();
@@ -15,6 +16,9 @@ export default function Gantt() {
       headerHeight={32}
       rowHeight={32}
       fontSize={'12px'}
+      viewMode={ViewMode.Day}
+      preStepsCount={1}
+      columnWidth={COLUMN_WIDTH}
     />
   );
 }

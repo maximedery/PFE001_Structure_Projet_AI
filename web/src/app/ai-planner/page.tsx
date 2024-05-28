@@ -114,7 +114,10 @@ export default function AiPlanner() {
             <TabsTrigger value="cost">Cost</TabsTrigger>
           </TabsList>
         </div>
-        <TabsContent value="employee" className="m-0 overflow-auto">
+        <TabsContent
+          value="employee"
+          className="m-0 overflow-y-auto overflow-x-hidden"
+        >
           <Workload />
         </TabsContent>
         <TabsContent value="equipment" className="m-0 overflow-auto">
