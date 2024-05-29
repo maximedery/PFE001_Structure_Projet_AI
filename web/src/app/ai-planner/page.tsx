@@ -18,7 +18,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 
-export default function AiPlanner() {
+export default function AiPlannerPage() {
   return (
     <Tabs defaultValue="basic" className="flex flex-col h-full">
       <div className="border-b py-2 px-2 flex items-center">
@@ -32,17 +32,17 @@ export default function AiPlanner() {
         </TabsList>
         <span className="flex-1" />
         <Button variant="default" size={'sm'}>
-          <Sparkles size={18} color={'white'} className="mr-2" />
+          <Sparkles size={18} color={'white'} />
           Generate
         </Button>
       </div>
       <TabsContent value="basic">
         <Tabs defaultValue="cost" className="flex flex-col">
-          <div className="border-b pb-2 px-2 flex items-center">
+          <div className="border-b pb-2 px-2 flex items-center gap-2">
             <Badge variant="label" size="lg">
               Compare the scenarios according to their priority.
             </Badge>
-            <TabsList className="ml-2">
+            <TabsList>
               <TabsTrigger value="cost">Costs</TabsTrigger>
               <TabsTrigger value="equipment">Equipments</TabsTrigger>
               <TabsTrigger value="employee">Employees</TabsTrigger>
@@ -51,11 +51,7 @@ export default function AiPlanner() {
             </TabsList>
             <span className="flex-1" />
             <Button variant="outline" size={'sm'}>
-              <Check
-                size={18}
-                color={getTailwindColorValue('cyan-500')}
-                className="mr-2"
-              />
+              <Check size={18} color={getTailwindColorValue('cyan-500')} />
               Save this scenario
             </Button>
           </div>
@@ -77,11 +73,7 @@ export default function AiPlanner() {
           />
         </div>
         <Button variant="outline_black" size={'sm'}>
-          <Settings
-            size={18}
-            color={getTailwindColorValue('slate-950')}
-            className="mr-2"
-          />
+          <Settings size={18} color={getTailwindColorValue('slate-950')} />
           Settings
         </Button>
         <Button variant="outline_black" size={'sm'}>
@@ -95,11 +87,7 @@ export default function AiPlanner() {
         </Button>
         <Button variant="outline_black" size={'sm'}>
           Year / Month
-          <ChevronDown
-            size={18}
-            color={getTailwindColorValue('slate-950')}
-            className="ml-2"
-          />
+          <ChevronDown size={18} color={getTailwindColorValue('slate-950')} />
         </Button>
       </div>
       <Gantt />
