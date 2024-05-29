@@ -1,7 +1,7 @@
 'use client';
 
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { ChevronDown } from 'lucide-react';
+import { ChevronDown, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { cn } from '@/lib/utils';
@@ -34,6 +34,12 @@ export default function OccupationTable() {
           />
         </>
       ))}
+      <div className="mt-2">
+        <Button variant="ghost" size={'sm'}>
+          <Plus size={18} color={getTailwindColorValue('slate-950')} />
+          Add an Occupation
+        </Button>
+      </div>
     </div>
   );
 }
