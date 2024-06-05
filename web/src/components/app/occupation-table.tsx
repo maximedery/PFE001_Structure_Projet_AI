@@ -15,7 +15,7 @@ const MOCK_DATA = [
 
 export default function OccupationTable() {
   return (
-    <div className="grid grid-cols-[250px,auto] item">
+    <div className="grid grid-cols-[250px,auto]">
       <div className="bg-slate-50 border-y border-l border-slate-200 p-2 text-sm rounded-tl-md">
         Occupation
       </div>

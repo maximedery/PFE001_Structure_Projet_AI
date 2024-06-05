@@ -1,4 +1,5 @@
 import OccupationTable from '@/components/app/occupation-table';
+import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -65,6 +66,7 @@ export default function SettingsPage() {
           Add a Project
         </Button>
       </div>
+      <TasksList />
     </div>
   );
 }
