@@ -2,8 +2,9 @@ import OccupationTable from '@/components/app/occupation-table';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { CalendarDays, Plus } from 'lucide-react';
+import { CalendarDays, Plus, Search } from 'lucide-react';
 
 export default function SettingsPage() {
   return (
@@ -49,6 +50,20 @@ export default function SettingsPage() {
           Working days
         </div>
         <WeekdaysPicker />
+      </div>
+      <div className="border-b p-2 flex items-center gap-3">
+        <div className="text-sm font-medium">Project & Task Settings</div>
+        <Badge variant="label" size="lg">
+          Add and configure projects & tasks to schedule.
+        </Badge>
+      </div>
+      <div className="border-b p-2 flex items-center gap-3">
+        <Input startIcon={Search} placeholder="Search" className="w-[250px]" />
+        <span className="flex-1" />
+        <Button variant="default" size={'sm'}>
+          <Plus size={18} color={'white'} />
+          Add a Project
+        </Button>
       </div>
     </div>
   );

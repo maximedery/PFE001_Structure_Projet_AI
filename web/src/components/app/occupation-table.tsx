@@ -1,7 +1,7 @@
 'use client';
 
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { ChevronDown, Plus } from 'lucide-react';
+import { ChevronDown, Ellipsis, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { cn } from '@/lib/utils';
@@ -68,11 +68,15 @@ function OccupationQuantityInput(props: { value: number; isLast?: boolean }) {
   return (
     <div
       className={cn(
-        'border-b border-r border-slate-200 p-2',
+        'border-b border-r border-slate-200 p-2 flex',
         props.isLast ? 'rounded-br-md' : ''
       )}
     >
       <Input className="w-[100px] text-end" value={props.value} />
+      <span className="flex-1" />
+      <Button variant="ghost" size={'sm'}>
+        <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
+      </Button>
     </div>
   );
 }
