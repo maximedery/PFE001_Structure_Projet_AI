@@ -70,6 +70,9 @@ export default function AiPlannerPage() {
             startIcon={Search}
             placeholder="Search"
             className="w-[250px]"
+            onChange={() => {
+              // TODO: Implement search
+            }}
           />
         </div>
         <Button variant="outline_black" size={'sm'}>

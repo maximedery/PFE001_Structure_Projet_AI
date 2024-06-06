@@ -1,3 +1,5 @@
+'use client';
+
 import OccupationTable from '@/components/app/occupation-table';
 import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
@@ -59,7 +61,14 @@ export default function SettingsPage() {
         </Badge>
       </div>
       <div className="border-b p-2 flex items-center gap-3">
-        <Input startIcon={Search} placeholder="Search" className="w-[250px]" />
+        <Input
+          startIcon={Search}
+          placeholder="Search"
+          className="w-[250px]"
+          onChange={() => {
+            // TODO: Implement search
+          }}
+        />
         <span className="flex-1" />
         <Button variant="default" size={'sm'}>
           <Plus size={18} color={'white'} />

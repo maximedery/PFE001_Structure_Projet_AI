@@ -26,6 +26,8 @@
     "datalabels",
     "gantt",
     "lucide",
-    "tailwindcss"
+    "tailwindcss",
+    "tanstack",
+    "Tanzim"
   ]
 }

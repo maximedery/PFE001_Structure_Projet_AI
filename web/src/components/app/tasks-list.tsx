@@ -1,9 +1,26 @@
 'use client';
 
+import * as React from 'react';
+import {
+  ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { cn } from '@/lib/utils';
-import { ChevronDown, Ellipsis, Plus, Square } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Ellipsis, Plus } from 'lucide-react';
 
 interface Task {
   id: string;
@@ -19,40 +36,112 @@ interface Project {
   tasks: Task[];
 }
 
+export const columns: ColumnDef<Project>[] = [
+  {
+    id: 'select',
+    size: 80,
+    meta: {
+      size: '80px',
+    },
+    maxSize: 80,
+    enableResizing: false,
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && 'indeterminate')
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ getValue }) => <div className="flex-1">{getValue<string>()}</div>,
+  },
+  {
+    id: 'actions',
+    header: '',
+    cell: ({ row }) => {
+      return (
+        <div className="flex gap-1 justify-end">
+          <Button variant="ghost" size={'icon'}>
+            <Plus size={16} color={getTailwindColorValue('slate-950')} />
+          </Button>
+          <Button variant="ghost" size={'icon'}>
+            <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
+          </Button>
+        </div>
+      );
+    },
+    enableSorting: false,
+    enableHiding: false,
+  },
+];
+
 export default function TasksList() {
+  const table = useReactTable({
+    data: MOCK_DATA,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    defaultColumn: {
+      minSize: 0,
+      size: 0,
+    },
+  });
+
   return (
-    <div className="grid grid-cols-[40px,60px,auto]">
-      <div className="w-full h-full flex items-center justify-center border-b border-slate-200 te">
-        <Square size={16} color={getTailwindColorValue('slate-300')} />
-      </div>
-      <div className="w-full h-full flex items-center justify-start border-b border-slate-200 text-sm">
-        Code
-      </div>
-      <div className="w-full h-full flex items-center justify-start py-2 border-b border-slate-200 text-sm">
-        Name
-      </div>
-      {MOCK_DATA.map((project) => (
-        <>
-          <div className="w-full h-full flex items-center justify-center border-b border-slate-200 bg-slate-50">
-            <Square size={16} color={getTailwindColorValue('slate-300')} />
-          </div>
-          <div className="w-full h-full flex items-center justify-start border-b font-medium border-slate-200  bg-slate-50 text-sm">
-            {project.id}
-          </div>
-          <div className="flex bg-slate-50 border-slate-200 border-b w-full h-full items-center justify-start  pr-2">
-            <ChevronDown size={16} color={getTailwindColorValue('slate-950')} />
-            <div className="p-2 font-medium text-sm">{project.name}</div>
-            <span className="flex-1" />
-            <Button variant="ghost" size={'sm'}>
-              <Plus size={16} color={getTailwindColorValue('slate-950')} />
-            </Button>
-            <Button variant="ghost" size={'sm'}>
-              <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
-            </Button>
-          </div>
-        </>
-      ))}
-    </div>
+    <Table className="border-b">
+      <TableHeader>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <TableRow key={headerGroup.id}>
+            {headerGroup.headers.map((header) => {
+              return (
+                <TableHead key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </TableHead>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableHeader>
+      <TableBody>
+        {table.getRowModel().rows?.length ? (
+          table.getRowModel().rows.map((row) => (
+            <TableRow
+              key={row.id}
+              data-state={row.getIsSelected() && 'selected'}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))
+        ) : (
+          <TableRow>
+            <TableCell colSpan={columns.length} className="h-24 text-center">
+              No Projects.
+            </TableCell>
+          </TableRow>
+        )}
+      </TableBody>
+    </Table>
   );
 }
 

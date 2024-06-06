@@ -5,12 +5,13 @@ import { ChevronDown, Ellipsis, Plus } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { cn } from '@/lib/utils';
+import React from 'react';
 
 const MOCK_DATA = [
-  { name: 'Carpenter', quantity: 15 },
-  { name: 'Electrician', quantity: 10 },
-  { name: 'Plumber', quantity: 5 },
-  { name: 'Painter', quantity: 20 },
+  { id: '1', name: 'Carpenter', quantity: 15 },
+  { id: '2', name: 'Electrician', quantity: 10 },
+  { id: '3', name: 'Plumber', quantity: 5 },
+  { id: '4', name: 'Painter', quantity: 20 },
 ];
 
 export default function OccupationTable() {
@@ -23,7 +24,7 @@ export default function OccupationTable() {
         Quantity
       </div>
       {MOCK_DATA.map((data, index) => (
-        <>
+        <React.Fragment key={data.id}>
           <OccupationDropdown
             name={data.name}
             isLast={MOCK_DATA.length === index + 1}
@@ -32,7 +33,7 @@ export default function OccupationTable() {
             value={data.quantity}
             isLast={MOCK_DATA.length === index + 1}
           />
-        </>
+        </React.Fragment>
       ))}
       <div className="mt-2">
         <Button variant="ghost" size={'sm'}>
@@ -72,7 +73,13 @@ function OccupationQuantityInput(props: { value: number; isLast?: boolean }) {
         props.isLast ? 'rounded-br-md' : ''
       )}
     >
-      <Input className="w-[100px] text-end" value={props.value} />
+      <Input
+        className="w-[100px] text-end"
+        value={props.value}
+        onChange={() => {
+          // TODO: Implement Input
+        }}
+      />
       <span className="flex-1" />
       <Button variant="ghost" size={'sm'}>
         <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
