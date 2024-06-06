@@ -26,7 +26,7 @@ export default function RootLayout({
               <MainNav />
             </div>
           </div>
-          <main className="overflow-hidden">{children}</main>
+          <main className="overflow-hidden h-full">{children}</main>
         </div>
       </body>
     </html>

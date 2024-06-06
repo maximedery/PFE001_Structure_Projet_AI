@@ -36,7 +36,7 @@ export default function AiPlannerPage() {
           Generate
         </Button>
       </div>
-      <TabsContent value="basic">
+      <TabsContent value="basic" className="border-b">
         <Tabs defaultValue="cost" className="flex flex-col">
           <div className="border-b pb-2 px-2 flex items-center gap-2">
             <Badge variant="label" size="lg">
@@ -61,63 +61,65 @@ export default function AiPlannerPage() {
         </Tabs>
       </TabsContent>
       <TabsContent value="advanced">Advanced</TabsContent>
-      <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
-        Timeline
-      </div>
-      <div className="flex p-2 gap-2">
-        <div className="w-[250px]">
-          <Input
-            startIcon={Search}
-            placeholder="Search"
-            className="w-[250px]"
-            onChange={() => {
-              // TODO: Implement search
-            }}
-          />
+      <div className="overflow-auto h-full flex flex-col">
+        <div className="border-b text-slate-700 bg-slate-50 text-xs px-2 py-1">
+          Timeline
         </div>
-        <Button variant="outline_black" size={'sm'}>
-          <Settings size={18} color={getTailwindColorValue('slate-950')} />
-          Settings
-        </Button>
-        <Button variant="outline_black" size={'sm'}>
-          <UnfoldVertical
-            size={18}
-            color={getTailwindColorValue('slate-950')}
-          />
-        </Button>
-        <Button variant="outline_black" size={'sm'}>
-          <FoldVertical size={18} color={getTailwindColorValue('slate-950')} />
-        </Button>
-        <Button variant="outline_black" size={'sm'}>
-          Year / Month
-          <ChevronDown size={18} color={getTailwindColorValue('slate-950')} />
-        </Button>
-      </div>
-      <Gantt />
-      <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
-        Workload
-      </div>
-      <Tabs defaultValue="employee" className="flex flex-col overflow-hidden">
-        <div className="p-2 border-b border-slate-200">
-          <TabsList>
-            <TabsTrigger value="employee">Employees</TabsTrigger>
-            <TabsTrigger value="equipment">Equipments</TabsTrigger>
-            <TabsTrigger value="cost">Cost</TabsTrigger>
-          </TabsList>
+        <div className="flex p-2 gap-2">
+          <div className="w-[250px]">
+            <Input
+              startIcon={Search}
+              placeholder="Search"
+              className="w-[250px]"
+              onChange={() => {
+                // TODO: Implement search
+              }}
+            />
+          </div>
+          <Button variant="outline_black" size={'sm'}>
+            <Settings size={18} color={getTailwindColorValue('slate-950')} />
+            Settings
+          </Button>
+          <Button variant="outline_black" size={'sm'}>
+            <UnfoldVertical
+              size={18}
+              color={getTailwindColorValue('slate-950')}
+            />
+          </Button>
+          <Button variant="outline_black" size={'sm'}>
+            <FoldVertical
+              size={18}
+              color={getTailwindColorValue('slate-950')}
+            />
+          </Button>
+          <Button variant="outline_black" size={'sm'}>
+            Year / Month
+            <ChevronDown size={18} color={getTailwindColorValue('slate-950')} />
+          </Button>
         </div>
-        <TabsContent
-          value="employee"
-          className="m-0 overflow-y-auto overflow-x-hidden"
-        >
-          <Workload />
-        </TabsContent>
-        <TabsContent value="equipment" className="m-0 overflow-auto">
-          equipment
-        </TabsContent>
-        <TabsContent value="cost" className="m-0 overflow-auto">
-          cost
-        </TabsContent>
-      </Tabs>
+        <Gantt />
+        <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
+          Workload
+        </div>
+        <Tabs defaultValue="employee" className="flex flex-col overflow-hidden">
+          <div className="p-2 border-b border-slate-200">
+            <TabsList>
+              <TabsTrigger value="employee">Employees</TabsTrigger>
+              <TabsTrigger value="equipment">Equipments</TabsTrigger>
+              <TabsTrigger value="cost">Cost</TabsTrigger>
+            </TabsList>
+          </div>
+          <TabsContent value="employee" className="m-0">
+            <Workload />
+          </TabsContent>
+          <TabsContent value="equipment" className="m-0">
+            equipment
+          </TabsContent>
+          <TabsContent value="cost" className="m-0">
+            cost
+          </TabsContent>
+        </Tabs>
+      </div>
     </Tabs>
   );
 }

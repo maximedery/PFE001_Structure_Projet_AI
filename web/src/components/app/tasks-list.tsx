@@ -18,7 +18,14 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { Ellipsis, Plus } from 'lucide-react';
+import {
+  ChevronDown,
+  ChevronRight,
+  Ellipsis,
+  Plus,
+  Square,
+} from 'lucide-react';
+import pluralize from 'pluralize';
 
 interface Task {
   id: string;
@@ -60,7 +67,26 @@ export const columns: ColumnDef<Project>[] = [
   {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ getValue }) => <div className="flex-1">{getValue<string>()}</div>,
+    cell: ({ getValue, row, cell }) => (
+      <div className="flex items-center gap-2">
+        {row.getIsExpanded() ? (
+          <ChevronDown size={16} color={getTailwindColorValue('slate-950')} />
+        ) : (
+          <ChevronRight size={16} color={getTailwindColorValue('slate-950')} />
+        )}
+        <Square
+          size={10}
+          color={getTailwindColorValue('blue-500')}
+          fill={getTailwindColorValue('blue-500')}
+        />
+        <div className="leading-none">{getValue<string>()}</div>
+        <div className=" text-slate-400 text-xs">{`(${pluralize(
+          'task',
+          cell.row.original.tasks.length,
+          true
+        )})`}</div>
+      </div>
+    ),
   },
   {
     id: 'actions',

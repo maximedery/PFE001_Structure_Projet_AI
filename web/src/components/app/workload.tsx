@@ -74,7 +74,6 @@ export default function Workload() {
                       offset: -6,
                       color: getTailwindColorValue('slate-400'),
                       display: function (context) {
-                        console.log('🚀 ~ context:', context);
                         const dataIndex = context.dataIndex;
                         const dataValue =
                           (context.dataset.data[dataIndex] as number) || 0;
