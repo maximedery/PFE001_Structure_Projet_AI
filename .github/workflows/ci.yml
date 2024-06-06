@@ -1,0 +1,69 @@
+name: ci
+
+on: [push]
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.9'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+        working-directory: ./api
+
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # Stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        working-directory: ./api
+
+      - name: Run tests
+        run: |
+          pip install pytest
+          pytest
+        working-directory: ./api
+
+      - name: Build Docker image
+        run: docker build -t my-fastapi-app .
+        working-directory: ./api
+  
+  build-web:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./web
+
+      # Deactivated for the moment.
+      # - name: Lint code
+      #   run: npm run lint
+      #   working-directory: ./web
+
+      - name: Run tests
+        run: npm test
+        working-directory: ./web
+
+      - name: Build application
+        run: npm run build
+        working-directory: ./web
