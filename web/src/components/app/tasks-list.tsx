@@ -5,8 +5,6 @@ import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
@@ -39,11 +37,7 @@ interface Project {
 export const columns: ColumnDef<Project>[] = [
   {
     id: 'select',
-    size: 80,
-    meta: {
-      size: '80px',
-    },
-    maxSize: 80,
+    size: 32,
     enableResizing: false,
     header: ({ table }) => (
       <Checkbox
@@ -71,6 +65,7 @@ export const columns: ColumnDef<Project>[] = [
   {
     id: 'actions',
     header: '',
+    size: 116,
     cell: ({ row }) => {
       return (
         <div className="flex gap-1 justify-end">
@@ -106,7 +101,12 @@ export default function TasksList() {
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead key={header.id}>
+                <TableHead
+                  key={header.id}
+                  style={{
+                    width: header.column.getSize() || 'auto',
+                  }}
+                >
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -127,7 +127,12 @@ export default function TasksList() {
               data-state={row.getIsSelected() && 'selected'}
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell
+                  key={cell.id}
+                  style={{
+                    width: cell.column.getSize() || 'auto',
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
