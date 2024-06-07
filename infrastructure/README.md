@@ -17,3 +17,6 @@ Section with all the related code to spawn the infrastructure.
 
 1. Open terminal in this context: <br> ``cd ./infrastructure/docker``
 2. Run docker compose: <br> ``docker compose up``
+
+---
+Navigate back to [Root](../README.md) markdown.
