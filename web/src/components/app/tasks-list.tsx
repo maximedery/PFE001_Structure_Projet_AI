@@ -121,9 +121,11 @@ export const columns: ColumnDef<Row>[] = [
     cell: ({ row }) => {
       return (
         <div className="flex gap-1 justify-end">
-          <Button variant="ghost" size={'icon'}>
-            <Plus size={16} color={getTailwindColorValue('slate-950')} />
-          </Button>
+          {row.original.type === 'project' && (
+            <Button variant="ghost" size={'icon'}>
+              <Plus size={16} color={getTailwindColorValue('slate-950')} />
+            </Button>
+          )}
           <Button variant="ghost" size={'icon'}>
             <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
           </Button>
