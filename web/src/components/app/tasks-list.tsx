@@ -29,7 +29,6 @@ import {
 } from 'lucide-react';
 import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
-import { type } from 'os';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -86,17 +85,19 @@ export const columns: ColumnDef<Row>[] = [
       } else {
         return (
           <div className="flex items-center gap-2">
-            {row.getIsExpanded() ? (
-              <ChevronDown
-                size={16}
-                color={getTailwindColorValue('slate-950')}
-              />
-            ) : (
-              <ChevronRight
-                size={16}
-                color={getTailwindColorValue('slate-950')}
-              />
-            )}
+            {row.getCanExpand() ? (
+              row.getIsExpanded() ? (
+                <ChevronDown
+                  size={16}
+                  color={getTailwindColorValue('slate-950')}
+                />
+              ) : (
+                <ChevronRight
+                  size={16}
+                  color={getTailwindColorValue('slate-950')}
+                />
+              )
+            ) : null}
             <Square
               size={10}
               color={getTailwindColorValue('blue-500')}
@@ -158,70 +159,84 @@ export default function TasksList() {
   }, []);
 
   return (
-    <Table className="border-b">
-      <TableHeader>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <TableRow key={headerGroup.id}>
-            {headerGroup.headers.map((header) => {
-              return (
-                <TableHead
-                  key={header.id}
-                  style={{
-                    width: header.column.getSize() || 'auto',
-                  }}
-                >
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                        header.column.columnDef.header,
-                        header.getContext()
-                      )}
-                </TableHead>
-              );
-            })}
-          </TableRow>
-        ))}
-      </TableHeader>
-      <TableBody>
-        {table.getRowModel().rows?.length ? (
-          table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              data-state={row.getIsSelected() && 'selected'}
-              className={cn(
-                'cursor-pointer',
-                row.original.type === 'project' && 'bg-slate-50',
-                row.original.type === 'task' && 'hover:bg-slate-50/40'
-              )}
-              onClick={() => {
-                if (row.original.type === 'project') {
-                  if (row.getCanExpand()) {
-                    row.toggleExpanded();
-                  }
-                }
-              }}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  style={{
-                    width: cell.column.getSize() || 'auto',
-                  }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
+    <div className="flex flex-col h-full overflow-auto">
+      <Table className="border-b">
+        <TableHeader>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <TableRow key={headerGroup.id}>
+              {headerGroup.headers.map((header) => {
+                return (
+                  <TableHead
+                    key={header.id}
+                    style={{
+                      width: header.column.getSize() || 'auto',
+                    }}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                );
+              })}
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={columns.length} className="h-24 text-center">
-              No Projects.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          ))}
+        </TableHeader>
+        <TableBody>
+          {table.getRowModel().rows?.length ? (
+            table.getRowModel().rows.map((row) => {
+              const projectRowOnClick = row.getCanExpand()
+                ? row.getToggleExpandedHandler()
+                : undefined;
+
+              const taskRowOnClick = () => {
+                console.log('task row clicked', row.original);
+              };
+
+              const rowOnClick =
+                row.original.type === 'project'
+                  ? projectRowOnClick
+                  : taskRowOnClick;
+
+              return (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && 'selected'}
+                  className={cn(
+                    !!rowOnClick && 'cursor-pointer',
+                    row.original.type === 'project' && 'bg-slate-50',
+                    row.original.type === 'task' && 'hover:bg-slate-50/40'
+                  )}
+                  onClick={rowOnClick}
+                >
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      style={{
+                        width: cell.column.getSize() || 'auto',
+                      }}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              );
+            })
+          ) : (
+            <TableRow>
+              <TableCell colSpan={columns.length} className="h-24 text-center">
+                No Projects.
+              </TableCell>
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }
 
@@ -349,5 +364,38 @@ const MOCK_DATA: Row[] = [
         end: '2022-01-08',
       },
     ],
+  },
+  {
+    id: '4',
+    type: 'project',
+    name: 'Project 4',
+    code: '4',
+    subRows: [
+      {
+        id: '1',
+        type: 'task',
+        name: 'Task 1',
+        code: '4-1',
+        duration: 2,
+        start: '2022-01-01',
+        end: '2022-01-03',
+      },
+      {
+        id: '2',
+        type: 'task',
+        name: 'Task 2',
+        code: '4-2',
+        duration: 3,
+        start: '2022-01-04',
+        end: '2022-01-06',
+      },
+    ],
+  },
+  {
+    id: '5',
+    type: 'project',
+    name: 'Project 5',
+    code: '5',
+    subRows: [],
   },
 ];

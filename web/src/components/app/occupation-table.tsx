@@ -81,7 +81,7 @@ function OccupationQuantityInput(props: { value: number; isLast?: boolean }) {
         }}
       />
       <span className="flex-1" />
-      <Button variant="ghost" size={'sm'}>
+      <Button variant="ghost" size={'sm'} className="ml-2">
         <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
       </Button>
     </div>
