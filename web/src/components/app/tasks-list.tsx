@@ -3,8 +3,10 @@
 import * as React from 'react';
 import {
   ColumnDef,
+  ExpandedState,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
@@ -26,67 +28,90 @@ import {
   Square,
 } from 'lucide-react';
 import pluralize from 'pluralize';
+import { cn } from '@/lib/utils';
+import { type } from 'os';
 
-interface Task {
-  id: string;
-  name: string;
-  duration: number | null;
-  start: string | null;
-  end: string | null;
-}
-
-interface Project {
-  id: string;
-  name: string;
-  tasks: Task[];
-}
-
-export const columns: ColumnDef<Project>[] = [
+export const columns: ColumnDef<Row>[] = [
   {
     id: 'select',
     size: 32,
     enableResizing: false,
     header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && 'indeterminate')
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-      />
+      <div className="flex justify-center">
+        <Checkbox
+          checked={
+            table.getIsAllPageRowsSelected() ||
+            (table.getIsSomePageRowsSelected() && 'indeterminate')
+          }
+          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        />
+      </div>
     ),
     cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-      />
+      <div className="flex justify-center">
+        <Checkbox
+          checked={row.getIsSelected()}
+          onCheckedChange={(value) => row.toggleSelected(!!value)}
+          onClick={(e) => e.stopPropagation()}
+        />
+      </div>
     ),
     enableSorting: false,
     enableHiding: false,
   },
   {
+    accessorKey: 'code',
+    header: 'Code',
+    size: 40,
+    cell: ({ getValue }) => {
+      return (
+        <div className="text-xs text-slate-500 flex justify-center">
+          {getValue<string>()}
+        </div>
+      );
+    },
+  },
+  {
     accessorKey: 'name',
     header: 'Name',
-    cell: ({ getValue, row, cell }) => (
-      <div className="flex items-center gap-2">
-        {row.getIsExpanded() ? (
-          <ChevronDown size={16} color={getTailwindColorValue('slate-950')} />
-        ) : (
-          <ChevronRight size={16} color={getTailwindColorValue('slate-950')} />
-        )}
-        <Square
-          size={10}
-          color={getTailwindColorValue('blue-500')}
-          fill={getTailwindColorValue('blue-500')}
-        />
-        <div className="leading-none">{getValue<string>()}</div>
-        <div className=" text-slate-400 text-xs">{`(${pluralize(
-          'task',
-          cell.row.original.tasks.length,
-          true
-        )})`}</div>
-      </div>
-    ),
+    cell: ({ getValue, row, cell }) => {
+      const rowData = cell.row.original;
+
+      if (rowData.type === 'task') {
+        return (
+          <div className="flex items-center gap-2">
+            <div className="text-sm pl-8">{getValue<string>()}</div>
+          </div>
+        );
+      } else {
+        return (
+          <div className="flex items-center gap-2">
+            {row.getIsExpanded() ? (
+              <ChevronDown
+                size={16}
+                color={getTailwindColorValue('slate-950')}
+              />
+            ) : (
+              <ChevronRight
+                size={16}
+                color={getTailwindColorValue('slate-950')}
+              />
+            )}
+            <Square
+              size={10}
+              color={getTailwindColorValue('blue-500')}
+              fill={getTailwindColorValue('blue-500')}
+            />
+            <div className="text-sm">{getValue<string>()}</div>
+            <div className="text-slate-400 text-xs">{`(${pluralize(
+              'task',
+              rowData.subRows.length,
+              true
+            )})`}</div>
+          </div>
+        );
+      }
+    },
   },
   {
     id: 'actions',
@@ -110,15 +135,27 @@ export const columns: ColumnDef<Project>[] = [
 ];
 
 export default function TasksList() {
+  const [expanded, setExpanded] = React.useState<ExpandedState>({});
+
   const table = useReactTable({
     data: MOCK_DATA,
+    state: {
+      expanded,
+    },
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => (row.type === 'project' ? row.subRows : undefined),
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getExpandedRowModel: getExpandedRowModel(),
     defaultColumn: {
       minSize: 0,
       size: 0,
     },
   });
+
+  React.useEffect(() => {
+    table.toggleAllRowsExpanded();
+  }, []);
 
   return (
     <Table className="border-b">
@@ -151,6 +188,18 @@ export default function TasksList() {
             <TableRow
               key={row.id}
               data-state={row.getIsSelected() && 'selected'}
+              className={cn(
+                'cursor-pointer',
+                row.original.type === 'project' && 'bg-slate-50',
+                row.original.type === 'task' && 'hover:bg-slate-50/40'
+              )}
+              onClick={() => {
+                if (row.original.type === 'project') {
+                  if (row.getCanExpand()) {
+                    row.toggleExpanded();
+                  }
+                }
+              }}
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
@@ -176,28 +225,55 @@ export default function TasksList() {
   );
 }
 
-const MOCK_DATA: Project[] = [
+type Row = ProjectRow | TaskRow;
+interface ProjectRow {
+  type: 'project';
+  id: string;
+  name: string;
+  code: string;
+  subRows: Row[];
+}
+
+interface TaskRow {
+  type: 'task';
+  id: string;
+  name: string;
+  code: string;
+  duration: number | null;
+  start: string | null;
+  end: string | null;
+}
+
+const MOCK_DATA: Row[] = [
   {
     id: '1',
+    type: 'project',
     name: 'Project 1',
-    tasks: [
+    code: '1',
+    subRows: [
       {
         id: '1',
+        type: 'task',
         name: 'Task 1',
+        code: '1-1',
         duration: 2,
         start: '2022-01-01',
         end: '2022-01-03',
       },
       {
         id: '2',
+        type: 'task',
         name: 'Task 2',
+        code: '1-2',
         duration: 3,
         start: '2022-01-04',
         end: '2022-01-06',
       },
       {
         id: '3',
+        type: 'task',
         name: 'Task 3',
+        code: '1-3',
         duration: 1,
         start: '2022-01-07',
         end: '2022-01-08',
@@ -206,25 +282,33 @@ const MOCK_DATA: Project[] = [
   },
   {
     id: '2',
+    type: 'project',
     name: 'Project 2',
-    tasks: [
+    code: '2',
+    subRows: [
       {
         id: '1',
+        type: 'task',
         name: 'Task 1',
+        code: '2-1',
         duration: 2,
         start: '2022-01-01',
         end: '2022-01-03',
       },
       {
         id: '2',
+        type: 'task',
         name: 'Task 2',
+        code: '2-2',
         duration: 3,
         start: '2022-01-04',
         end: '2022-01-06',
       },
       {
         id: '3',
+        type: 'task',
         name: 'Task 3',
+        code: '2-3',
         duration: 1,
         start: '2022-01-07',
         end: '2022-01-08',
@@ -233,25 +317,33 @@ const MOCK_DATA: Project[] = [
   },
   {
     id: '3',
+    type: 'project',
     name: 'Project 3',
-    tasks: [
+    code: '3',
+    subRows: [
       {
         id: '1',
+        type: 'task',
         name: 'Task 1',
+        code: '3-1',
         duration: 2,
         start: '2022-01-01',
         end: '2022-01-03',
       },
       {
         id: '2',
+        type: 'task',
         name: 'Task 2',
+        code: '3-2',
         duration: 3,
         start: '2022-01-04',
         end: '2022-01-06',
       },
       {
         id: '3',
+        type: 'task',
         name: 'Task 3',
+        code: '3-3',
         duration: 1,
         start: '2022-01-07',
         end: '2022-01-08',
