@@ -66,16 +66,14 @@ export default function AiPlannerPage() {
           Timeline
         </div>
         <div className="flex p-2 gap-2">
-          <div className="w-[250px]">
-            <Input
-              startIcon={Search}
-              placeholder="Search"
-              className="w-[250px]"
-              onChange={() => {
-                // TODO: Implement search
-              }}
-            />
-          </div>
+          <Input
+            startIcon={Search}
+            placeholder="Search"
+            className="w-[250px]"
+            onChange={() => {
+              // TODO: Implement search
+            }}
+          />
           <Button variant="outline_black" size={'sm'}>
             <Settings size={18} color={getTailwindColorValue('slate-950')} />
             Settings

@@ -1,10 +1,19 @@
 'use client';
 
 import OccupationTable from '@/components/app/occupation-table';
+import TaskDialog from '@/components/app/task-dialog';
 import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 import { CalendarDays, Plus, Search } from 'lucide-react';
@@ -77,10 +86,12 @@ export default function SettingsPage() {
             }}
           />
           <span className="flex-1" />
-          <Button variant="default" size={'sm'}>
-            <Plus size={18} color={'white'} />
-            Add a Project
-          </Button>
+          <TaskDialog>
+            <Button variant="default" size={'sm'}>
+              <Plus size={18} color={'white'} />
+              Add a Project
+            </Button>
+          </TaskDialog>
         </div>
         <TasksList />
       </div>

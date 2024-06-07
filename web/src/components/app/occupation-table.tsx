@@ -74,7 +74,8 @@ function OccupationQuantityInput(props: { value: number; isLast?: boolean }) {
       )}
     >
       <Input
-        className="w-[100px] text-end"
+        className="w-[100px]"
+        inputClassName="text-end"
         value={props.value}
         onChange={() => {
           // TODO: Implement Input
