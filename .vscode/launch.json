@@ -1,0 +1,63 @@
+// NexJS
+// Source: https://nextjs.org/docs/pages/building-your-application/configuring/debugging
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Next.js: debug server-side",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "cwd": "${workspaceFolder}/web"
+    },
+    {
+      "name": "Next.js: debug client-side",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000",
+      "cwd": "${workspaceFolder}/web"
+    },
+    {
+      "name": "Next.js: debug full stack",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "npm run dev",
+      "serverReadyAction": {
+        "pattern": "started server on .+, url: (https?://.+)",
+        "uriFormat": "%s",
+        "action": "debugWithChrome"
+      },
+      "cwd": "${workspaceFolder}/web"
+    },
+    {
+      "name": "Attach to Node (Running docker WIP - not working)",
+      "type": "node",
+      "request": "attach",
+      "restart": true,
+      "port": 9229,
+      "address": "localhost",
+      "remoteRoot": "/web",
+      "localRoot": "${workspaceFolder}/web",
+      "sourceMaps": true,
+      "outFiles": [
+        "${workspaceFolder}/web/.next/**/*.js"
+      ]
+    },
+    {
+      "name": "Attach to Python",
+      "type": "debugpy",
+      "request": "attach",
+      "justMyCode": false,
+      "connect": {
+        "host": "localhost",
+        "port": 5678
+      },
+      "pathMappings": [
+        {
+          "localRoot": "${workspaceFolder}/api/app",
+          "remoteRoot": "/app"
+        }
+      ]
+    }
+  ]
+}
