@@ -23,6 +23,7 @@ import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 import {
   ChevronDown,
   ChevronRight,
+  Circle,
   Ellipsis,
   Plus,
   Square,
@@ -97,7 +98,15 @@ export const columns: ColumnDef<Row>[] = [
                   color={getTailwindColorValue('slate-950')}
                 />
               )
-            ) : null}
+            ) : (
+              <div className="w-4 flex justify-center items-center">
+                <Circle
+                  size={5}
+                  color={getTailwindColorValue('slate-950')}
+                  fill={getTailwindColorValue('slate-950')}
+                />
+              </div>
+            )}
             <Square
               size={10}
               color={getTailwindColorValue('blue-500')}
