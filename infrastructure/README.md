@@ -10,8 +10,17 @@ Section with all the related code to spawn the infrastructure.
 ## Docker Compose
 
 ### Contains
-- FrontEnd Next.js container that support hot reload;
-- Backend FastAPI container that support hot reload;
+**FrontEnd Next.js** container that support hot reload;
+- [localhost:3000](http://localhost:3000)
+
+**Backend FastAPI** container that support hot reload;
+- [localhost:3000](http://localhost:3001)
+
+**MongoDb**
+- localhost:27017
+
+**MongoDb Web Manager**
+- [localhost:8081](http://localhost:8081)
 
 ## Run Docker Compose
 
