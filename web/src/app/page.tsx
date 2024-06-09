@@ -1,19 +1,12 @@
 'use client';
 
+import EquipmentTypeTable from '@/components/app/equipment-type-table';
 import OccupationTable from '@/components/app/occupation-table';
 import TaskDialog from '@/components/app/task-dialog';
 import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 import { CalendarDays, Plus, Search } from 'lucide-react';
@@ -31,9 +24,13 @@ export default function SettingsPage() {
         <div className="flex flex-col h-full overflow-y-auto">
           <div className=" px-2 py-4 grid gap-x-6 gap-y-3 grid-cols-[200px,auto]">
             <div className="text-sm text-slate-500">
-              Number of resources available in the company
+              Number of employees available in the company
             </div>
             <OccupationTable />
+            <div className="text-sm text-slate-500">
+              Number of equipments available in the company
+            </div>
+            <EquipmentTypeTable />
             <div className="text-sm text-slate-500 flex items-center">
               Desired start date
             </div>

@@ -4,7 +4,6 @@ import { Button } from '../ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -12,6 +11,8 @@ import {
 } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
+import EquipmentTypeTable from './equipment-type-table';
+import OccupationTable from './occupation-table';
 
 export default function TaskDialog({
   children,
@@ -21,31 +22,55 @@ export default function TaskDialog({
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="max-w-[425px]">
+      <DialogContent className="max-w-[800px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
-          <DialogDescription>
-            Make changes to your profile here. Click save when you're done.
-          </DialogDescription>
+          <DialogTitle>
+            <div className="flex items-center gap-3">
+              <div className="text-slate-500">Task</div>
+              <div className="text-slate-500">/</div>
+              <div>{'Excavation'}</div>
+            </div>
+          </DialogTitle>
         </DialogHeader>
-        <div className="grid gap-4 py-4">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="name" className="text-right">
-              Name
+        <ContentArea>
+          <ContentRow>
+            <Label>Name</Label>
+            <Input id="name" value="Tanzim" className="col-span-2" />
+          </ContentRow>
+          <ContentRow>
+            <Label className="self-start">
+              Employees needed to complete the task
             </Label>
-            <Input id="name" value="Tanzim" className="col-span-3" />
-          </div>
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="username" className="text-right">
-              Username
+            <OccupationTable className="col-span-4" />
+          </ContentRow>
+          <ContentRow>
+            <Label className="self-start">
+              Equipments needed to complete the task
             </Label>
-            <Input id="username" value="@tanzim" className="col-span-3" />
-          </div>
-        </div>
+            <EquipmentTypeTable className="col-span-4" />
+          </ContentRow>
+        </ContentArea>
         <DialogFooter>
-          <Button type="submit">Save changes</Button>
+          <Button variant="ghost_destructive" size={'sm'}>
+            Delete this task
+          </Button>
+          <span className="flex-1" />
+          <Button variant="ghost" size={'sm'}>
+            Cancel
+          </Button>
+          <Button variant="black" size={'sm'}>
+            Save changes
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
+}
+
+function ContentArea({ children }: { children: React.ReactNode }) {
+  return <div className="flex flex-col gap-4 px-4">{children}</div>;
+}
+
+function ContentRow({ children }: { children: React.ReactNode }) {
+  return <div className="grid grid-cols-5 items-center gap-4">{children}</div>;
 }
