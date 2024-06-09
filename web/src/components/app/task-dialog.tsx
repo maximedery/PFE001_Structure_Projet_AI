@@ -1,5 +1,7 @@
 'use client';
 
+import { Turtle, Cat, Dog, Rabbit, Fish } from 'lucide-react';
+import { useState } from 'react';
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -12,13 +14,27 @@ import {
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import EquipmentTypeTable from './equipment-type-table';
+import { MultiSelect } from './multi-select';
 import OccupationTable from './occupation-table';
+
+const MOCK_TASK_LIST = [
+  { value: '1-1', label: '1-1 - Project 1 - Task 1' },
+  { value: '1-2', label: '1-2 - Project 1 - Task 1' },
+  { value: '1-3', label: '1-3 - Project 1 - Task 1' },
+  { value: '2-1', label: '2-1 - Project 2 - Task 1' },
+  { value: '2-2', label: '2-2 - Project 2 - Task 2' },
+];
 
 export default function TaskDialog({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([
+    '1-1',
+    '2-2',
+  ]);
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -48,6 +64,17 @@ export default function TaskDialog({
               Equipments needed to complete the task
             </Label>
             <EquipmentTypeTable className="col-span-4" />
+          </ContentRow>
+          <ContentRow>
+            <Label>Predecessor</Label>
+            <MultiSelect
+              options={MOCK_TASK_LIST}
+              onValueChange={setSelectedFrameworks}
+              defaultValue={selectedFrameworks}
+              placeholder="Select tasks"
+              maxCount={2}
+              className="col-span-3"
+            />
           </ContentRow>
         </ContentArea>
         <DialogFooter>
