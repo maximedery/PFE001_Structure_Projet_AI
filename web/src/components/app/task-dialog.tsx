@@ -162,7 +162,7 @@ export default function TaskDialog({
             Cancel
           </Button>
           <Button variant="black" size={'sm'}>
-            Save changes
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>

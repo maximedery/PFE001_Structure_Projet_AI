@@ -52,7 +52,7 @@ export default function ProjectDialog({
             Cancel
           </Button>
           <Button variant="black" size={'sm'}>
-            Save changes
+            Confirm
           </Button>
         </DialogFooter>
       </DialogContent>
