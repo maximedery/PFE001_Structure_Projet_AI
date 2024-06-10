@@ -1,6 +1,14 @@
 'use client';
 
-import { Turtle, Cat, Dog, Rabbit, Fish } from 'lucide-react';
+import {
+  Turtle,
+  Cat,
+  Dog,
+  Rabbit,
+  Fish,
+  Calendar,
+  CalendarDays,
+} from 'lucide-react';
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import {
@@ -54,8 +62,23 @@ export default function TaskDialog({
         <DialogContentArea>
           <DialogContentRow>
             <Label>Name</Label>
-            <Input id="name" value="Tanzim" className="col-span-2" />
+            <Input id="name" value="Tanzim" className="col-span-2" autoFocus />
           </DialogContentRow>
+          <DialogContentRow>
+            <Label>Start</Label>
+            <Button variant="outline_black" size={'sm'}>
+              <CalendarDays size={18} />
+              23 May 2024
+            </Button>
+          </DialogContentRow>
+          <DialogContentRow>
+            <Label>End</Label>
+            <Button variant="outline_black" size={'sm'}>
+              <CalendarDays size={18} />
+              15 Jun 2024
+            </Button>
+          </DialogContentRow>
+
           <DialogContentRow>
             <Label>Predecessor</Label>
             <MultiSelect
@@ -66,6 +89,14 @@ export default function TaskDialog({
               maxCount={2}
               className="col-span-3"
             />
+          </DialogContentRow>
+          <DialogContentRow>
+            <Label>Duration to finish the task</Label>
+            <Input className="col-span-1" suffix={'hours'} type="number" />
+          </DialogContentRow>
+          <DialogContentRow>
+            <Label>Cost</Label>
+            <Input className="col-span-1" suffix={'$'} type="number" />
           </DialogContentRow>
           <DialogContentRow>
             <Label>Importance</Label>
@@ -108,14 +139,6 @@ export default function TaskDialog({
                 Impossible
               </ToggleGroupItem>
             </ToggleGroup>
-          </DialogContentRow>
-          <DialogContentRow>
-            <Label>Duration to finish the task</Label>
-            <Input className="col-span-1" suffix={'hours'} type="number" />
-          </DialogContentRow>
-          <DialogContentRow>
-            <Label>Cost</Label>
-            <Input className="col-span-1" suffix={'$'} type="number" />
           </DialogContentRow>
           <DialogContentRow>
             <Label className="self-start">
