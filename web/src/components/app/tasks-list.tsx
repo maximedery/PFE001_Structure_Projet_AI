@@ -30,6 +30,7 @@ import {
 } from 'lucide-react';
 import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
+import TaskDialog from './task-dialog';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -131,9 +132,17 @@ export const columns: ColumnDef<Row>[] = [
       return (
         <div className="flex gap-1 justify-end">
           {row.original.type === 'project' && (
-            <Button variant="ghost" size={'icon'}>
-              <Plus size={16} color={getTailwindColorValue('slate-950')} />
-            </Button>
+            <div
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <TaskDialog>
+                <Button variant="ghost" size={'icon'}>
+                  <Plus size={16} color={getTailwindColorValue('slate-950')} />
+                </Button>
+              </TaskDialog>
+            </div>
           )}
           <Button variant="ghost" size={'icon'}>
             <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
