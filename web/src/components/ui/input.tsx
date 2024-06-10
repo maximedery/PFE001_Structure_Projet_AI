@@ -7,13 +7,21 @@ export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   startIcon?: LucideIcon;
   endIcon?: LucideIcon;
+  suffix?: string;
   inputClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ inputClassName, className, type, startIcon, endIcon, ...props }, ref) => {
+  (
+    { inputClassName, className, type, startIcon, endIcon, suffix, ...props },
+    ref
+  ) => {
     const StartIcon = startIcon;
     const EndIcon = endIcon;
+
+    if (!!suffix && !!endIcon) {
+      throw new Error('Suffix and EndIcon cannot be used together');
+    }
 
     return (
       <div className={cn('w-full relative', className)}>
@@ -33,6 +41,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
+        {suffix && (
+          <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <div className="text-sm text-slate-500 ">{suffix}</div>
+          </div>
+        )}
         {EndIcon && (
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
             <EndIcon className="text-muted-foreground" size={18} />
