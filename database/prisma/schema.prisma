@@ -1,0 +1,45 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id    String @id @default(cuid())
+  name  String
+  code  String
+  color String
+  tasks Task[]
+}
+
+model Task {
+  id            String        @id @default(cuid())
+  name          String
+  project       Project       @relation(fields: [projectId], references: [id])
+  projectId     String
+  start         DateTime
+  end           DateTime
+  duration      Int
+  cost          Float
+  predecessor   Task[]        @relation("TaskPredecessor")
+  successors    Task[]        @relation("TaskPredecessor")
+  importance    Importance
+  weatherEffect WeatherEffect
+}
+
+enum Importance {
+  asap
+  high
+  medium
+  low
+}
+
+enum WeatherEffect {
+  none
+  slight
+  significant
+  impossible
+}

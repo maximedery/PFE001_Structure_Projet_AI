@@ -1,0 +1,23 @@
+{
+  "name": "tanzim-database",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "format": "npx prisma format",
+    "migrate-dev": "npx prisma migrate dev",
+    "seed": "npx prisma db seed"
+  },
+  "devDependencies": {
+    "prisma": "5.15.0",
+    "ts-node": "10.9.2",
+    "@types/node": "20.14.2",
+    "typescript": "5.4.5"
+
+  },
+  "dependencies": {
+    "@prisma/client": "5.15.0"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}
