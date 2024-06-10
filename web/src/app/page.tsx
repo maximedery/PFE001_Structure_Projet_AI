@@ -15,7 +15,7 @@ import { CalendarDays, Plus, Search } from 'lucide-react';
 export default function SettingsPage() {
   return (
     <div className="flex flex-row h-full overflow-hidden">
-      <div className="flex flex-col h-full border-r overflow-hidden">
+      <div className="flex flex-col h-full border-r-2 overflow-hidden">
         <div className="border-b p-2 flex items-center gap-3">
           <div className="text-sm font-medium">Multi-projects Settings</div>
           <Badge variant="label" size="lg">
