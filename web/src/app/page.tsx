@@ -2,6 +2,7 @@
 
 import EquipmentTypeTable from '@/components/app/equipment-type-table';
 import OccupationTable from '@/components/app/occupation-table';
+import ProjectDialog from '@/components/app/project-dialog';
 import TaskDialog from '@/components/app/task-dialog';
 import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
@@ -83,12 +84,12 @@ export default function SettingsPage() {
             }}
           />
           <span className="flex-1" />
-          <TaskDialog>
+          <ProjectDialog>
             <Button variant="default" size={'sm'}>
               <Plus size={18} color={'white'} />
               Add a Project
             </Button>
-          </TaskDialog>
+          </ProjectDialog>
         </div>
         <TasksList />
       </div>
