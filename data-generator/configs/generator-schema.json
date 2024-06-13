@@ -1,0 +1,9 @@
+{
+  "rules": [
+    {"type": "integer", "field": "age", "config": {"lower_bound": 18, "upper_bound": 65}},
+    {"type": "float", "field": "salary", "config": {"lower_bound": 30000, "upper_bound": 120000}},
+    {"type": "string", "field": "name", "config": {"length": 10}},
+    {"type": "dependent", "field": "is_adult", "config": {"depends_on": "age", "condition": ">= 18"}}
+  ],
+  "num_records": 100
+}
