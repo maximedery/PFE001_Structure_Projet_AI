@@ -17,6 +17,13 @@ import {
   FoldVertical,
   ChevronDown,
 } from 'lucide-react';
+import {fetchHelloWorld} from '../../api/api.js'
+
+const GeneratePlanner = () => {
+  const data = fetchHelloWorld().then((test) => {
+    alert(test.Hello);
+  });
+}
 
 export default function AiPlannerPage() {
   return (
@@ -31,7 +38,7 @@ export default function AiPlannerPage() {
           </TabsTrigger>
         </TabsList>
         <span className="flex-1" />
-        <Button variant="default" size={'sm'}>
+        <Button variant="default" size={'sm'} onClick={GeneratePlanner}>
           <Sparkles size={18} color={'white'} />
           Generate
         </Button>
