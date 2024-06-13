@@ -18,15 +18,23 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import {fetchHelloWorld} from '../../api/api.js'
+import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
-const GeneratePlanner = () => {
-  const data = fetchHelloWorld().then((test) => {
-    alert(test.Hello);
-  });
+const queryClient = new QueryClient()
+
+// TEST
+// https://tanstack.com/query/latest/docs/framework/react/overview?from=reactQueryV3
+function Example() {
+  const { error, data } = useQuery('helloworld', () => fetchHelloWorld());
+  console.log(error)
+  console.log(data)
+  return <div></div> 
 }
 
 export default function AiPlannerPage() {
   return (
+    <QueryClientProvider client={queryClient}>
+    <Example />
     <Tabs defaultValue="basic" className="flex flex-col h-full">
       <div className="border-b py-2 px-2 flex items-center">
         <TabsList>
@@ -38,7 +46,7 @@ export default function AiPlannerPage() {
           </TabsTrigger>
         </TabsList>
         <span className="flex-1" />
-        <Button variant="default" size={'sm'} onClick={GeneratePlanner}>
+        <Button variant="default" size={'sm'}>
           <Sparkles size={18} color={'white'} />
           Generate
         </Button>
@@ -123,5 +131,6 @@ export default function AiPlannerPage() {
         </TabsContent>
       </Tabs>
     </Tabs>
+    </QueryClientProvider>
   );
 }

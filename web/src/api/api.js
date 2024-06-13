@@ -1,6 +1,6 @@
 import {useQuery} from 'react-query';
 
-const apiUrl = 'http://127.0.0.1:8000/' // to put in an env file
+const apiUrl = 'http://127.0.0.1:3001/' // to put in an env file
 
 export const fetchHelloWorld = async() => {
   const res = await fetch(apiUrl);
@@ -12,7 +12,7 @@ export const fetchHelloWorld = async() => {
   return res.json();
 };
 
+// not used...
 export function useHelloWorldQuery() {
-  
-  const[] = useQuery('', () => fetchHelloWorld());
+  const { data, status } = useQuery('', () => fetchHelloWorld());
 };
