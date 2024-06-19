@@ -1,10 +1,10 @@
 'use client';
 
-import EquipmentTypeTable from '@/components/app/equipment-type-table';
-import OccupationTable from '@/components/app/occupation-table';
-import ProjectDialog from '@/components/app/project-dialog';
-import TasksList from '@/components/app/tasks-list';
-import WeekdaysPicker from '@/components/app/weekdays-picker';
+import EquipmentTypeTable from '@/components/global/equipment-type-table';
+import OccupationTable from '@/components/global/occupation-table';
+import ProjectDialog from '@/components/global/project-dialog';
+import TasksList from '@/components/global/tasks-list';
+import WeekdaysPicker from '@/components/global/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';

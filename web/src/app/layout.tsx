@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { MainNav } from '@/components/app/main-nav';
+import { MainNav } from '@/components/global/main-nav';
 
 import './globals.css';
 import 'gantt-task-react/dist/index.css';

@@ -1,8 +1,8 @@
 'use client';
 
-import Gantt from '@/components/app/gantt';
-import ScoreHeader from '@/components/app/score-header';
-import Workload from '@/components/app/workload';
+import Gantt from '@/components/global/gantt';
+import ScoreHeader from '@/components/global/score-header';
+import Workload from '@/components/global/workload';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
