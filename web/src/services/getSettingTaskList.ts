@@ -32,7 +32,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
   const projectMap: { [key: string]: ProjectRow } = {};
   let projectCode = 1;
 
-  data.forEach((task, taskIndex) => {
+  data.forEach((task) => {
     const project = task.Project;
 
     if (!project) return;
