@@ -31,6 +31,7 @@ import {
 import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
 import TaskDialog from './task-dialog';
+import { Row, useGetSettingTaskList } from '@/services/getSettingTaskList';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -156,10 +157,12 @@ export const columns: ColumnDef<Row>[] = [
 ];
 
 export default function TasksList() {
+  const { data: settingTasks } = useGetSettingTaskList();
+
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable({
-    data: MOCK_DATA,
+    data: settingTasks || [],
     state: {
       expanded,
     },
@@ -259,163 +262,3 @@ export default function TasksList() {
     </div>
   );
 }
-
-type Row = ProjectRow | TaskRow;
-interface ProjectRow {
-  type: 'project';
-  id: string;
-  name: string;
-  code: string;
-  subRows: Row[];
-}
-
-interface TaskRow {
-  type: 'task';
-  id: string;
-  name: string;
-  code: string;
-  duration: number | null;
-  start: string | null;
-  end: string | null;
-}
-
-const MOCK_DATA: Row[] = [
-  {
-    id: '1',
-    type: 'project',
-    name: 'Project 1',
-    code: '1',
-    subRows: [
-      {
-        id: '1',
-        type: 'task',
-        name: 'Task 1',
-        code: '1-1',
-        duration: 2,
-        start: '2022-01-01',
-        end: '2022-01-03',
-      },
-      {
-        id: '2',
-        type: 'task',
-        name: 'Task 2',
-        code: '1-2',
-        duration: 3,
-        start: '2022-01-04',
-        end: '2022-01-06',
-      },
-      {
-        id: '3',
-        type: 'task',
-        name: 'Task 3',
-        code: '1-3',
-        duration: 1,
-        start: '2022-01-07',
-        end: '2022-01-08',
-      },
-    ],
-  },
-  {
-    id: '2',
-    type: 'project',
-    name: 'Project 2',
-    code: '2',
-    subRows: [
-      {
-        id: '1',
-        type: 'task',
-        name: 'Task 1',
-        code: '2-1',
-        duration: 2,
-        start: '2022-01-01',
-        end: '2022-01-03',
-      },
-      {
-        id: '2',
-        type: 'task',
-        name: 'Task 2',
-        code: '2-2',
-        duration: 3,
-        start: '2022-01-04',
-        end: '2022-01-06',
-      },
-      {
-        id: '3',
-        type: 'task',
-        name: 'Task 3',
-        code: '2-3',
-        duration: 1,
-        start: '2022-01-07',
-        end: '2022-01-08',
-      },
-    ],
-  },
-  {
-    id: '3',
-    type: 'project',
-    name: 'Project 3',
-    code: '3',
-    subRows: [
-      {
-        id: '1',
-        type: 'task',
-        name: 'Task 1',
-        code: '3-1',
-        duration: 2,
-        start: '2022-01-01',
-        end: '2022-01-03',
-      },
-      {
-        id: '2',
-        type: 'task',
-        name: 'Task 2',
-        code: '3-2',
-        duration: 3,
-        start: '2022-01-04',
-        end: '2022-01-06',
-      },
-      {
-        id: '3',
-        type: 'task',
-        name: 'Task 3',
-        code: '3-3',
-        duration: 1,
-        start: '2022-01-07',
-        end: '2022-01-08',
-      },
-    ],
-  },
-  {
-    id: '4',
-    type: 'project',
-    name: 'Project 4',
-    code: '4',
-    subRows: [
-      {
-        id: '1',
-        type: 'task',
-        name: 'Task 1',
-        code: '4-1',
-        duration: 2,
-        start: '2022-01-01',
-        end: '2022-01-03',
-      },
-      {
-        id: '2',
-        type: 'task',
-        name: 'Task 2',
-        code: '4-2',
-        duration: 3,
-        start: '2022-01-04',
-        end: '2022-01-06',
-      },
-    ],
-  },
-  {
-    id: '5',
-    type: 'project',
-    name: 'Project 5',
-    code: '5',
-    subRows: [],
-  },
-];

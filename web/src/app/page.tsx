@@ -3,7 +3,6 @@
 import EquipmentTypeTable from '@/components/app/equipment-type-table';
 import OccupationTable from '@/components/app/occupation-table';
 import ProjectDialog from '@/components/app/project-dialog';
-import TaskDialog from '@/components/app/task-dialog';
 import TasksList from '@/components/app/tasks-list';
 import WeekdaysPicker from '@/components/app/weekdays-picker';
 import { Badge } from '@/components/ui/badge';

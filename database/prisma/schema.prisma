@@ -10,7 +10,6 @@ datasource db {
 model Project {
   id    String @id @default(cuid())
   name  String
-  code  String
   color String
   tasks Task[]
 }

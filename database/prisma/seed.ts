@@ -7,7 +7,6 @@ async function main() {
   const project1 = await prisma.project.create({
     data: {
       name: "Project Alpha",
-      code: "PA123",
       color: "#FF5733",
     },
   });
@@ -15,7 +14,6 @@ async function main() {
   const project2 = await prisma.project.create({
     data: {
       name: "Project Beta",
-      code: "PB456",
       color: "#33FF57",
     },
   });

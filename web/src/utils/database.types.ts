@@ -74,19 +74,16 @@ export type Database = {
       }
       Project: {
         Row: {
-          code: string
           color: string
           id: string
           name: string
         }
         Insert: {
-          code: string
           color: string
           id: string
           name: string
         }
         Update: {
-          code?: string
           color?: string
           id?: string
           name?: string
