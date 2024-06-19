@@ -1,26 +1,20 @@
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
+import { Database } from '@/utils/database.types';
 import { useQuery } from '@tanstack/react-query';
 
 export type Row = ProjectRow | TaskRow;
 
-interface ProjectRow {
+type ProjectRow = {
   type: 'project';
-  id: string;
-  name: string;
   code: string;
   subRows: Row[];
-}
+} & Database['public']['Tables']['Project']['Row'];
 
-interface TaskRow {
+type TaskRow = {
   type: 'task';
-  id: string;
-  name: string;
   code: string;
-  duration: number | null;
-  start: string | null;
-  end: string | null;
-}
+} & Database['public']['Tables']['Task']['Row'];
 
 async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
   const { data, error } = await client.from('Task').select('*, Project(*)');
@@ -41,7 +35,8 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
       projectMap[project.id] = {
         type: 'project',
         id: project.id,
-        name: project.name,
+        color: project.color,
+        name: project.name || 'Untitled',
         code: projectCode.toString(),
         subRows: [],
       };
@@ -53,11 +48,15 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
     const taskRow: TaskRow = {
       type: 'task',
       id: task.id,
-      name: task.name,
+      name: task.name || 'Untitled',
       code: `${projectMap[project.id].code}-${taskCode}`,
       duration: task.duration,
       start: task.start,
       end: task.end,
+      cost: task.cost,
+      importance: task.importance,
+      weatherEffect: task.weatherEffect,
+      projectId: task.projectId,
     };
 
     projectMap[project.id].subRows.push(taskRow);

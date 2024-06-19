@@ -76,52 +76,52 @@ export type Database = {
         Row: {
           color: string
           id: string
-          name: string
+          name: string | null
         }
         Insert: {
           color: string
           id: string
-          name: string
+          name?: string | null
         }
         Update: {
           color?: string
           id?: string
-          name?: string
+          name?: string | null
         }
         Relationships: []
       }
       Task: {
         Row: {
-          cost: number
-          duration: number
-          end: string
+          cost: number | null
+          duration: number | null
+          end: string | null
           id: string
           importance: Database["public"]["Enums"]["Importance"]
-          name: string
+          name: string | null
           projectId: string
-          start: string
+          start: string | null
           weatherEffect: Database["public"]["Enums"]["WeatherEffect"]
         }
         Insert: {
-          cost: number
-          duration: number
-          end: string
+          cost?: number | null
+          duration?: number | null
+          end?: string | null
           id: string
-          importance: Database["public"]["Enums"]["Importance"]
-          name: string
+          importance?: Database["public"]["Enums"]["Importance"]
+          name?: string | null
           projectId: string
-          start: string
-          weatherEffect: Database["public"]["Enums"]["WeatherEffect"]
+          start?: string | null
+          weatherEffect?: Database["public"]["Enums"]["WeatherEffect"]
         }
         Update: {
-          cost?: number
-          duration?: number
-          end?: string
+          cost?: number | null
+          duration?: number | null
+          end?: string | null
           id?: string
           importance?: Database["public"]["Enums"]["Importance"]
-          name?: string
+          name?: string | null
           projectId?: string
-          start?: string
+          start?: string | null
           weatherEffect?: Database["public"]["Enums"]["WeatherEffect"]
         }
         Relationships: [
