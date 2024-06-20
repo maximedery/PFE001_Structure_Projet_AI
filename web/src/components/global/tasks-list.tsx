@@ -146,9 +146,11 @@ export const columns: ColumnDef<Row>[] = [
         deleteProjectDialogStateAtom
       );
 
+      const rowData = row.original;
+
       return (
         <div className="flex gap-1 justify-end">
-          {row.original.type === 'project' && (
+          {rowData.type === 'project' && (
             <div
               onClick={(e) => {
                 e.stopPropagation();
@@ -161,7 +163,7 @@ export const columns: ColumnDef<Row>[] = [
               </TaskDialog>
             </div>
           )}
-          {row.original.type === 'project' ? (
+          {rowData.type === 'project' ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size={'icon'}>
@@ -178,8 +180,9 @@ export const columns: ColumnDef<Row>[] = [
                     setProjectDialogState({
                       isOpen: true,
                       defaultValues: {
-                        id: row.original.id,
-                        name: row.original.name || undefined,
+                        id: rowData.id,
+                        name: rowData.name || undefined,
+                        color: rowData.color,
                       },
                     });
                   }}
@@ -192,8 +195,8 @@ export const columns: ColumnDef<Row>[] = [
                     e.stopPropagation();
                     setDeleteProjectDialogState({
                       isOpen: true,
-                      id: row.original.id,
-                      name: row.original.name || undefined,
+                      id: rowData.id,
+                      name: rowData.name || undefined,
                     });
                   }}
                   className="text-red-500"

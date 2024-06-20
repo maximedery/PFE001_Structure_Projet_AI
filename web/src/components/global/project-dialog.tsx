@@ -15,8 +15,8 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField } from '../ui/form';
-import { useEffect, useState } from 'react';
+import { Form, FormField, FormItem, FormMessage } from '../ui/form';
+import { useEffect } from 'react';
 import { useCreateProject } from '@/services/createProject';
 import { useAtom, useSetAtom } from 'jotai';
 import {
@@ -24,10 +24,13 @@ import {
   projectDialogStateAtom,
 } from '@/stores/dialogs';
 import { useUpdateProject } from '@/services/updateProject';
+import { ColorPicker } from './color-picker';
+import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 
 const formSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
+  color: z.string().min(4).max(9).regex(/^#/),
 });
 
 export type ProjectDialogDefaultValues = z.infer<typeof formSchema>;
@@ -45,6 +48,7 @@ export default function ProjectDialog() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: undefined,
+      color: getTailwindColorValue('blue-500'),
       name: undefined,
     },
   });
@@ -64,6 +68,7 @@ export default function ProjectDialog() {
       form.reset(
         projectDialogState.defaultValues || {
           id: undefined,
+          color: getTailwindColorValue('blue-500'),
           name: undefined,
         }
       );
@@ -104,6 +109,22 @@ export default function ProjectDialog() {
                       autoFocus
                       {...field}
                     />
+                  )}
+                />
+              </DialogContentRow>
+              <DialogContentRow>
+                <Label>Color</Label>
+                <FormField
+                  control={form.control}
+                  name="color"
+                  render={({ field }) => (
+                    <FormItem className="col-span-4">
+                      <ColorPicker
+                        color={field.value}
+                        setColor={field.onChange}
+                      />
+                      <FormMessage />
+                    </FormItem>
                   )}
                 />
               </DialogContentRow>
