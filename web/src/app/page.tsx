@@ -1,5 +1,6 @@
 'use client';
 
+import DeleteProjectDialog from '@/components/global/delete-project-dialog';
 import EquipmentTypeTable from '@/components/global/equipment-type-table';
 import OccupationTable from '@/components/global/occupation-table';
 import ProjectDialog from '@/components/global/project-dialog';
@@ -103,6 +104,7 @@ export default function SettingsPage() {
         </div>
       </div>
       <ProjectDialog />
+      <DeleteProjectDialog />
     </>
   );
 }

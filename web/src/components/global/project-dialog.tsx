@@ -4,14 +4,12 @@ import { useForm } from 'react-hook-form';
 import { Button } from '../ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogContentArea,
   DialogContentRow,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from '../ui/dialog';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -20,8 +18,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormField } from '../ui/form';
 import { useEffect, useState } from 'react';
 import { useCreateProject } from '@/services/createProject';
-import { useAtom } from 'jotai';
-import { projectDialogStateAtom } from '@/stores/dialogs';
+import { useAtom, useSetAtom } from 'jotai';
+import {
+  deleteProjectDialogStateAtom,
+  projectDialogStateAtom,
+} from '@/stores/dialogs';
 import { useUpdateProject } from '@/services/updateProject';
 
 const formSchema = z.object({
@@ -35,6 +36,7 @@ export default function ProjectDialog() {
   const [projectDialogState, setProjectDialogState] = useAtom(
     projectDialogStateAtom
   );
+  const setDeleteProjectDialogState = useSetAtom(deleteProjectDialogStateAtom);
 
   const createProject = useCreateProject();
   const updateProject = useUpdateProject();
@@ -108,12 +110,29 @@ export default function ProjectDialog() {
             </DialogContentArea>
             <DialogFooter>
               {!isCreate && (
-                <Button variant="ghost_destructive" size={'sm'} type="button">
+                <Button
+                  variant="ghost_destructive"
+                  size={'sm'}
+                  type="button"
+                  onClick={() => {
+                    setProjectDialogState({ isOpen: false });
+                    setDeleteProjectDialogState({
+                      isOpen: true,
+                      id: form.getValues('id'),
+                      name: form.getValues('name'),
+                    });
+                  }}
+                >
                   Delete this Project
                 </Button>
               )}
               <span className="flex-1" />
-              <Button variant="ghost" size={'sm'} type="button">
+              <Button
+                variant="ghost"
+                size={'sm'}
+                type="button"
+                onClick={() => setProjectDialogState({ isOpen: false })}
+              >
                 Cancel
               </Button>
               <Button variant="black" size={'sm'} type="submit">

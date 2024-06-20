@@ -9,3 +9,11 @@ export const projectDialogStateAtom = atom<{
   isOpen: false,
   defaultValues: undefined,
 });
+
+export const deleteProjectDialogStateAtom = atom<{
+  isOpen: boolean;
+  id?: string;
+  name?: string;
+}>({
+  isOpen: false,
+});

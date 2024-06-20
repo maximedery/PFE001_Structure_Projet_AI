@@ -41,7 +41,10 @@ import {
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 import { useSetAtom } from 'jotai';
-import { projectDialogStateAtom } from '@/stores/dialogs';
+import {
+  deleteProjectDialogStateAtom,
+  projectDialogStateAtom,
+} from '@/stores/dialogs';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -139,6 +142,9 @@ export const columns: ColumnDef<Row>[] = [
     size: 116,
     cell: ({ row }) => {
       const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+      const setDeleteProjectDialogState = useSetAtom(
+        deleteProjectDialogStateAtom
+      );
 
       return (
         <div className="flex gap-1 justify-end">
@@ -184,6 +190,11 @@ export const columns: ColumnDef<Row>[] = [
                 <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
+                    setDeleteProjectDialogState({
+                      isOpen: true,
+                      id: row.original.id,
+                      name: row.original.name || undefined,
+                    });
                   }}
                   className="text-red-500"
                 >
