@@ -52,6 +52,8 @@ export default function ProjectDialog({ children }: { children: ReactNode }) {
     }
   }, [isOpen]);
 
+  const isCreate = !form.getValues('id');
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -85,17 +87,17 @@ export default function ProjectDialog({ children }: { children: ReactNode }) {
               </DialogContentRow>
             </DialogContentArea>
             <DialogFooter>
-              {!!form.getValues('id') && (
-                <Button variant="ghost_destructive" size={'sm'}>
+              {!isCreate && (
+                <Button variant="ghost_destructive" size={'sm'} type="button">
                   Delete this Project
                 </Button>
               )}
               <span className="flex-1" />
-              <Button variant="ghost" size={'sm'}>
+              <Button variant="ghost" size={'sm'} type="button">
                 Cancel
               </Button>
               <Button variant="black" size={'sm'} type="submit">
-                Confirm
+                {isCreate ? 'Create' : 'Update'}
               </Button>
             </DialogFooter>
           </form>
