@@ -17,16 +17,36 @@ type TaskRow = {
 } & Database['public']['Tables']['Task']['Row'];
 
 async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
-  const { data, error } = await client.from('Task').select('*, Project(*)');
+  // Fetch projects and tasks separately
+  const { data: projects, error: projectError } = await client
+    .from('Project')
+    .select();
+  if (projectError) throw new Error(projectError.message);
+  if (!projects) throw new Error('No projects found');
 
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error('No data found');
+  const { data: tasks, error: taskError } = await client
+    .from('Task')
+    .select('*, Project(*)');
+  if (taskError) throw new Error(taskError.message);
+  if (!tasks) throw new Error('No tasks found');
 
   // Group tasks by project
   const projectMap: { [key: string]: ProjectRow } = {};
   let projectCode = 1;
 
-  data.forEach((task) => {
+  projects.forEach((project) => {
+    projectMap[project.id] = {
+      type: 'project',
+      id: project.id,
+      color: project.color,
+      name: project.name || 'Untitled',
+      code: projectCode.toString(),
+      subRows: [],
+    };
+    projectCode++;
+  });
+
+  tasks.forEach((task) => {
     const project = task.Project;
 
     if (!project) return;
