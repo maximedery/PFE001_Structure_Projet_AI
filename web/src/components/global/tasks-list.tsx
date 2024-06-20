@@ -25,6 +25,7 @@ import {
   ChevronRight,
   Circle,
   Ellipsis,
+  Pencil,
   Plus,
   Square,
 } from 'lucide-react';
@@ -32,6 +33,14 @@ import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
 import TaskDialog from './task-dialog';
 import { Row, useGetSettingTaskList } from '@/services/getSettingTaskList';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
+import ProjectDialog from './project-dialog';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -109,11 +118,7 @@ export const columns: ColumnDef<Row>[] = [
                 />
               </div>
             )}
-            <Square
-              size={10}
-              color={getTailwindColorValue('blue-500')}
-              fill={getTailwindColorValue('blue-500')}
-            />
+            <Square size={10} color={rowData.color} fill={rowData.color} />
             <div className="text-sm">{getValue<string>()}</div>
             <div className="text-slate-400 text-xs">{`(${pluralize(
               'task',
@@ -145,9 +150,34 @@ export const columns: ColumnDef<Row>[] = [
               </TaskDialog>
             </div>
           )}
-          <Button variant="ghost" size={'icon'}>
-            <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
-          </Button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size={'icon'}>
+                <Ellipsis
+                  size={18}
+                  color={getTailwindColorValue('slate-950')}
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="bottom">
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
+                Edit Project
+              </DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+                className="text-red-500"
+              >
+                Delete Project
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },

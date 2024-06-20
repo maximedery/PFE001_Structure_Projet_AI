@@ -18,7 +18,7 @@ import { Label } from '../ui/label';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormField } from '../ui/form';
-import { ReactNode, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useCreateProject } from '@/services/createProject';
 
 const formSchema = z.object({
@@ -26,10 +26,17 @@ const formSchema = z.object({
   name: z.string().optional(),
 });
 
-export default function ProjectDialog({ children }: { children: ReactNode }) {
+export type ProjectDialogDefaultValues = z.infer<typeof formSchema>;
+
+export default function ProjectDialog() {
   const [isOpen, setIsOpen] = useState(false);
 
   const createProject = useCreateProject();
+
+  const defaultValues: ProjectDialogDefaultValues = {
+    id: undefined,
+    name: undefined,
+  }; // TODO: get from store
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,15 +55,14 @@ export default function ProjectDialog({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (isOpen) {
-      form.reset();
+      form.reset(defaultValues);
     }
-  }, [isOpen]);
+  }, [isOpen, defaultValues]);
 
   const isCreate = !form.getValues('id');
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className="max-w-[800px] ">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>
