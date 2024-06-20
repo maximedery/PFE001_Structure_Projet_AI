@@ -155,41 +155,47 @@ export const columns: ColumnDef<Row>[] = [
               </TaskDialog>
             </div>
           )}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size={'icon'}>
-                <Ellipsis
-                  size={18}
-                  color={getTailwindColorValue('slate-950')}
-                />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent side="bottom">
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setProjectDialogState({
-                    isOpen: true,
-                    defaultValues: {
-                      id: row.original.id,
-                      name: row.original.name || undefined,
-                    },
-                  });
-                }}
-              >
-                Edit Project
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-                className="text-red-500"
-              >
-                Delete Project
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {row.original.type === 'project' ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size={'icon'}>
+                  <Ellipsis
+                    size={18}
+                    color={getTailwindColorValue('slate-950')}
+                  />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent side="bottom">
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setProjectDialogState({
+                      isOpen: true,
+                      defaultValues: {
+                        id: row.original.id,
+                        name: row.original.name || undefined,
+                      },
+                    });
+                  }}
+                >
+                  Edit Project
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
+                  className="text-red-500"
+                >
+                  Delete Project
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button variant="ghost" size={'icon'}>
+              <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
+            </Button>
+          )}
         </div>
       );
     },
