@@ -20,13 +20,17 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
   // Fetch projects and tasks separately
   const { data: projects, error: projectError } = await client
     .from('Project')
-    .select();
+    .select()
+    .order('name', { ascending: true });
+
   if (projectError) throw new Error(projectError.message);
   if (!projects) throw new Error('No projects found');
 
   const { data: tasks, error: taskError } = await client
     .from('Task')
-    .select('*, Project(*)');
+    .select('*, Project(*)')
+    .order('name', { ascending: true });
+
   if (taskError) throw new Error(taskError.message);
   if (!tasks) throw new Error('No tasks found');
 

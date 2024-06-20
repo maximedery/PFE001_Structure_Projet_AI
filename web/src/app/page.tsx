@@ -9,9 +9,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
+import { projectDialogStateAtom } from '@/stores/dialogs';
+import { useSetAtom } from 'jotai';
 import { CalendarDays, Plus, Search } from 'lucide-react';
 
 export default function SettingsPage() {
+  const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+
   return (
     <>
       <div className="flex flex-row h-full overflow-hidden">
@@ -84,7 +88,13 @@ export default function SettingsPage() {
               }}
             />
             <span className="flex-1" />
-            <Button variant="default" size={'sm'}>
+            <Button
+              variant="default"
+              size={'sm'}
+              onClick={() => {
+                setProjectDialogState({ isOpen: true });
+              }}
+            >
               <Plus size={18} color={'white'} />
               Add a Project
             </Button>

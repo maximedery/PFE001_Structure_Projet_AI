@@ -1,42 +1,41 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
-import randomColor from 'randomcolor';
-import cuid from 'cuid';
 import { Database } from '@/utils/database.types';
 
-type InsertOptions = Database['public']['Tables']['Project']['Insert'];
+type UpdateOptions = Database['public']['Tables']['Project']['Update'];
 
-interface CreateProjectInput {
-  name?: InsertOptions['name'];
-  color?: InsertOptions['color'];
+interface UpdateProjectInput {
+  id: string;
+  name?: UpdateOptions['name'];
+  color?: UpdateOptions['color'];
 }
 
-async function createProject(
+async function updateProject(
   client: TypedSupabaseClient,
-  inputValues: CreateProjectInput
+  inputValues: UpdateProjectInput
 ) {
   const { data, error } = await client
     .from('Project')
-    .insert({
-      id: cuid(),
+    .update({
       name: inputValues.name,
-      color: inputValues.color || randomColor(),
+      color: inputValues.color,
     })
+    .eq('id', inputValues.id)
     .select();
 
-  if (error) throw new Error('Error creating project');
+  if (error) throw new Error('Error updating project');
 
   return data;
 }
 
-export const useCreateProject = () => {
+export const useUpdateProject = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (inputValues: CreateProjectInput) =>
-      createProject(client, inputValues),
+    mutationFn: (inputValues: UpdateProjectInput) =>
+      updateProject(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['projects', 'list'] });
       queryClient.invalidateQueries({ queryKey: ['tasks', 'setting-list'] });

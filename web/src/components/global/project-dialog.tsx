@@ -20,6 +20,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormField } from '../ui/form';
 import { useEffect, useState } from 'react';
 import { useCreateProject } from '@/services/createProject';
+import { useAtom } from 'jotai';
+import { projectDialogStateAtom } from '@/stores/dialogs';
+import { useUpdateProject } from '@/services/updateProject';
 
 const formSchema = z.object({
   id: z.string().optional(),
@@ -29,40 +32,46 @@ const formSchema = z.object({
 export type ProjectDialogDefaultValues = z.infer<typeof formSchema>;
 
 export default function ProjectDialog() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [projectDialogState, setProjectDialogState] = useAtom(
+    projectDialogStateAtom
+  );
 
   const createProject = useCreateProject();
-
-  const defaultValues: ProjectDialogDefaultValues = {
-    id: undefined,
-    name: undefined,
-  }; // TODO: get from store
+  const updateProject = useUpdateProject();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
+    defaultValues: projectDialogState.defaultValues || {
       id: undefined,
       name: undefined,
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!values.id) {
-      createProject.mutate({ name: values.name });
+    const { id, ...rest } = values;
+    if (!id) {
+      createProject.mutate({ ...rest });
+    } else {
+      updateProject.mutate({ id, ...rest });
     }
-    setIsOpen(false);
+    setProjectDialogState({ isOpen: false });
   }
 
   useEffect(() => {
-    if (isOpen) {
-      form.reset(defaultValues);
+    if (projectDialogState.isOpen) {
+      form.reset(projectDialogState.defaultValues);
     }
-  }, [isOpen, defaultValues]);
+  }, [projectDialogState]);
 
   const isCreate = !form.getValues('id');
 
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={projectDialogState.isOpen}
+      onOpenChange={(newIsOpen) => {
+        setProjectDialogState({ ...projectDialogState, isOpen: newIsOpen });
+      }}
+    >
       <DialogContent className="max-w-[800px] ">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)}>

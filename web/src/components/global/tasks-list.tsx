@@ -40,7 +40,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import ProjectDialog from './project-dialog';
+import { useSetAtom } from 'jotai';
+import { projectDialogStateAtom } from '@/stores/dialogs';
 
 export const columns: ColumnDef<Row>[] = [
   {
@@ -135,6 +136,8 @@ export const columns: ColumnDef<Row>[] = [
     header: '',
     size: 116,
     cell: ({ row }) => {
+      const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+
       return (
         <div className="flex gap-1 justify-end">
           {row.original.type === 'project' && (
@@ -163,6 +166,13 @@ export const columns: ColumnDef<Row>[] = [
               <DropdownMenuItem
                 onClick={(e) => {
                   e.stopPropagation();
+                  setProjectDialogState({
+                    isOpen: true,
+                    defaultValues: {
+                      id: row.original.id,
+                      name: row.original.name || undefined,
+                    },
+                  });
                 }}
               >
                 Edit Project
