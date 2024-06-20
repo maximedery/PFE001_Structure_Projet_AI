@@ -92,7 +92,9 @@ export const columns: ColumnDef<Row>[] = [
       if (rowData.type === 'task') {
         return (
           <div className="flex items-center gap-2">
-            <div className="text-sm pl-8">{getValue<string>()}</div>
+            <div className="text-sm pl-8">
+              {getValue<string>() || 'Untitled'}
+            </div>
           </div>
         );
       } else {
@@ -120,7 +122,7 @@ export const columns: ColumnDef<Row>[] = [
               </div>
             )}
             <Square size={10} color={rowData.color} fill={rowData.color} />
-            <div className="text-sm">{getValue<string>()}</div>
+            <div className="text-sm">{getValue<string>() || 'Untitled'}</div>
             <div className="text-slate-400 text-xs">{`(${pluralize(
               'task',
               rowData.subRows.length,

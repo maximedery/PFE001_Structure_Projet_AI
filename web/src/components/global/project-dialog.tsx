@@ -41,7 +41,7 @@ export default function ProjectDialog() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: projectDialogState.defaultValues || {
+    defaultValues: {
       id: undefined,
       name: undefined,
     },
@@ -59,9 +59,14 @@ export default function ProjectDialog() {
 
   useEffect(() => {
     if (projectDialogState.isOpen) {
-      form.reset(projectDialogState.defaultValues);
+      form.reset(
+        projectDialogState.defaultValues || {
+          id: undefined,
+          name: undefined,
+        }
+      );
     }
-  }, [projectDialogState]);
+  }, [projectDialogState.isOpen]);
 
   const isCreate = !form.getValues('id');
 

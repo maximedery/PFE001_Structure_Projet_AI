@@ -43,7 +43,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
       type: 'project',
       id: project.id,
       color: project.color,
-      name: project.name || 'Untitled',
+      name: project.name,
       code: projectCode.toString(),
       subRows: [],
     };
@@ -60,7 +60,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
         type: 'project',
         id: project.id,
         color: project.color,
-        name: project.name || 'Untitled',
+        name: project.name,
         code: projectCode.toString(),
         subRows: [],
       };
@@ -72,7 +72,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
     const taskRow: TaskRow = {
       type: 'task',
       id: task.id,
-      name: task.name || 'Untitled',
+      name: task.name,
       code: `${projectMap[project.id].code}-${taskCode}`,
       duration: task.duration,
       start: task.start,
