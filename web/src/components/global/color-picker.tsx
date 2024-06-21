@@ -35,8 +35,9 @@ export function ColorPicker({
       <PopoverTrigger asChild>
         <Button
           variant={'outline_black'}
+          size={'sm'}
           className={cn(
-            'w-[220px] justify-start text-left font-normal',
+            'w-[220px] justify-start text-left font-normal py-px',
             !color && 'text-muted-foreground',
             className
           )}
