@@ -1,27 +1,57 @@
 import { atom } from 'jotai';
 
 import { ProjectDialogDefaultValues } from '@/components/global/project-dialog';
+import { TaskDialogDefaultValues } from '@/components/global/task-dialog';
 
-export const projectDialogStateAtom = atom<{
-  isOpen: boolean;
-  defaultValues?: ProjectDialogDefaultValues;
-}>({
+export const projectDialogStateAtom = atom<
+  | {
+      // Closed
+      isOpen: false;
+    }
+  | {
+      // Open To Create
+      isOpen: true;
+    }
+  | {
+      // Open To Update
+      isOpen: true;
+      id: string;
+      defaultValues: ProjectDialogDefaultValues;
+    }
+>({
   isOpen: false,
-  defaultValues: undefined,
 });
 
-export const deleteProjectDialogStateAtom = atom<{
-  isOpen: boolean;
-  id?: string;
-  name?: string;
-}>({
+export const deleteProjectDialogStateAtom = atom<
+  | {
+      isOpen: false;
+    }
+  | {
+      isOpen: true;
+      id: string;
+      name: string | null;
+    }
+>({
   isOpen: false,
 });
 
-export const taskDialogStateAtom = atom<{
-  isOpen: boolean;
-  defaultValues?: ProjectDialogDefaultValues;
-}>({
+export const taskDialogStateAtom = atom<
+  | {
+      // Closed
+      isOpen: false;
+    }
+  | {
+      // Open To Create
+      isOpen: true;
+      projectId: string;
+    }
+  | {
+      // Open To Update
+      isOpen: true;
+      id: string;
+      projectId: string;
+      defaultValues: TaskDialogDefaultValues;
+    }
+>({
   isOpen: false,
-  defaultValues: undefined,
 });

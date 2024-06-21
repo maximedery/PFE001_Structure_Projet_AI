@@ -2,6 +2,7 @@ import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
 import { useQuery } from '@tanstack/react-query';
+import { getQueryKey } from './_queryKeys';
 
 export type Row = ProjectRow | TaskRow;
 
@@ -93,7 +94,7 @@ export const useGetSettingTaskList = () => {
   const client = useSupabaseBrowser();
 
   return useQuery({
-    queryKey: ['tasks', 'setting-list'],
+    queryKey: getQueryKey('tasks', 'setting-list'),
     queryFn: () => getSettingTaskList(client),
   });
 };

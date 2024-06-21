@@ -6,41 +6,44 @@ import cuid from 'cuid';
 import { Database } from '@/utils/database.types';
 import { getQueryKey } from './_queryKeys';
 
-type InsertOptions = Database['public']['Tables']['Project']['Insert'];
+type InsertOptions = Database['public']['Tables']['Task']['Insert'];
 
-type CreateProjectInput = Omit<InsertOptions, 'id'>;
+type CreateTaskInput = Omit<InsertOptions, 'id'>;
 
-async function createProject(
+async function createTask(
   client: TypedSupabaseClient,
-  inputValues: CreateProjectInput
+  inputValues: CreateTaskInput
 ) {
   const { data, error } = await client
-    .from('Project')
+    .from('Task')
     .insert({
       id: cuid(),
       name: inputValues.name,
-      color: inputValues.color || randomColor(),
+      start: inputValues.start,
+      end: inputValues.end,
+      duration: inputValues.duration,
+      cost: inputValues.cost,
+      importance: inputValues.importance,
+      weatherEffect: inputValues.weatherEffect,
+      projectId: inputValues.projectId,
     })
     .select();
 
-  if (error) throw new Error('Error creating project');
+  if (error) throw new Error('Error creating task');
 
   return data;
 }
 
-export const useCreateProject = () => {
+export const useCreateTask = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (inputValues: CreateProjectInput) =>
-      createProject(client, inputValues),
+    mutationFn: (inputValues: CreateTaskInput) =>
+      createTask(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('projects', 'list'),
-      });
-      queryClient.invalidateQueries({
-        queryKey: getQueryKey('tasks', 'setting-list'),
+        queryKey: getQueryKey('tasks'),
       });
     },
   });

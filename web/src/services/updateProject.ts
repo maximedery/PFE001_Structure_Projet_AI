@@ -2,14 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
+import { getQueryKey } from './_queryKeys';
 
 type UpdateOptions = Database['public']['Tables']['Project']['Update'];
 
-interface UpdateProjectInput {
+type UpdateProjectInput = {
   id: string;
-  name?: UpdateOptions['name'];
-  color?: UpdateOptions['color'];
-}
+} & UpdateOptions;
 
 async function updateProject(
   client: TypedSupabaseClient,
@@ -37,8 +36,12 @@ export const useUpdateProject = () => {
     mutationFn: (inputValues: UpdateProjectInput) =>
       updateProject(client, inputValues),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'list'] });
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'setting-list'] });
+      queryClient.invalidateQueries({
+        queryKey: getQueryKey('projects', 'list'),
+      });
+      queryClient.invalidateQueries({
+        queryKey: getQueryKey('tasks', 'setting-list'),
+      });
     },
   });
 };

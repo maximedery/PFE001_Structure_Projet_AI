@@ -165,6 +165,7 @@ export const columns: ColumnDef<Row>[] = [
                   e.stopPropagation();
                   setTaskDialogState({
                     isOpen: true,
+                    projectId: rowData.id,
                   });
                 }}
               >
@@ -188,9 +189,9 @@ export const columns: ColumnDef<Row>[] = [
                     e.stopPropagation();
                     setProjectDialogState({
                       isOpen: true,
+                      id: rowData.id,
                       defaultValues: {
-                        id: rowData.id,
-                        name: rowData.name || undefined,
+                        name: rowData.name,
                         color: rowData.color,
                       },
                     });
@@ -205,7 +206,7 @@ export const columns: ColumnDef<Row>[] = [
                     setDeleteProjectDialogState({
                       isOpen: true,
                       id: rowData.id,
-                      name: rowData.name || undefined,
+                      name: rowData.name,
                     });
                   }}
                   className="text-red-500"

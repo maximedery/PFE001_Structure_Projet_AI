@@ -28,12 +28,16 @@ import { ColorPicker } from './color-picker';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 
 const formSchema = z.object({
-  id: z.string().optional(),
-  name: z.string().optional(),
+  name: z.string().nullable(),
   color: z.string().min(4).max(9).regex(/^#/),
 });
 
 export type ProjectDialogDefaultValues = z.infer<typeof formSchema>;
+
+const initialValues: ProjectDialogDefaultValues = {
+  color: getTailwindColorValue('blue-500'),
+  name: null,
+};
 
 export default function ProjectDialog() {
   const [projectDialogState, setProjectDialogState] = useAtom(
@@ -46,42 +50,38 @@ export default function ProjectDialog() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      id: undefined,
-      color: getTailwindColorValue('blue-500'),
-      name: undefined,
-    },
+    defaultValues: initialValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    const { id, ...rest } = values;
-    if (!id) {
-      createProject.mutate({ ...rest });
+  useEffect(() => {
+    if (projectDialogState.isOpen && 'id' in projectDialogState) {
+      form.reset(projectDialogState.defaultValues);
     } else {
-      updateProject.mutate({ id, ...rest });
+      form.reset(initialValues);
+    }
+  }, [projectDialogState]);
+
+  if (!projectDialogState.isOpen) return null;
+  const isUpdate = 'id' in projectDialogState;
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!projectDialogState.isOpen) return null;
+
+    if (!isUpdate) {
+      createProject.mutate(values);
+    } else {
+      updateProject.mutate({ id: projectDialogState.id, ...values });
     }
     setProjectDialogState({ isOpen: false });
   }
-
-  useEffect(() => {
-    if (projectDialogState.isOpen) {
-      form.reset(
-        projectDialogState.defaultValues || {
-          id: undefined,
-          color: getTailwindColorValue('blue-500'),
-          name: undefined,
-        }
-      );
-    }
-  }, [projectDialogState.isOpen]);
-
-  const isCreate = !form.getValues('id');
 
   return (
     <Dialog
       open={projectDialogState.isOpen}
       onOpenChange={(newIsOpen) => {
-        setProjectDialogState({ ...projectDialogState, isOpen: newIsOpen });
+        if (newIsOpen === false) {
+          setProjectDialogState({ isOpen: false });
+        }
       }}
     >
       <DialogContent className="max-w-[800px] ">
@@ -104,7 +104,7 @@ export default function ProjectDialog() {
                   name="name"
                   render={({ field }) => (
                     <Input
-                      placeholder="Untitled"
+                      placeholder="Enter project name"
                       className="col-span-2"
                       autoFocus
                       {...field}
@@ -130,7 +130,7 @@ export default function ProjectDialog() {
               </DialogContentRow>
             </DialogContentArea>
             <DialogFooter>
-              {!isCreate && (
+              {isUpdate && (
                 <Button
                   variant="ghost_destructive"
                   size={'sm'}
@@ -139,7 +139,7 @@ export default function ProjectDialog() {
                     setProjectDialogState({ isOpen: false });
                     setDeleteProjectDialogState({
                       isOpen: true,
-                      id: form.getValues('id'),
+                      id: projectDialogState.id,
                       name: form.getValues('name'),
                     });
                   }}
@@ -157,7 +157,7 @@ export default function ProjectDialog() {
                 Cancel
               </Button>
               <Button variant="black" size={'sm'} type="submit">
-                {isCreate ? 'Create' : 'Update'}
+                {isUpdate ? 'Update' : 'Create'}
               </Button>
             </DialogFooter>
           </form>

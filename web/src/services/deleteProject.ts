@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
+import { getQueryKey } from './_queryKeys';
 
 type DeleteProjectInput = {
   id: Database['public']['Tables']['Project']['Row']['id'];
@@ -30,8 +31,12 @@ export const useDeleteProject = () => {
     mutationFn: (inputValues: DeleteProjectInput) =>
       deleteProject(client, inputValues),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['projects', 'list'] });
-      queryClient.invalidateQueries({ queryKey: ['tasks', 'setting-list'] });
+      queryClient.invalidateQueries({
+        queryKey: getQueryKey('projects', 'list'),
+      });
+      queryClient.invalidateQueries({
+        queryKey: getQueryKey('tasks', 'setting-list'),
+      });
     },
   });
 };

@@ -4,11 +4,12 @@ import { LucideIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value'> {
   startIcon?: LucideIcon;
   endIcon?: LucideIcon;
   suffix?: string;
   inputClassName?: string;
+  value: string | number | null;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(

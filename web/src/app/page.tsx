@@ -85,6 +85,7 @@ export default function SettingsPage() {
               startIcon={Search}
               placeholder="Search"
               className="w-[250px]"
+              value={null}
               onChange={() => {
                 // TODO: Implement search
               }}
