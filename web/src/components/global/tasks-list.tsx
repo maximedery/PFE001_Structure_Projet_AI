@@ -44,6 +44,7 @@ import { useSetAtom } from 'jotai';
 import {
   deleteProjectDialogStateAtom,
   projectDialogStateAtom,
+  taskDialogStateAtom,
 } from '@/stores/dialogs';
 
 export const columns: ColumnDef<Row>[] = [
@@ -142,6 +143,7 @@ export const columns: ColumnDef<Row>[] = [
     size: 116,
     cell: ({ row }) => {
       const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+      const setTaskDialogState = useSetAtom(taskDialogStateAtom);
       const setDeleteProjectDialogState = useSetAtom(
         deleteProjectDialogStateAtom
       );
@@ -156,11 +158,18 @@ export const columns: ColumnDef<Row>[] = [
                 e.stopPropagation();
               }}
             >
-              <TaskDialog>
-                <Button variant="ghost" size={'icon'}>
-                  <Plus size={16} color={getTailwindColorValue('slate-950')} />
-                </Button>
-              </TaskDialog>
+              <Button
+                variant="ghost"
+                size={'icon'}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTaskDialogState({
+                    isOpen: true,
+                  });
+                }}
+              >
+                <Plus size={16} color={getTailwindColorValue('slate-950')} />
+              </Button>
             </div>
           )}
           {rowData.type === 'project' ? (

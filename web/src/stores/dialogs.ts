@@ -17,3 +17,11 @@ export const deleteProjectDialogStateAtom = atom<{
 }>({
   isOpen: false,
 });
+
+export const taskDialogStateAtom = atom<{
+  isOpen: boolean;
+  defaultValues?: ProjectDialogDefaultValues;
+}>({
+  isOpen: false,
+  defaultValues: undefined,
+});

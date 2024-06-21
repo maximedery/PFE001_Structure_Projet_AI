@@ -4,6 +4,7 @@ import DeleteProjectDialog from '@/components/global/delete-project-dialog';
 import EquipmentTypeTable from '@/components/global/equipment-type-table';
 import OccupationTable from '@/components/global/occupation-table';
 import ProjectDialog from '@/components/global/project-dialog';
+import TaskDialog from '@/components/global/task-dialog';
 import TasksList from '@/components/global/tasks-list';
 import WeekdaysPicker from '@/components/global/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
@@ -103,8 +104,10 @@ export default function SettingsPage() {
           <TasksList />
         </div>
       </div>
+      {/* TODO: Move to layout for all the app */}
       <ProjectDialog />
       <DeleteProjectDialog />
+      <TaskDialog />
     </>
   );
 }

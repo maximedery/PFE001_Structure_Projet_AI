@@ -27,6 +27,8 @@ import EquipmentTypeTable from './equipment-type-table';
 import { MultiSelect } from './multi-select';
 import OccupationTable from './occupation-table';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
+import { taskDialogStateAtom } from '@/stores/dialogs';
+import { useAtom } from 'jotai';
 
 const MOCK_TASK_LIST = [
   { value: '1-1', label: '1-1 - Project 1 - Task 1' },
@@ -36,19 +38,21 @@ const MOCK_TASK_LIST = [
   { value: '2-2', label: '2-2 - Project 2 - Task 2' },
 ];
 
-export default function TaskDialog({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function TaskDialog() {
+  const [taskDialogState, setTaskDialogState] = useAtom(taskDialogStateAtom);
+
   const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([
     '1-1',
     '2-2',
   ]);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog
+      open={taskDialogState.isOpen}
+      onOpenChange={(newIsOpen) => {
+        setTaskDialogState({ ...taskDialogState, isOpen: newIsOpen });
+      }}
+    >
       <DialogContent className="max-w-[800px] ">
         <DialogHeader>
           <DialogTitle>
