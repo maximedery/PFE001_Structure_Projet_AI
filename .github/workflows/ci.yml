@@ -23,10 +23,14 @@ jobs:
       - name: Lint with flake8
         run: |
           pip install flake8
-          # Stop the build if there are Python syntax errors or undefined names
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          # Exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+        working-directory: ./api
+
+      - name: Format with black
+        run: |
+          pip install black
+          black .
         working-directory: ./api
 
       - name: Run tests
@@ -55,10 +59,17 @@ jobs:
         run: npm install
         working-directory: ./web
 
-      # Deactivated for the moment.
-      # - name: Lint code
-      #   run: npm run lint
-      #   working-directory: ./web
+      - name: Lint with eslint
+        run: |
+          npm install eslint
+          npx eslint .
+        working-directory: ./web
+
+      - name: Format with prettier
+        run: |
+          npm install prettier
+          npx prettier --write .
+        working-directory: ./web
 
       - name: Run tests
         run: npm test
