@@ -1,0 +1,64 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Vérifier le dépôt
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # Configurer Docker Buildx
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      # Mettre en cache les couches Docker
+      - name: Cache Docker layers
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      # Se connecter à Docker Hub
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # Extraire la version de l'image Docker
+      - name: Extract Docker image version
+        id: vars
+        run: echo "VERSION=$(cat ai/VERSION)" >> $GITHUB_ENV
+
+      # Construire et pousser l'image Docker
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./api
+          file: ./api/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/your-docker-repo:${{ env.VERSION }}
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new
+
+      # Mettre à jour le cache
+      - name: Update cache
+        if: always()
+        uses: actions/cache@v3
+        with:
+          path: /tmp/.buildx-cache-new
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
