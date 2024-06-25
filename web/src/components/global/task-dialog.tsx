@@ -39,7 +39,7 @@ const formSchema = z.object({
   name: z.string().nullable(),
   start: z.string().nullable(),
   end: z.string().nullable(),
-  predecessor: z.array(z.string()).nullable(),
+  predecessorIds: z.array(z.string()),
   duration: z
     .number()
     .min(0, { message: 'Duration must be positive' })
@@ -55,7 +55,7 @@ const initialValues: TaskDialogDefaultValues = {
   name: null,
   start: null,
   end: null,
-  predecessor: [],
+  predecessorIds: [],
   duration: null,
   cost: null,
   importance: 'medium',
@@ -113,7 +113,7 @@ export default function TaskDialog() {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit, (error) => {
-              console.log(error);
+              console.error(error);
             })}
           >
             <DialogHeader>

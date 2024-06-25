@@ -4,20 +4,25 @@ import { Database } from '@/utils/database.types';
 import { useQuery } from '@tanstack/react-query';
 import { getQueryKey } from './_queryKeys';
 
-export type Row = ProjectRow | TaskRow;
+export type SettingTaskListRow =
+  | SettingTaskListProjectRow
+  | SettingTaskListTaskRow;
 
-type ProjectRow = {
+type SettingTaskListProjectRow = {
   type: 'project';
   code: string;
-  subRows: Row[];
+  subRows: SettingTaskListRow[];
 } & Database['public']['Tables']['Project']['Row'];
 
-type TaskRow = {
+type SettingTaskListTaskRow = {
   type: 'task';
   code: string;
+  predecessorIds: string[];
 } & Database['public']['Tables']['Task']['Row'];
 
-async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
+async function getSettingTaskList(
+  client: TypedSupabaseClient
+): Promise<SettingTaskListRow[]> {
   // Fetch projects and tasks separately
   const { data: projects, error: projectError } = await client
     .from('Project')
@@ -36,7 +41,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
   if (!tasks) throw new Error('No tasks found');
 
   // Group tasks by project
-  const projectMap: { [key: string]: ProjectRow } = {};
+  const projectMap: { [key: string]: SettingTaskListProjectRow } = {};
   let projectCode = 1;
 
   projects.forEach((project) => {
@@ -70,7 +75,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
 
     const taskCode = projectMap[project.id].subRows.length + 1;
 
-    const taskRow: TaskRow = {
+    const taskRow: SettingTaskListTaskRow = {
       type: 'task',
       id: task.id,
       name: task.name,
@@ -82,6 +87,7 @@ async function getSettingTaskList(client: TypedSupabaseClient): Promise<Row[]> {
       importance: task.importance,
       weatherEffect: task.weatherEffect,
       projectId: task.projectId,
+      predecessorIds: [],
     };
 
     projectMap[project.id].subRows.push(taskRow);

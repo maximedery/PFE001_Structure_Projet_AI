@@ -86,7 +86,11 @@ export default function ProjectDialog() {
     >
       <DialogContent className="max-w-[800px] ">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit, (error) => {
+              console.error(error);
+            })}
+          >
             <DialogHeader>
               <DialogTitle>
                 <div className="flex items-center gap-3">

@@ -25,14 +25,15 @@ import {
   ChevronRight,
   Circle,
   Ellipsis,
-  Pencil,
   Plus,
   Square,
 } from 'lucide-react';
 import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
-import TaskDialog from './task-dialog';
-import { Row, useGetSettingTaskList } from '@/services/getSettingTaskList';
+import {
+  SettingTaskListRow,
+  useGetSettingTaskList,
+} from '@/services/getSettingTaskList';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -46,8 +47,10 @@ import {
   projectDialogStateAtom,
   taskDialogStateAtom,
 } from '@/stores/dialogs';
+import { Skeleton } from '../ui/skeleton';
+import { LoadingSpinner } from '../ui/loading-spinner';
 
-export const columns: ColumnDef<Row>[] = [
+export const columns: ColumnDef<SettingTaskListRow>[] = [
   {
     id: 'select',
     size: 32,
@@ -173,53 +176,84 @@ export const columns: ColumnDef<Row>[] = [
               </Button>
             </div>
           )}
-          {rowData.type === 'project' ? (
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size={'icon'}>
-                  <Ellipsis
-                    size={18}
-                    color={getTailwindColorValue('slate-950')}
-                  />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent side="bottom">
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setProjectDialogState({
-                      isOpen: true,
-                      id: rowData.id,
-                      defaultValues: {
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size={'icon'}>
+                <Ellipsis
+                  size={18}
+                  color={getTailwindColorValue('slate-950')}
+                />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="bottom">
+              {rowData.type === 'project' ? (
+                // Project Dropdown
+                <>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setProjectDialogState({
+                        isOpen: true,
+                        id: rowData.id,
+                        defaultValues: {
+                          ...rowData,
+                        },
+                      });
+                    }}
+                  >
+                    Edit Project
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteProjectDialogState({
+                        isOpen: true,
+                        id: rowData.id,
                         name: rowData.name,
-                        color: rowData.color,
-                      },
-                    });
-                  }}
-                >
-                  Edit Project
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setDeleteProjectDialogState({
-                      isOpen: true,
-                      id: rowData.id,
-                      name: rowData.name,
-                    });
-                  }}
-                  className="text-red-500"
-                >
-                  Delete Project
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ) : (
-            <Button variant="ghost" size={'icon'}>
-              <Ellipsis size={18} color={getTailwindColorValue('slate-950')} />
-            </Button>
-          )}
+                      });
+                    }}
+                    className="text-red-500"
+                  >
+                    Delete Project
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                // Task Dropdown
+                <>
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setTaskDialogState({
+                        isOpen: true,
+                        id: rowData.id,
+                        projectId: rowData.projectId,
+                        defaultValues: {
+                          ...rowData,
+                        },
+                      });
+                    }}
+                  >
+                    Edit Project
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDeleteProjectDialogState({
+                        isOpen: true,
+                        id: rowData.id,
+                        name: rowData.name,
+                      });
+                    }}
+                    className="text-red-500"
+                  >
+                    Delete Project
+                  </DropdownMenuItem>
+                </>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
       );
     },
@@ -229,7 +263,7 @@ export const columns: ColumnDef<Row>[] = [
 ];
 
 export default function TasksList() {
-  const { data: settingTasks } = useGetSettingTaskList();
+  const { data: settingTasks, isLoading } = useGetSettingTaskList();
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
@@ -325,7 +359,13 @@ export default function TasksList() {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No Projects.
+                <div className="flex items-center justify-center">
+                  {isLoading ? (
+                    <LoadingSpinner className="text-gray-300" />
+                  ) : (
+                    'No Projects.'
+                  )}
+                </div>
               </TableCell>
             </TableRow>
           )}
