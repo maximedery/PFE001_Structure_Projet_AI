@@ -1,7 +1,7 @@
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { useQuery } from '@tanstack/react-query';
-import { getQueryKey } from './_queryKeys';
+import { getQueryKey } from './_query-keys';
 
 async function getProjectList(client: TypedSupabaseClient) {
   const { data } = await client.from('Project').select().throwOnError();

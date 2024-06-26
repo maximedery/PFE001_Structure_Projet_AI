@@ -11,7 +11,7 @@ import {
 } from '../ui/dialog';
 import { useAtom } from 'jotai';
 import { deleteProjectDialogStateAtom } from '@/stores/dialogs';
-import { useDeleteProject } from '@/services/deleteProject';
+import { useDeleteProject } from '@/services/delete-project';
 
 export default function DeleteProjectDialog() {
   const [deleteProjectDialogState, setDeleteProjectDialogState] = useAtom(
@@ -19,7 +19,15 @@ export default function DeleteProjectDialog() {
   );
   const deleteProject = useDeleteProject();
 
+  if (!deleteProjectDialogState.isOpen) {
+    return null;
+  }
+
   function handleDelete() {
+    if (!deleteProjectDialogState.isOpen) {
+      return null;
+    }
+
     const projectId = deleteProjectDialogState.id;
 
     if (!projectId) {
@@ -34,7 +42,9 @@ export default function DeleteProjectDialog() {
     <Dialog
       open={deleteProjectDialogState.isOpen}
       onOpenChange={(newIsOpen) => {
-        setDeleteProjectDialogState({ isOpen: newIsOpen });
+        if (newIsOpen === false) {
+          setDeleteProjectDialogState({ isOpen: false });
+        }
       }}
     >
       <DialogContent className="max-w-[400px]">

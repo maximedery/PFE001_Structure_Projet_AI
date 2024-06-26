@@ -24,9 +24,9 @@ import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
 import { taskDialogStateAtom } from '@/stores/dialogs';
 import { useAtom } from 'jotai';
 import { Form, FormField } from '../ui/form';
-import { useCreateTask } from '@/services/createTask';
+import { useCreateTask } from '@/services/create-task';
 import { DatePicker } from '../ui/date-picker';
-import { useUpdateTask } from '@/services/updateTask';
+import { useUpdateTask } from '@/services/update-task';
 import { values } from 'lodash';
 
 const MOCK_TASK_LIST = [

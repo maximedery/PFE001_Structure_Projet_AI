@@ -33,7 +33,7 @@ import { cn } from '@/lib/utils';
 import {
   SettingTaskListRow,
   useGetSettingTaskList,
-} from '@/services/getSettingTaskList';
+} from '@/services/get-setting-task-list';
 import {
   DropdownMenu,
   DropdownMenuContent,

@@ -2,34 +2,39 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
-import { getQueryKey } from './_queryKeys';
+import { getQueryKey } from './_query-keys';
 
-type DeleteProjectInput = {
-  id: Database['public']['Tables']['Project']['Row']['id'];
-};
+type UpdateOptions = Database['public']['Tables']['Project']['Update'];
 
-async function deleteProject(
+type UpdateProjectInput = {
+  id: string;
+} & UpdateOptions;
+
+async function updateProject(
   client: TypedSupabaseClient,
-  inputValues: DeleteProjectInput
+  inputValues: UpdateProjectInput
 ) {
   const { data, error } = await client
     .from('Project')
-    .delete()
+    .update({
+      name: inputValues.name,
+      color: inputValues.color,
+    })
     .eq('id', inputValues.id)
     .select();
 
-  if (error) throw new Error('Error deleting project');
+  if (error) throw new Error('Error updating project');
 
   return data;
 }
 
-export const useDeleteProject = () => {
+export const useUpdateProject = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (inputValues: DeleteProjectInput) =>
-      deleteProject(client, inputValues),
+    mutationFn: (inputValues: UpdateProjectInput) =>
+      updateProject(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: getQueryKey('projects', 'list'),

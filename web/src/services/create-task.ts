@@ -1,22 +1,22 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
+import cuid from 'cuid';
 import { Database } from '@/utils/database.types';
-import { getQueryKey } from './_queryKeys';
+import { getQueryKey } from './_query-keys';
 
-type UpdateOptions = Database['public']['Tables']['Task']['Update'];
+type InsertOptions = Database['public']['Tables']['Task']['Insert'];
 
-type UpdateTaskInput = {
-  id: string;
-} & UpdateOptions;
+type CreateTaskInput = Omit<InsertOptions, 'id'>;
 
-async function updateTask(
+async function createTask(
   client: TypedSupabaseClient,
-  inputValues: UpdateTaskInput
+  inputValues: CreateTaskInput
 ) {
   const { data, error } = await client
     .from('Task')
-    .update({
+    .insert({
+      id: cuid(),
       name: inputValues.name,
       start: inputValues.start,
       end: inputValues.end,
@@ -26,24 +26,23 @@ async function updateTask(
       weatherEffect: inputValues.weatherEffect,
       projectId: inputValues.projectId,
     })
-    .eq('id', inputValues.id)
     .select();
 
-  if (error) throw new Error('Error updating task');
+  if (error) throw new Error('Error creating task');
 
   return data;
 }
 
-export const useUpdateTask = () => {
+export const useCreateTask = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (inputValues: UpdateTaskInput) =>
-      updateTask(client, inputValues),
+    mutationFn: (inputValues: CreateTaskInput) =>
+      createTask(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('tasks', 'setting-list'),
+        queryKey: getQueryKey('tasks'),
       });
     },
   });

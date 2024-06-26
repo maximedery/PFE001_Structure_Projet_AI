@@ -2,7 +2,7 @@ import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
 import { useQuery } from '@tanstack/react-query';
-import { getQueryKey } from './_queryKeys';
+import { getQueryKey } from './_query-keys';
 
 export type SettingTaskListRow =
   | SettingTaskListProjectRow

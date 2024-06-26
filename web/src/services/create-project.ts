@@ -4,7 +4,7 @@ import { TypedSupabaseClient } from '@/lib/supabase/types';
 import randomColor from 'randomcolor';
 import cuid from 'cuid';
 import { Database } from '@/utils/database.types';
-import { getQueryKey } from './_queryKeys';
+import { getQueryKey } from './_query-keys';
 
 type InsertOptions = Database['public']['Tables']['Project']['Insert'];
 

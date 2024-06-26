@@ -17,13 +17,13 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Form, FormField, FormItem, FormMessage } from '../ui/form';
 import { useEffect } from 'react';
-import { useCreateProject } from '@/services/createProject';
+import { useCreateProject } from '@/services/create-project';
 import { useAtom, useSetAtom } from 'jotai';
 import {
   deleteProjectDialogStateAtom,
   projectDialogStateAtom,
 } from '@/stores/dialogs';
-import { useUpdateProject } from '@/services/updateProject';
+import { useUpdateProject } from '@/services/update-project';
 import { ColorPicker } from './color-picker';
 import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 
