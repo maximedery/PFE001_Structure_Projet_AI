@@ -23,6 +23,10 @@ export function DatePicker(props: Props) {
     props.onChange(dayjs(date).toISOString());
   };
 
+  const handleClearDate = () => {
+    props.onChange(null);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -49,6 +53,18 @@ export function DatePicker(props: Props) {
           onSelect={handleOnSelect}
           initialFocus
         />
+        {props.value && (
+          <div className="flex px-2 pb-4">
+            <Button
+              variant="outline_black"
+              size="sm"
+              onClick={handleClearDate}
+              className="flex-1"
+            >
+              Clear
+            </Button>
+          </div>
+        )}
       </PopoverContent>
     </Popover>
   );
