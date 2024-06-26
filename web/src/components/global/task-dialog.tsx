@@ -217,6 +217,9 @@ export default function TaskDialog() {
                       type="single"
                       className="col-span-3 justify-start"
                       {...field}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
                     >
                       <ToggleGroupItem
                         value="asap"
@@ -256,6 +259,9 @@ export default function TaskDialog() {
                       type="single"
                       className="col-span-3 justify-start"
                       {...field}
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
                     >
                       <ToggleGroupItem
                         value="none"
