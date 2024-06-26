@@ -8,12 +8,36 @@ type UpdateOptions = Database['public']['Tables']['Task']['Update'];
 
 type UpdateTaskInput = {
   id: string;
+  predecessorIds?: string[];
 } & UpdateOptions;
 
 async function updateTask(
   client: TypedSupabaseClient,
   inputValues: UpdateTaskInput
 ) {
+  // Unlink all current predecessors
+  const { error: unlinkError } = await client
+    .from('TaskHierarchy')
+    .delete()
+    .eq('successorId', inputValues.id);
+
+  if (unlinkError)
+    throw new Error(`Error unlinking predecessors: ${unlinkError.message}`);
+
+  // Link new predecessors if any
+  if (inputValues.predecessorIds && inputValues.predecessorIds.length) {
+    const linkData = inputValues.predecessorIds.map((predecessorId) => ({
+      predecessorId,
+      successorId: inputValues.id,
+    }));
+    const { error: linkError } = await client
+      .from('TaskHierarchy')
+      .insert(linkData);
+
+    if (linkError)
+      throw new Error(`Error linking new predecessors: ${linkError.message}`);
+  }
+
   const { data, error } = await client
     .from('Task')
     .update({
@@ -43,7 +67,7 @@ export const useUpdateTask = () => {
       updateTask(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('tasks', 'setting-list'),
+        queryKey: getQueryKey('project-task-setting-list'),
       });
     },
   });

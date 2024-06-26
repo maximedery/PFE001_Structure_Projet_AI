@@ -31,10 +31,6 @@ import {
 import pluralize from 'pluralize';
 import { cn } from '@/lib/utils';
 import {
-  SettingTaskListRow,
-  useGetSettingTaskList,
-} from '@/services/get-setting-task-list';
-import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
@@ -48,8 +44,12 @@ import {
   taskDialogStateAtom,
 } from '@/stores/dialogs';
 import { LoadingSpinner } from '../ui/loading-spinner';
+import {
+  ProjectTaskSettingListRow,
+  useGetProjectTaskSettingList,
+} from '@/services/get-project-task-setting-list';
 
-export const columns: ColumnDef<SettingTaskListRow>[] = [
+export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
   {
     id: 'select',
     size: 32,
@@ -262,7 +262,7 @@ export const columns: ColumnDef<SettingTaskListRow>[] = [
 ];
 
 export default function TasksList() {
-  const { data: settingTasks, isLoading } = useGetSettingTaskList();
+  const { data: settingTasks, isLoading } = useGetProjectTaskSettingList();
   const setTaskDialogState = useSetAtom(taskDialogStateAtom);
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({});

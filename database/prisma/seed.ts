@@ -72,41 +72,19 @@ async function main() {
     },
   });
 
-  // Update Task relationships for Project Alpha
-  await prisma.task.update({
-    where: { id: task1.id },
+  // Create TaskHierarchy relationships for Project Alpha
+  await prisma.taskHierarchy.create({
     data: {
-      successors: {
-        connect: { id: task2.id },
-      },
+      predecessorId: task1.id,
+      successorId: task2.id,
     },
   });
 
-  await prisma.task.update({
-    where: { id: task2.id },
+  // Create TaskHierarchy relationships for Project Beta
+  await prisma.taskHierarchy.create({
     data: {
-      predecessor: {
-        connect: { id: task1.id },
-      },
-    },
-  });
-
-  // Update Task relationships for Project Beta
-  await prisma.task.update({
-    where: { id: task3.id },
-    data: {
-      successors: {
-        connect: { id: task4.id },
-      },
-    },
-  });
-
-  await prisma.task.update({
-    where: { id: task4.id },
-    data: {
-      predecessor: {
-        connect: { id: task3.id },
-      },
+      predecessorId: task3.id,
+      successorId: task4.id,
     },
   });
 }

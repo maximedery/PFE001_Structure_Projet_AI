@@ -4,25 +4,26 @@ import { Database } from '@/utils/database.types';
 import { useQuery } from '@tanstack/react-query';
 import { getQueryKey } from './_query-keys';
 
-export type SettingTaskListRow =
-  | SettingTaskListProjectRow
-  | SettingTaskListTaskRow;
+export type ProjectTaskSettingListRow =
+  | ProjectTaskSettingListProjectRow
+  | ProjectTaskSettingListTaskRow;
 
-type SettingTaskListProjectRow = {
+export type ProjectTaskSettingListProjectRow = {
   type: 'project';
   code: string;
-  subRows: SettingTaskListRow[];
+  subRows: ProjectTaskSettingListRow[];
 } & Database['public']['Tables']['Project']['Row'];
 
-type SettingTaskListTaskRow = {
+export type ProjectTaskSettingListTaskRow = {
   type: 'task';
   code: string;
   predecessorIds: string[];
+  projectName: Database['public']['Tables']['Project']['Row']['name'];
 } & Database['public']['Tables']['Task']['Row'];
 
-async function getSettingTaskList(
+async function getProjectTaskSettingList(
   client: TypedSupabaseClient
-): Promise<SettingTaskListRow[]> {
+): Promise<ProjectTaskSettingListRow[]> {
   // Fetch projects and tasks separately
   const { data: projects, error: projectError } = await client
     .from('Project')
@@ -40,8 +41,24 @@ async function getSettingTaskList(
   if (taskError) throw new Error(taskError.message);
   if (!tasks) throw new Error('No tasks found');
 
+  const { data: taskHierarchies, error: hierarchyError } = await client
+    .from('TaskHierarchy')
+    .select();
+
+  if (hierarchyError) throw new Error(hierarchyError.message);
+  if (!taskHierarchies) throw new Error('No task hierarchies found');
+
+  // Create a map of successorId to predecessorIds
+  const predecessorMap: { [key: string]: string[] } = {};
+  taskHierarchies.forEach((hierarchy) => {
+    if (!predecessorMap[hierarchy.successorId]) {
+      predecessorMap[hierarchy.successorId] = [];
+    }
+    predecessorMap[hierarchy.successorId].push(hierarchy.predecessorId);
+  });
+
   // Group tasks by project
-  const projectMap: { [key: string]: SettingTaskListProjectRow } = {};
+  const projectMap: { [key: string]: ProjectTaskSettingListProjectRow } = {};
   let projectCode = 1;
 
   projects.forEach((project) => {
@@ -75,7 +92,7 @@ async function getSettingTaskList(
 
     const taskCode = projectMap[project.id].subRows.length + 1;
 
-    const taskRow: SettingTaskListTaskRow = {
+    const taskRow: ProjectTaskSettingListTaskRow = {
       type: 'task',
       id: task.id,
       name: task.name,
@@ -87,7 +104,8 @@ async function getSettingTaskList(
       importance: task.importance,
       weatherEffect: task.weatherEffect,
       projectId: task.projectId,
-      predecessorIds: [],
+      projectName: project.name,
+      predecessorIds: predecessorMap[task.id] || [],
     };
 
     projectMap[project.id].subRows.push(taskRow);
@@ -96,11 +114,11 @@ async function getSettingTaskList(
   return Object.values(projectMap);
 }
 
-export const useGetSettingTaskList = () => {
+export const useGetProjectTaskSettingList = () => {
   const client = useSupabaseBrowser();
 
   return useQuery({
-    queryKey: getQueryKey('tasks', 'setting-list'),
-    queryFn: () => getSettingTaskList(client),
+    queryKey: getQueryKey('project-task-setting-list'),
+    queryFn: () => getProjectTaskSettingList(client),
   });
 };

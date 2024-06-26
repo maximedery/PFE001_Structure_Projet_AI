@@ -1,8 +1,7 @@
 type QueryKeyCombinations =
   | ['projects']
   | ['projects', 'list']
-  | ['tasks']
-  | ['tasks', 'setting-list'];
+  | ['project-task-setting-list'];
 
 export const getQueryKey = (
   ...args: QueryKeyCombinations

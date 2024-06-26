@@ -27,15 +27,7 @@ import { Form, FormField } from '../ui/form';
 import { useCreateTask } from '@/services/create-task';
 import { DatePicker } from '../ui/date-picker';
 import { useUpdateTask } from '@/services/update-task';
-import { values } from 'lodash';
-
-const MOCK_TASK_LIST = [
-  { value: '1-1', label: '1-1 - Project 1 - Task 1' },
-  { value: '1-2', label: '1-2 - Project 1 - Task 1' },
-  { value: '1-3', label: '1-3 - Project 1 - Task 1' },
-  { value: '2-1', label: '2-1 - Project 2 - Task 1' },
-  { value: '2-2', label: '2-2 - Project 2 - Task 2' },
-];
+import { useGetTaskOptions } from '@/helpers/useGetTaskOptions';
 
 const formSchema = z.object({
   name: z.string().nullable(),
@@ -67,13 +59,12 @@ const initialValues: TaskDialogDefaultValues = {
 export default function TaskDialog() {
   const [taskDialogState, setTaskDialogState] = useAtom(taskDialogStateAtom);
 
+  const taskOptions = useGetTaskOptions({
+    projectId: taskDialogState.isOpen ? taskDialogState.projectId : undefined,
+  });
+
   const createTask = useCreateTask();
   const updateTask = useUpdateTask();
-
-  const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([
-    '1-1',
-    '2-2',
-  ]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -168,13 +159,21 @@ export default function TaskDialog() {
               </DialogContentRow>
               <DialogContentRow>
                 <Label>Predecessor</Label>
-                <MultiSelect
-                  options={MOCK_TASK_LIST}
-                  onValueChange={setSelectedFrameworks}
-                  defaultValue={selectedFrameworks}
-                  placeholder="Select tasks"
-                  maxCount={2}
-                  className="col-span-3"
+                <FormField
+                  control={form.control}
+                  name="predecessorIds"
+                  render={({ field }) => {
+                    return (
+                      <MultiSelect
+                        options={taskOptions}
+                        onValueChange={field.onChange}
+                        defaultValue={field.value}
+                        placeholder="Select tasks"
+                        maxCount={2}
+                        className="col-span-3"
+                      />
+                    );
+                  }}
                 />
               </DialogContentRow>
               <DialogContentRow>

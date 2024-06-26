@@ -35,7 +35,7 @@ export const useDeleteProject = () => {
         queryKey: getQueryKey('projects', 'list'),
       });
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('tasks', 'setting-list'),
+        queryKey: getQueryKey('project-task-setting-list'),
       });
     },
   });

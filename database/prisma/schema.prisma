@@ -15,19 +15,29 @@ model Project {
 }
 
 model Task {
-  id            String        @id @default(cuid())
+  id            String          @id @default(cuid())
   name          String?
-  project       Project       @relation(fields: [projectId], references: [id],  onDelete: Cascade)
+  project       Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId     String
   start         DateTime?
   end           DateTime?
   duration      Int?
   cost          Float?
-  predecessor   Task[]        @relation("TaskPredecessor")
-  successors    Task[]        @relation("TaskPredecessor")
-  importance    Importance    @default(medium)
-  weatherEffect WeatherEffect @default(none)
+  predecessors  TaskHierarchy[] @relation("PredecessorRelation")
+  successors    TaskHierarchy[] @relation("SuccessorRelation")
+  importance    Importance      @default(medium)
+  weatherEffect WeatherEffect   @default(none)
 }
+
+model TaskHierarchy {
+  predecessorId String
+  successorId   String
+  predecessor   Task            @relation("PredecessorRelation", fields: [predecessorId], references: [id])
+  successor     Task            @relation("SuccessorRelation", fields: [successorId], references: [id])
+
+  @@id([predecessorId, successorId])
+}
+
 
 enum Importance {
   asap

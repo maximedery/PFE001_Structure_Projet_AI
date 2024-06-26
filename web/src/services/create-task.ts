@@ -7,7 +7,9 @@ import { getQueryKey } from './_query-keys';
 
 type InsertOptions = Database['public']['Tables']['Task']['Insert'];
 
-type CreateTaskInput = Omit<InsertOptions, 'id'>;
+type CreateTaskInput = {
+  predecessorIds?: string[];
+} & Omit<InsertOptions, 'id'>;
 
 async function createTask(
   client: TypedSupabaseClient,
@@ -30,6 +32,21 @@ async function createTask(
 
   if (error) throw new Error('Error creating task');
 
+  // Link predecessors if any
+  if (inputValues.predecessorIds && inputValues.predecessorIds.length) {
+    const linkData = inputValues.predecessorIds.map((predecessorId) => ({
+      predecessorId,
+      successorId: data[0].id,
+    }));
+
+    const { error: linkError } = await client
+      .from('TaskHierarchy')
+      .insert(linkData);
+
+    if (linkError)
+      throw new Error(`Error linking predecessors: ${linkError.message}`);
+  }
+
   return data;
 }
 
@@ -42,7 +59,7 @@ export const useCreateTask = () => {
       createTask(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('tasks'),
+        queryKey: getQueryKey('project-task-setting-list'),
       });
     },
   });

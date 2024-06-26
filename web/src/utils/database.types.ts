@@ -42,36 +42,6 @@ export type Database = {
         }
         Relationships: []
       }
-      _TaskPredecessor: {
-        Row: {
-          A: string
-          B: string
-        }
-        Insert: {
-          A: string
-          B: string
-        }
-        Update: {
-          A?: string
-          B?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "_TaskPredecessor_A_fkey"
-            columns: ["A"]
-            isOneToOne: false
-            referencedRelation: "Task"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "_TaskPredecessor_B_fkey"
-            columns: ["B"]
-            isOneToOne: false
-            referencedRelation: "Task"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       Project: {
         Row: {
           color: string
@@ -130,6 +100,36 @@ export type Database = {
             columns: ["projectId"]
             isOneToOne: false
             referencedRelation: "Project"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      TaskHierarchy: {
+        Row: {
+          predecessorId: string
+          successorId: string
+        }
+        Insert: {
+          predecessorId: string
+          successorId: string
+        }
+        Update: {
+          predecessorId?: string
+          successorId?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "TaskHierarchy_predecessorId_fkey"
+            columns: ["predecessorId"]
+            isOneToOne: false
+            referencedRelation: "Task"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "TaskHierarchy_successorId_fkey"
+            columns: ["successorId"]
+            isOneToOne: false
+            referencedRelation: "Task"
             referencedColumns: ["id"]
           },
         ]

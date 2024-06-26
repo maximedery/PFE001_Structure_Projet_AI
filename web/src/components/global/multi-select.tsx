@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { cva, type VariantProps } from 'class-variance-authority';
 import { CheckIcon, X, ChevronDown, XIcon } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
@@ -29,7 +28,7 @@ interface MultiSelectProps
     icon?: React.ComponentType<{ className?: string }>;
   }[];
   onValueChange: (value: string[]) => void;
-  defaultValue: string[];
+  defaultValue?: string[];
   placeholder?: string;
   animation?: number;
   maxCount?: number;
