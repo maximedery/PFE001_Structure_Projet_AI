@@ -15,6 +15,10 @@ import { projectDialogStateAtom } from '@/stores/dialogs';
 import { useSetAtom } from 'jotai';
 import { CalendarDays, Plus, Search } from 'lucide-react';
 
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import dayjs from 'dayjs';
+dayjs.extend(LocalizedFormat);
+
 export default function SettingsPage() {
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
 

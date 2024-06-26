@@ -25,7 +25,9 @@ import { taskDialogStateAtom } from '@/stores/dialogs';
 import { useAtom } from 'jotai';
 import { Form, FormField } from '../ui/form';
 import { useCreateTask } from '@/services/createTask';
-import { rest } from 'lodash';
+import { DatePicker } from '../ui/date-picker';
+import { useUpdateTask } from '@/services/updateTask';
+import { values } from 'lodash';
 
 const MOCK_TASK_LIST = [
   { value: '1-1', label: '1-1 - Project 1 - Task 1' },
@@ -66,6 +68,7 @@ export default function TaskDialog() {
   const [taskDialogState, setTaskDialogState] = useAtom(taskDialogStateAtom);
 
   const createTask = useCreateTask();
+  const updateTask = useUpdateTask();
 
   const [selectedFrameworks, setSelectedFrameworks] = useState<string[]>([
     '1-1',
@@ -92,10 +95,12 @@ export default function TaskDialog() {
     if (!taskDialogState.isOpen) return null;
 
     if (!isUpdate) {
-      createTask.mutate({ ...values, projectId: taskDialogState.projectId });
+      createTask.mutate({
+        ...values,
+        projectId: taskDialogState.projectId,
+      });
     } else {
-      // TODO: Implement updateTask mutation
-      // updateTask.mutate({ id, ...rest });
+      updateTask.mutate({ id: taskDialogState.id, ...values });
     }
     setTaskDialogState({ isOpen: false });
   }
@@ -143,17 +148,23 @@ export default function TaskDialog() {
               </DialogContentRow>
               <DialogContentRow>
                 <Label>Start</Label>
-                <Button variant="outline_black" size={'sm'}>
-                  <CalendarDays size={18} />
-                  23 May 2024
-                </Button>
+                <FormField
+                  control={form.control}
+                  name="start"
+                  render={({ field }) => (
+                    <DatePicker value={field.value} onChange={field.onChange} />
+                  )}
+                />
               </DialogContentRow>
               <DialogContentRow>
                 <Label>End</Label>
-                <Button variant="outline_black" size={'sm'}>
-                  <CalendarDays size={18} />
-                  15 Jun 2024
-                </Button>
+                <FormField
+                  control={form.control}
+                  name="end"
+                  render={({ field }) => (
+                    <DatePicker value={field.value} onChange={field.onChange} />
+                  )}
+                />
               </DialogContentRow>
               <DialogContentRow>
                 <Label>Predecessor</Label>

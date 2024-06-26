@@ -47,7 +47,6 @@ import {
   projectDialogStateAtom,
   taskDialogStateAtom,
 } from '@/stores/dialogs';
-import { Skeleton } from '../ui/skeleton';
 import { LoadingSpinner } from '../ui/loading-spinner';
 
 export const columns: ColumnDef<SettingTaskListRow>[] = [
@@ -264,6 +263,7 @@ export const columns: ColumnDef<SettingTaskListRow>[] = [
 
 export default function TasksList() {
   const { data: settingTasks, isLoading } = useGetSettingTaskList();
+  const setTaskDialogState = useSetAtom(taskDialogStateAtom);
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
@@ -321,7 +321,18 @@ export default function TasksList() {
                 : undefined;
 
               const taskRowOnClick = () => {
-                console.log('task row clicked', row.original);
+                const rowData = row.original;
+
+                if (rowData.type === 'project') return;
+
+                setTaskDialogState({
+                  isOpen: true,
+                  id: rowData.id,
+                  projectId: rowData.projectId,
+                  defaultValues: {
+                    ...rowData,
+                  },
+                });
               };
 
               const rowOnClick =
