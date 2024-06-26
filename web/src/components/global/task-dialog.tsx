@@ -1,6 +1,5 @@
 'use client';
 
-import { CalendarDays } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -187,6 +186,7 @@ export default function TaskDialog() {
                       suffix={'hours'}
                       type="number"
                       {...field}
+                      onChange={(event) => field.onChange(+event.target.value)}
                     />
                   )}
                 />
@@ -202,6 +202,7 @@ export default function TaskDialog() {
                       suffix={'$'}
                       type="number"
                       {...field}
+                      onChange={(event) => field.onChange(+event.target.value)}
                     />
                   )}
                 />
