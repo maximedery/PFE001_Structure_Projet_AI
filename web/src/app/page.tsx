@@ -16,8 +16,11 @@ import { useSetAtom } from 'jotai';
 import { CalendarDays, Plus, Search } from 'lucide-react';
 
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+
 import dayjs from 'dayjs';
 dayjs.extend(LocalizedFormat);
+dayjs.extend(relativeTime);
 
 export default function SettingsPage() {
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
@@ -34,14 +37,15 @@ export default function SettingsPage() {
           </div>
           <div className="flex flex-col h-full overflow-y-auto">
             <div className=" px-2 py-4 grid gap-x-6 gap-y-3 grid-cols-[200px,auto]">
-              <div className="text-sm text-slate-500">
+              {/* TODO: Add OccupationTable */}
+              {/* <div className="text-sm text-slate-500">
                 Number of employees available in the company
               </div>
               <OccupationTable />
               <div className="text-sm text-slate-500">
                 Number of equipments available in the company
               </div>
-              <EquipmentTypeTable />
+              <EquipmentTypeTable /> */}
               <div className="text-sm text-slate-500 flex items-center">
                 Desired start date
               </div>

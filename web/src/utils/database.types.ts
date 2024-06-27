@@ -63,10 +63,10 @@ export type Database = {
       Task: {
         Row: {
           cost: number | null
-          duration: number | null
           end: string | null
           id: string
           importance: Database["public"]["Enums"]["Importance"]
+          manHours: number | null
           name: string | null
           projectId: string
           start: string | null
@@ -74,10 +74,10 @@ export type Database = {
         }
         Insert: {
           cost?: number | null
-          duration?: number | null
           end?: string | null
           id: string
           importance?: Database["public"]["Enums"]["Importance"]
+          manHours?: number | null
           name?: string | null
           projectId: string
           start?: string | null
@@ -85,10 +85,10 @@ export type Database = {
         }
         Update: {
           cost?: number | null
-          duration?: number | null
           end?: string | null
           id?: string
           importance?: Database["public"]["Enums"]["Importance"]
+          manHours?: number | null
           name?: string | null
           projectId?: string
           start?: string | null

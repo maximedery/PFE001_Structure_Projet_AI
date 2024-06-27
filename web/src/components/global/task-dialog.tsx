@@ -27,15 +27,16 @@ import { useCreateTask } from '@/services/create-task';
 import { DatePicker } from '../ui/date-picker';
 import { useUpdateTask } from '@/services/update-task';
 import { useGetTaskOptions } from '@/helpers/useGetTaskOptions';
+import { getDurationString } from '@/helpers/getDurationString';
 
 const formSchema = z.object({
   name: z.string().nullable(),
   start: z.string().nullable(),
   end: z.string().nullable(),
   predecessorIds: z.array(z.string()),
-  duration: z
+  manHours: z
     .number()
-    .min(0, { message: 'Duration must be positive' })
+    .min(0, { message: 'Man-Hours must be positive' })
     .nullable(),
   cost: z.number().min(0, { message: 'Cost must be positive' }).nullable(),
   importance: z.enum(['asap', 'high', 'medium', 'low']),
@@ -49,7 +50,7 @@ const initialValues: TaskDialogDefaultValues = {
   start: null,
   end: null,
   predecessorIds: [],
-  duration: null,
+  manHours: null,
   cost: null,
   importance: 'medium',
   weatherEffect: 'none',
@@ -94,6 +95,10 @@ export default function TaskDialog() {
     }
     setTaskDialogState({ isOpen: false });
   }
+
+  const start = form.watch('start');
+  const end = form.watch('end');
+  const duration = start && end ? getDurationString(start, end) : undefined;
 
   return (
     <Dialog
@@ -156,6 +161,14 @@ export default function TaskDialog() {
                   )}
                 />
               </DialogContentRow>
+              {duration && (
+                <DialogContentRow>
+                  <Label>Duration</Label>
+                  <div className="col-span-2">
+                    <div className="text-sm text-slate-500">{duration}</div>
+                  </div>
+                </DialogContentRow>
+              )}
               <DialogContentRow>
                 <Label>Predecessor</Label>
                 <FormField
@@ -176,10 +189,10 @@ export default function TaskDialog() {
                 />
               </DialogContentRow>
               <DialogContentRow>
-                <Label>Duration to finish the task</Label>
+                <Label>Man-hours required</Label>
                 <FormField
                   control={form.control}
-                  name="duration"
+                  name="manHours"
                   render={({ field }) => (
                     <Input
                       className="col-span-1"
@@ -295,7 +308,8 @@ export default function TaskDialog() {
                   )}
                 />
               </DialogContentRow>
-              <DialogContentRow>
+              {/* TODO: Add OccupationTable */}
+              {/* <DialogContentRow>
                 <Label className="self-start">
                   Employees needed to complete the task
                 </Label>
@@ -306,7 +320,7 @@ export default function TaskDialog() {
                   Equipments needed to complete the task
                 </Label>
                 <EquipmentTypeTable className="col-span-4" />
-              </DialogContentRow>
+              </DialogContentRow> */}
             </DialogContentArea>
             <DialogFooter>
               <Button variant="ghost_destructive" size={'sm'}>

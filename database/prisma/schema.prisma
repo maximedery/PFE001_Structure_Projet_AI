@@ -21,7 +21,7 @@ model Task {
   projectId     String
   start         DateTime?
   end           DateTime?
-  duration      Int?
+  manHours      Float?
   cost          Float?
   predecessors  TaskHierarchy[] @relation("PredecessorRelation")
   successors    TaskHierarchy[] @relation("SuccessorRelation")
