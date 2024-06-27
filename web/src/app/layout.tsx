@@ -7,6 +7,7 @@ import 'gantt-task-react/dist/index.css';
 import { ReactQueryClientProvider } from '@/lib/react-query/ReactQueryClientProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
+import { AppHeader } from '@/components/global/app-header';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,22 +26,8 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className} suppressHydrationWarning={true}>
           <div className="flex flex-col h-screen">
-            <div className="border-b">
-              <div className="flex flex-col">
-                <div className="border-b flex items-center px-2 py-1.5">
-                  <img src="/logo.svg" alt="Tanzim" className="h-8 w-auto" />
-                  <div className="font-semibold text-primary text-xl leading-none text-center mt-px">
-                    Tanzim
-                  </div>
-                  <span className="flex-1" />
-                  <Avatar className="h-8 w-8 cursor-pointer">
-                    <AvatarImage src="https://ui.shadcn.com/avatars/01.png" />
-                    <AvatarFallback>CN</AvatarFallback>
-                  </Avatar>
-                </div>
-                <MainNav className="px-2" />
-              </div>
-            </div>
+            <AppHeader />
+            <MainNav className="px-2 border-b" />
             <main className="overflow-hidden h-full">{children}</main>
           </div>
         </body>

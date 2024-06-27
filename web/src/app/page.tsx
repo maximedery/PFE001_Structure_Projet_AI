@@ -20,14 +20,10 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 
 import dayjs from 'dayjs';
 import DeleteTaskDialog from '@/components/global/delete-task-dialog';
-import { useGetWorkspaceList } from '@/services/get-workspace-list';
 dayjs.extend(LocalizedFormat);
 dayjs.extend(relativeTime);
 
 export default function SettingsPage() {
-  const { data, error, isLoading } = useGetWorkspaceList();
-  console.log('🚀 ~ data:', data);
-
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
 
   return (

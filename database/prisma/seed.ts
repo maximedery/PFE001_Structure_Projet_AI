@@ -6,7 +6,7 @@ async function main() {
   // Create WorkSpaces
   const workSpace1 = await prisma.workspace.create({
     data: {
-      name: "WorkSpace One",
+      name: "Workspace One",
       start: new Date("2024-01-01"),
       end: new Date("2024-12-31"),
       workingDays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
@@ -15,7 +15,7 @@ async function main() {
 
   const workSpace2 = await prisma.workspace.create({
     data: {
-      name: "WorkSpace Two",
+      name: "Workspace Two",
       start: new Date("2024-01-01"),
       end: new Date("2024-12-31"),
       workingDays: ["monday", "tuesday", "wednesday", "thursday", "friday"],

@@ -1,3 +1,6 @@
-import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils';
 
-export const currentWorkspaceIdAtom = atom<string | null>(null);
+export const currentWorkspaceIdAtom = atomWithStorage<string | null>(
+  'currentWorkspaceId',
+  null
+);
