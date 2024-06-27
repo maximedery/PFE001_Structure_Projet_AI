@@ -1,8 +1,6 @@
 import dayjs from 'dayjs';
 
 export function getDurationString(start: string, end: string) {
-  console.log('🚀 ~ end:', end);
-  console.log('🚀 ~ start:', start);
   let result = '';
 
   const dayjsStart = dayjs(start).startOf('day');
@@ -11,11 +9,8 @@ export function getDurationString(start: string, end: string) {
   const diffDays = dayjsEnd.diff(dayjsStart, 'day');
 
   const years = Math.floor(diffDays / 365);
-  console.log('🚀 ~ years:', years);
   const months = Math.floor((diffDays % 365) / 30);
-  console.log('🚀 ~ months:', months);
   const days = Math.floor((diffDays % 365) % 30);
-  console.log('🚀 ~ days:', days);
 
   if (years > 0) {
     result += `${years} year${years > 1 ? 's' : ''}`;
