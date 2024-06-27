@@ -22,7 +22,7 @@ async function createTask(
       name: inputValues.name,
       start: inputValues.start,
       end: inputValues.end,
-      duration: inputValues.duration,
+      manHours: inputValues.manHours,
       cost: inputValues.cost,
       importance: inputValues.importance,
       weatherEffect: inputValues.weatherEffect,

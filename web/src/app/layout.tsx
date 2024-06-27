@@ -6,6 +6,7 @@ import './globals.css';
 import 'gantt-task-react/dist/index.css';
 import { ReactQueryClientProvider } from '@/lib/react-query/ReactQueryClientProvider';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useGetWorkspaceList } from '@/services/get-workspace-list';
 
 const inter = Inter({ subsets: ['latin'] });
 

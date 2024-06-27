@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model WorkSpace {
+model Workspace {
   id          String       @id @default(cuid())
   name        String
   projects    Project[]
@@ -21,7 +21,7 @@ model Project {
   id          String    @id @default(cuid())
   name        String?
   color       String
-  workspace   WorkSpace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String
   tasks       Task[]
 }
@@ -35,7 +35,7 @@ model Task {
   end           DateTime?       @db.Date
   manHours      Float?
   cost          Float?
-  workspace     WorkSpace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace     Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId   String
   importance    Importance      @default(medium)
   weatherEffect WeatherEffect   @default(none)

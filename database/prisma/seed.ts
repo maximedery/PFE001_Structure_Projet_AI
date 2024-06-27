@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create WorkSpaces
-  const workSpace1 = await prisma.workSpace.create({
+  const workSpace1 = await prisma.workspace.create({
     data: {
       name: "WorkSpace One",
       start: new Date("2024-01-01"),
@@ -13,7 +13,7 @@ async function main() {
     },
   });
 
-  const workSpace2 = await prisma.workSpace.create({
+  const workSpace2 = await prisma.workspace.create({
     data: {
       name: "WorkSpace Two",
       start: new Date("2024-01-01"),

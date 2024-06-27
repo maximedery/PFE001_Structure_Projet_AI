@@ -66,7 +66,7 @@ export type Database = {
             foreignKeyName: "Project_workspaceId_fkey"
             columns: ["workspaceId"]
             isOneToOne: false
-            referencedRelation: "WorkSpace"
+            referencedRelation: "Workspace"
             referencedColumns: ["id"]
           },
         ]
@@ -120,7 +120,7 @@ export type Database = {
             foreignKeyName: "Task_workspaceId_fkey"
             columns: ["workspaceId"]
             isOneToOne: false
-            referencedRelation: "WorkSpace"
+            referencedRelation: "Workspace"
             referencedColumns: ["id"]
           },
         ]
@@ -155,7 +155,7 @@ export type Database = {
           },
         ]
       }
-      WorkSpace: {
+      Workspace: {
         Row: {
           end: string | null
           id: string
