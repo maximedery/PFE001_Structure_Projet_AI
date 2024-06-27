@@ -1,14 +1,16 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { deleteTaskDialogStateAtom } from '@/stores/dialogs';
-import { useDeleteTask } from '@/services/delete-task';
-import { DeleteDialog } from './delete-dialog';
 import React from 'react';
+
+import { useDeleteTask } from '@/services/delete-task';
+import { deleteTaskDialogStateAtom } from '@/stores/dialogs';
+
+import { DeleteDialog } from './delete-dialog';
 
 export default function DeleteTaskDialog() {
   const [deleteTaskDialogState, setDeleteTaskDialogState] = useAtom(
-    deleteTaskDialogStateAtom
+    deleteTaskDialogStateAtom,
   );
   const deleteTask = useDeleteTask();
 

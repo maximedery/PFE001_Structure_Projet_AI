@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
+
 import { getQueryKey } from './_query-keys';
 
 type UpdateOptions = Database['public']['Tables']['Task']['Update'];
@@ -13,7 +15,7 @@ type UpdateTaskInput = {
 
 async function updateTask(
   client: TypedSupabaseClient,
-  inputValues: UpdateTaskInput
+  inputValues: UpdateTaskInput,
 ) {
   // Unlink all current predecessors
   const { error: unlinkError } = await client

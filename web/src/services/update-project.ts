@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
+
 import { getQueryKey } from './_query-keys';
 
 type UpdateOptions = Database['public']['Tables']['Project']['Update'];
@@ -12,7 +14,7 @@ type UpdateProjectInput = {
 
 async function updateProject(
   client: TypedSupabaseClient,
-  inputValues: UpdateProjectInput
+  inputValues: UpdateProjectInput,
 ) {
   const { data, error } = await client
     .from('Project')

@@ -1,13 +1,15 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { deleteProjectDialogStateAtom } from '@/stores/dialogs';
+
 import { useDeleteProject } from '@/services/delete-project';
+import { deleteProjectDialogStateAtom } from '@/stores/dialogs';
+
 import { DeleteDialog } from './delete-dialog';
 
 export default function DeleteProjectDialog() {
   const [deleteProjectDialogState, setDeleteProjectDialogState] = useAtom(
-    deleteProjectDialogStateAtom
+    deleteProjectDialogStateAtom,
   );
   const deleteProject = useDeleteProject();
 

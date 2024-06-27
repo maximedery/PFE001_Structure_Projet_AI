@@ -1,7 +1,7 @@
 import { atom } from 'jotai';
 
-import { ProjectDialogDefaultValues } from '@/components/global/project-dialog';
-import { TaskDialogDefaultValues } from '@/components/global/task-dialog';
+import type { ProjectDialogDefaultValues } from '@/components/global/project-dialog';
+import type { TaskDialogDefaultValues } from '@/components/global/task-dialog';
 
 export const projectDialogStateAtom = atom<
   | {

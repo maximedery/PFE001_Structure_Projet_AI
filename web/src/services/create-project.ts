@@ -1,9 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import cuid from 'cuid';
+import randomColor from 'randomcolor';
+
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
-import randomColor from 'randomcolor';
-import cuid from 'cuid';
 import { Database } from '@/utils/database.types';
+
 import { getQueryKey } from './_query-keys';
 
 type InsertOptions = Database['public']['Tables']['Project']['Insert'];
@@ -12,7 +14,7 @@ type CreateProjectInput = Omit<InsertOptions, 'id'>;
 
 async function createProject(
   client: TypedSupabaseClient,
-  inputValues: CreateProjectInput
+  inputValues: CreateProjectInput,
 ) {
   const { data, error } = await client
     .from('Project')

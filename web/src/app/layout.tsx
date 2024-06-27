@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { MainNav } from '@/components/global/main-nav';
-
 import './globals.css';
 import 'gantt-task-react/dist/index.css';
-import { ReactQueryClientProvider } from '@/lib/react-query/ReactQueryClientProvider';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { useGetWorkspaceList } from '@/services/get-workspace-list';
+
+import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
+import React from 'react';
+
 import { AppHeader } from '@/components/global/app-header';
+import { MainNav } from '@/components/global/main-nav';
+import { ReactQueryClientProvider } from '@/lib/react-query/react-query-client-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -25,10 +25,10 @@ export default function RootLayout({
     <ReactQueryClientProvider>
       <html lang="en">
         <body className={inter.className} suppressHydrationWarning={true}>
-          <div className="flex flex-col h-screen">
+          <div className="flex h-screen flex-col">
             <AppHeader />
-            <MainNav className="px-2 border-b" />
-            <main className="overflow-hidden h-full">{children}</main>
+            <MainNav className="border-b px-2" />
+            <main className="h-full overflow-hidden">{children}</main>
           </div>
         </body>
       </html>

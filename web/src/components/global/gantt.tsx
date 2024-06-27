@@ -1,11 +1,12 @@
 'use client';
 
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { COLUMN_WIDTH } from '@/helpers/global';
 import { Gantt as GanttComponent, Task, ViewMode } from 'gantt-task-react';
 import { ChevronDown, Square } from 'lucide-react';
 
-let tasks: Task[] = initTasks();
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { COLUMN_WIDTH } from '@/helpers/global';
+
+const tasks: Task[] = initTasks();
 
 export default function Gantt() {
   return (
@@ -25,8 +26,8 @@ export default function Gantt() {
 
 function TaskListHeader() {
   return (
-    <div className="h-8 bg-slate-50 px-2 flex items-center w-[165px] border-r border-y border-slate-200">
-      <div className="text-xs whitespace-nowrap ">Projects & Tasks</div>
+    <div className="flex h-8 w-[165px] items-center border-y border-r border-slate-200 bg-slate-50 px-2">
+      <div className="whitespace-nowrap text-xs ">Projects & Tasks</div>
     </div>
   );
 }
@@ -40,7 +41,7 @@ function TaskListTable(props: { tasks: Task[] }) {
             key={task.id}
             className="flex items-center border-b border-r border-slate-200"
           >
-            <div className="flex items-center h-8 px-2 gap-2 -mb-px">
+            <div className="-mb-px flex h-8 items-center gap-2 px-2">
               {task.type === 'project' && (
                 <>
                   <ChevronDown
@@ -69,7 +70,7 @@ function TaskListTable(props: { tasks: Task[] }) {
 
 export function initTasks() {
   const currentDate = new Date();
-  const tasks: Task[] = [
+  const result: Task[] = [
     {
       start: new Date(currentDate.getFullYear(), currentDate.getMonth(), 1),
       end: new Date(currentDate.getFullYear(), currentDate.getMonth(), 15),
@@ -87,7 +88,7 @@ export function initTasks() {
         currentDate.getMonth(),
         2,
         12,
-        28
+        28,
       ),
       name: 'Idea',
       id: 'Task 0',
@@ -161,5 +162,5 @@ export function initTasks() {
       type: 'task',
     },
   ];
-  return tasks;
+  return result;
 }

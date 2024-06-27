@@ -1,26 +1,25 @@
 'use client';
 
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import { COLUMN_WIDTH } from '@/helpers/global';
 import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
   BarElement,
-  Title,
+  CategoryScale,
+  Chart as ChartJS,
   Legend,
+  LinearScale,
+  Title,
   Tooltip,
-  scales,
 } from 'chart.js';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 import dayjs from 'dayjs';
 import { ChevronRight } from 'lucide-react';
+import { Bar } from 'react-chartjs-2';
+
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { COLUMN_WIDTH } from '@/helpers/global';
 
 const NUMBER_OF_DAYS = 30;
 
-let workload: EmployeeWorkload[] = initWorkload();
-
-import { Bar } from 'react-chartjs-2';
+const workload: EmployeeWorkload[] = initWorkload();
 
 ChartJS.register(
   CategoryScale,
@@ -29,7 +28,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  ChartDataLabels
+  ChartDataLabels,
 );
 
 export default function Workload() {
@@ -37,26 +36,31 @@ export default function Workload() {
 
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col w-[165px] border-r border-slate-200 shrink-0">
+      <div className="flex w-[165px] shrink-0 flex-col border-r border-slate-200">
         {workload.map((employee) => (
           <div
             key={employee.id}
-            className="flex items-center h-8 px-2 border-b border-slate-200 gap-2"
+            className="flex h-8 items-center gap-2 border-b border-slate-200 px-2"
           >
             <ChevronRight
               size={18}
               color={getTailwindColorValue('slate-950')}
             />
-            <div className="text-xs whitespace-nowrap">{employee.name}</div>
+            <div className="whitespace-nowrap text-xs">{employee.name}</div>
           </div>
         ))}
       </div>
-      <div className="flex flex-col w-full overflow-auto">
+      <div className="flex w-full flex-col overflow-auto">
         {workload.map((employee) => {
-          const data = employee.workloads.map((workload) => workload.hours);
-
+          const data = employee.workloads.map(
+            (employeeWorkload) => employeeWorkload.hours,
+          );
           return (
-            <div className="h-8" style={{ width: `${chartWidth}px` }}>
+            <div
+              key={employee.id}
+              className="h-8"
+              style={{ width: `${chartWidth}px` }}
+            >
               <Bar
                 options={{
                   responsive: true,
@@ -73,14 +77,14 @@ export default function Workload() {
                       align: 'top',
                       offset: -6,
                       color: getTailwindColorValue('slate-400'),
-                      display: function (context) {
-                        const dataIndex = context.dataIndex;
+                      display(context) {
+                        const { dataIndex } = context;
                         const dataValue =
                           (context.dataset.data[dataIndex] as number) || 0;
                         return dataValue > 0;
                       },
-                      formatter: function (value, context) {
-                        return value + 'h';
+                      formatter(value) {
+                        return `${value}h`;
                       },
                     },
                   },
@@ -97,7 +101,7 @@ export default function Workload() {
                   datasets: [
                     {
                       label: 'Workload Hours',
-                      data: data,
+                      data,
                       backgroundColor: getTailwindColorValue('violet-100'),
                       borderColor: getTailwindColorValue('violet-400'),
                       borderWidth: 1,
@@ -154,7 +158,7 @@ export function initWorkload(): EmployeeWorkload[] {
         name,
         workloads,
       };
-    }
+    },
   );
 
   return employeeWorkloads;

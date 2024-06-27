@@ -1,11 +1,13 @@
 'use client';
 
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 import { ChevronDown, Ellipsis, Plus } from 'lucide-react';
+import React from 'react';
+
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { cn } from '@/lib/utils';
+
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
-import { cn } from '@/lib/utils';
-import React from 'react';
 
 export function TableHeader({ columns }: { columns: string[] }) {
   return (
@@ -16,7 +18,7 @@ export function TableHeader({ columns }: { columns: string[] }) {
           className={cn(
             'bg-slate-50 border-y border-slate-200 p-2 text-sm',
             index === 0 ? 'border-l rounded-tl-md' : '',
-            index === columns.length - 1 ? 'border-r rounded-tr-md' : ''
+            index === columns.length - 1 ? 'border-r rounded-tr-md' : '',
           )}
         >
           {column}
@@ -52,7 +54,7 @@ export function TableCellDropdown({
     <div
       className={cn(
         'border-b border-l border-slate-200 p-2',
-        isLast ? 'rounded-bl-md' : ''
+        isLast ? 'rounded-bl-md' : '',
       )}
     >
       <Button
@@ -79,7 +81,7 @@ export function TableCellQuantityInput({
     <div
       className={cn(
         'border-b border-r border-slate-200 p-2 flex',
-        isLast ? 'rounded-br-md' : ''
+        isLast ? 'rounded-br-md' : '',
       )}
     >
       <Input

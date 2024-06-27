@@ -1,5 +1,15 @@
 'use client';
 
+import {
+  Check,
+  ChevronDown,
+  FoldVertical,
+  Search,
+  Settings,
+  Sparkles,
+  UnfoldVertical,
+} from 'lucide-react';
+
 import Gantt from '@/components/global/gantt';
 import ScoreHeader from '@/components/global/score-header';
 import Workload from '@/components/global/workload';
@@ -7,21 +17,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import {
-  Check,
-  Sparkles,
-  Search,
-  Settings,
-  UnfoldVertical,
-  FoldVertical,
-  ChevronDown,
-} from 'lucide-react';
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 
 export default function AiPlannerPage() {
   return (
-    <Tabs defaultValue="basic" className="flex flex-col h-full">
-      <div className="border-b py-2 px-2 flex items-center">
+    <Tabs defaultValue="basic" className="flex h-full flex-col">
+      <div className="flex items-center border-b p-2">
         <TabsList>
           <TabsTrigger value="basic" cyanLabel>
             Basic
@@ -38,7 +39,7 @@ export default function AiPlannerPage() {
       </div>
       <TabsContent value="basic" className="border-b">
         <Tabs defaultValue="cost" className="flex flex-col">
-          <div className="border-b pb-2 px-2 flex items-center gap-2">
+          <div className="flex items-center gap-2 border-b px-2 pb-2">
             <Badge variant="label" size="lg">
               Compare the scenarios according to their priority.
             </Badge>
@@ -61,11 +62,11 @@ export default function AiPlannerPage() {
         </Tabs>
       </TabsContent>
       <TabsContent value="advanced">Advanced</TabsContent>
-      <div className="overflow-auto h-full flex flex-col">
-        <div className="border-b text-slate-700 bg-slate-50 text-xs px-2 py-1">
+      <div className="flex h-full flex-col overflow-auto">
+        <div className="border-b bg-slate-50 px-2 py-1 text-xs text-slate-700">
           Timeline
         </div>
-        <div className="flex p-2 gap-2">
+        <div className="flex gap-2 p-2">
           <Input
             startIcon={Search}
             placeholder="Search"
@@ -96,11 +97,11 @@ export default function AiPlannerPage() {
           </Button>
         </div>
         <Gantt />
-        <div className="border-y text-slate-700 bg-slate-50 text-xs px-2 py-1">
+        <div className="border-y bg-slate-50 px-2 py-1 text-xs text-slate-700">
           Workload
         </div>
         <Tabs defaultValue="employee" className="flex flex-col overflow-hidden">
-          <div className="p-2 border-b border-slate-200">
+          <div className="border-b border-slate-200 p-2">
             <TabsList>
               <TabsTrigger value="employee">Employees</TabsTrigger>
               <TabsTrigger value="equipment">Equipments</TabsTrigger>

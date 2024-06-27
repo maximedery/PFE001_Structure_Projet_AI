@@ -1,8 +1,10 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 import { Circle } from 'lucide-react';
+import React from 'react';
+
+import { Badge } from '@/components/ui/badge';
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 
 export default function ScoreHeader() {
   return (
@@ -67,8 +69,8 @@ export default function ScoreHeader() {
 
 function ScoreSection(props: { title: string; children: React.ReactNode }) {
   return (
-    <div className="flex flex-col items-start border-r px-4 text-sm gap-1">
-      <h3 className="font-semibold mb-1">{props.title}</h3>
+    <div className="flex flex-col items-start gap-1 border-r px-4 text-sm">
+      <h3 className="mb-1 font-semibold">{props.title}</h3>
       {props.children}
     </div>
   );
@@ -76,7 +78,7 @@ function ScoreSection(props: { title: string; children: React.ReactNode }) {
 
 function ScoreTable(props: { children: React.ReactNode }) {
   return (
-    <div className="grid gap-x-6 gap-y-2 grid-cols-[auto,auto,auto] items-center">
+    <div className="grid grid-cols-[auto,auto,auto] items-center gap-x-6 gap-y-2">
       {props.children}
     </div>
   );
@@ -102,7 +104,7 @@ function ScoreBestValue(props: { value: string }) {
 }
 
 function ScoreLabel(props: { label: string }) {
-  return <div className="text-slate-500 pr-8">{props.label}</div>;
+  return <div className="pr-8 text-slate-500">{props.label}</div>;
 }
 
 function ScoreValue(props: { value: string }) {

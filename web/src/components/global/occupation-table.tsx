@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+
 import { ResourceTable } from './resource-table';
 
 const MOCK_DATA_OCCUPATION = [

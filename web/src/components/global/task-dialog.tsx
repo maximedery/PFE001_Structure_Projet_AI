@@ -1,10 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtom } from 'jotai';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+
+import { getDurationString } from '@/helpers/get-duration-string';
+import { useGetTaskOptions } from '@/helpers/use-get-task-options';
+import { useCreateTask } from '@/services/create-task';
+import { useUpdateTask } from '@/services/update-task';
+import { taskDialogStateAtom } from '@/stores/dialogs';
+
 import { Button } from '../ui/button';
+import { DatePicker } from '../ui/date-picker';
 import {
   Dialog,
   DialogContent,
@@ -14,20 +23,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
+import { Form, FormField } from '../ui/form';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import EquipmentTypeTable from './equipment-type-table';
-import { MultiSelect } from './multi-select';
-import OccupationTable from './occupation-table';
 import { ToggleGroup, ToggleGroupItem } from '../ui/toggle-group';
-import { taskDialogStateAtom } from '@/stores/dialogs';
-import { useAtom } from 'jotai';
-import { Form, FormField } from '../ui/form';
-import { useCreateTask } from '@/services/create-task';
-import { DatePicker } from '../ui/date-picker';
-import { useUpdateTask } from '@/services/update-task';
-import { useGetTaskOptions } from '@/helpers/useGetTaskOptions';
-import { getDurationString } from '@/helpers/getDurationString';
+import { MultiSelect } from './multi-select';
 
 const formSchema = z.object({
   name: z.string().nullable(),
@@ -77,13 +77,13 @@ export default function TaskDialog() {
     } else {
       form.reset(initialValues);
     }
-  }, [taskDialogState]);
+  }, [taskDialogState, form]);
 
   if (!taskDialogState.isOpen) return null;
   const isUpdate = 'id' in taskDialogState;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!taskDialogState.isOpen) return null;
+    if (!taskDialogState.isOpen) return;
 
     if (!isUpdate) {
       createTask.mutate({

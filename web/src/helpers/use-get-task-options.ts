@@ -1,8 +1,9 @@
+import { useMemo } from 'react';
+
 import {
   ProjectTaskSettingListProjectRow,
   useGetProjectTaskSettingList,
 } from '@/services/get-project-task-setting-list';
-import { useMemo } from 'react';
 
 export const useGetTaskOptions = (props: { projectId?: string }) => {
   const { data: projectTaskSettingList } = useGetProjectTaskSettingList();
@@ -13,8 +14,10 @@ export const useGetTaskOptions = (props: { projectId?: string }) => {
     }
 
     const project = projectTaskSettingList.find(
-      (project): project is ProjectTaskSettingListProjectRow =>
-        project.id === props.projectId
+      (
+        projectTaskSetting,
+      ): projectTaskSetting is ProjectTaskSettingListProjectRow =>
+        projectTaskSetting.id === props.projectId,
     );
 
     const predecessorOptions =

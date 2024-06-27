@@ -1,7 +1,12 @@
 'use client';
 
+import { useAtom } from 'jotai';
+import Image from 'next/image';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
+import { currentWorkspaceIdAtom } from '@/stores/general';
+
 import {
   Select,
   SelectContent,
@@ -9,19 +14,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import { useAtom } from 'jotai';
-import { currentWorkspaceIdAtom } from '@/stores/general';
 
 export function AppHeader() {
-  const { data: workspaces, error, isLoading } = useGetWorkspaceList();
+  const { data: workspaces } = useGetWorkspaceList();
   const [currentWorkspaceId, setCurrentWorkspaceId] = useAtom(
-    currentWorkspaceIdAtom
+    currentWorkspaceIdAtom,
   );
 
   return (
-    <div className="border-b flex items-center px-2 py-1.5">
-      <img src="/logo.svg" alt="Tanzim" className="h-8 w-auto" />
-      <div className="font-semibold text-primary text-xl leading-none text-center mt-px">
+    <div className="flex items-center border-b px-2 py-1.5">
+      <Image
+        src="/logo.svg"
+        alt="Tanzim"
+        width={32}
+        height={32}
+        className="h-8 w-auto"
+      />
+      <div className="mt-px text-center text-xl font-semibold leading-none text-primary">
         Tanzim
       </div>
       <Select
@@ -30,7 +39,7 @@ export function AppHeader() {
           setCurrentWorkspaceId(newValue);
         }}
       >
-        <SelectTrigger className="w-[180px] ml-4">
+        <SelectTrigger className="ml-4 w-[180px]">
           <SelectValue placeholder="Select a workspace" />
         </SelectTrigger>
         <SelectContent>
@@ -42,7 +51,7 @@ export function AppHeader() {
         </SelectContent>
       </Select>
       <span className="flex-1" />
-      <Avatar className="h-8 w-8 cursor-pointer">
+      <Avatar className="size-8 cursor-pointer">
         <AvatarImage src="https://ui.shadcn.com/avatars/01.png" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>

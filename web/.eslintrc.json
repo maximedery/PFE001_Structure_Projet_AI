@@ -1,0 +1,80 @@
+{
+  "extends": [
+    "airbnb-base",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "plugins": ["unicorn"],
+  "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "endOfLine": "auto"
+      }
+    ],
+    "unicorn/filename-case": [
+      "error",
+      {
+        "case": "kebabCase",
+        "ignore": ["/android", "/ios"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["**/*.ts", "**/*.tsx", "**/*.js"],
+      "plugins": [
+        "@typescript-eslint",
+        "unused-imports",
+        "tailwindcss",
+        "simple-import-sort"
+      ],
+      "extends": [
+        "plugin:tailwindcss/recommended",
+        "plugin:prettier/recommended"
+      ],
+      "parserOptions": {
+        "project": "./tsconfig.json"
+      },
+      "rules": {
+        "import/extensions": ["error", "never"],
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "prettier/prettier": [
+          "error",
+          {
+            "singleQuote": true,
+            "endOfLine": "auto"
+          }
+        ],
+        "max-params": ["error", 3],
+        "react/destructuring-assignment": "off",
+        "react/require-default-props": "off",
+        "@typescript-eslint/comma-dangle": "off",
+        "import/prefer-default-export": "off",
+        "tailwindcss/classnames-order": [
+          "warn",
+          {
+            "officialSorting": true
+          }
+        ],
+        "no-use-before-define": "off",
+        "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+        "no-nested-ternary": "off",
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error",
+        "@typescript-eslint/no-unused-vars": "off",
+        "tailwindcss/no-custom-classname": "off",
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": [
+          "error",
+          {
+            "argsIgnorePattern": "^_",
+            "varsIgnorePattern": "^_",
+            "caughtErrorsIgnorePattern": "^_"
+          }
+        ]
+      }
+    }
+  ]
+}

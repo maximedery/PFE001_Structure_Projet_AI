@@ -1,8 +1,13 @@
 'use client';
 
+import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useSetAtom } from 'jotai';
+import { CalendarDays, Plus, Search } from 'lucide-react';
+
 import DeleteProjectDialog from '@/components/global/delete-project-dialog';
-import EquipmentTypeTable from '@/components/global/equipment-type-table';
-import OccupationTable from '@/components/global/occupation-table';
+import DeleteTaskDialog from '@/components/global/delete-task-dialog';
 import ProjectDialog from '@/components/global/project-dialog';
 import TaskDialog from '@/components/global/task-dialog';
 import TasksList from '@/components/global/tasks-list';
@@ -10,16 +15,9 @@ import WeekdaysPicker from '@/components/global/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 import { projectDialogStateAtom } from '@/stores/dialogs';
-import { useSetAtom } from 'jotai';
-import { CalendarDays, Plus, Search } from 'lucide-react';
 
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
-import dayjs from 'dayjs';
-import DeleteTaskDialog from '@/components/global/delete-task-dialog';
 dayjs.extend(LocalizedFormat);
 dayjs.extend(relativeTime);
 
@@ -28,16 +26,16 @@ export default function SettingsPage() {
 
   return (
     <>
-      <div className="flex flex-row h-full overflow-hidden">
-        <div className="flex flex-col h-full border-r-2 overflow-hidden">
-          <div className="border-b p-2 flex items-center gap-3">
+      <div className="flex h-full flex-row overflow-hidden">
+        <div className="flex h-full flex-col overflow-hidden border-r-2">
+          <div className="flex items-center gap-3 border-b p-2">
             <div className="text-sm font-medium">Multi-projects Settings</div>
             <Badge variant="label" size="lg">
               Enter the settings applicable to all projects
             </Badge>
           </div>
-          <div className="flex flex-col h-full overflow-y-auto">
-            <div className=" px-2 py-4 grid gap-x-6 gap-y-3 grid-cols-[200px,auto]">
+          <div className="flex h-full flex-col overflow-y-auto">
+            <div className=" grid grid-cols-[200px,auto] gap-x-6 gap-y-3 px-2 py-4">
               {/* TODO: Add OccupationTable */}
               {/* <div className="text-sm text-slate-500">
                 Number of employees available in the company
@@ -47,7 +45,7 @@ export default function SettingsPage() {
                 Number of equipments available in the company
               </div>
               <EquipmentTypeTable /> */}
-              <div className="text-sm text-slate-500 flex items-center">
+              <div className="flex items-center text-sm text-slate-500">
                 Desired start date
               </div>
               <div>
@@ -59,7 +57,7 @@ export default function SettingsPage() {
                   12 mars. 2024
                 </Button>
               </div>
-              <div className="text-sm text-slate-500 flex items-center">
+              <div className="flex items-center text-sm text-slate-500">
                 Desired end date
               </div>
               <div>
@@ -71,25 +69,25 @@ export default function SettingsPage() {
                   05 nov. 2024
                 </Button>
               </div>
-              <div className="text-sm text-slate-500 flex items-center">
+              <div className="flex items-center text-sm text-slate-500">
                 Duration
               </div>
               <div className="text-sm text-slate-500">7 month and 23 days</div>
-              <div className="text-sm text-slate-500 flex items-center">
+              <div className="flex items-center text-sm text-slate-500">
                 Working days
               </div>
               <WeekdaysPicker />
             </div>
           </div>
         </div>
-        <div className="flex flex-col h-full flex-1 overflow-hidden">
-          <div className="border-b p-2 flex items-center gap-3">
+        <div className="flex h-full flex-1 flex-col overflow-hidden">
+          <div className="flex items-center gap-3 border-b p-2">
             <div className="text-sm font-medium">Project & Task Settings</div>
             <Badge variant="label" size="lg">
               Add and configure projects & tasks to schedule.
             </Badge>
           </div>
-          <div className="border-b p-2 flex items-center gap-3">
+          <div className="flex items-center gap-3 border-b p-2">
             <Input
               startIcon={Search}
               placeholder="Search"

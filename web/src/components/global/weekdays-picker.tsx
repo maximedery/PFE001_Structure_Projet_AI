@@ -22,7 +22,7 @@ export default function WeekdaysPicker() {
             'h-8 w-8 border flex items-center justify-center rounded-full text-sm font-semibold cursor-pointer',
             day.selected
               ? 'bg-cyan-50 border-cyan-500 hover:bg-cyan-100 hover:border-cyan-600'
-              : 'bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300'
+              : 'bg-white border-slate-200 hover:bg-slate-50 hover:border-slate-300',
           )}
         >
           {day.label}

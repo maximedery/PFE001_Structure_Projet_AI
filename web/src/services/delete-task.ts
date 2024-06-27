@@ -1,7 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
+
 import { getQueryKey } from './_query-keys';
 
 type DeleteTaskInput = {
@@ -10,7 +12,7 @@ type DeleteTaskInput = {
 
 async function deleteTask(
   client: TypedSupabaseClient,
-  inputValues: DeleteTaskInput
+  inputValues: DeleteTaskInput,
 ) {
   const { data, error } = await client
     .from('Task')

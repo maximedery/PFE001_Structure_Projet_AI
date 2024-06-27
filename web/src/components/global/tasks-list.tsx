@@ -1,6 +1,5 @@
 'use client';
 
-import * as React from 'react';
 import {
   ColumnDef,
   ExpandedState,
@@ -9,6 +8,18 @@ import {
   getExpandedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { useSetAtom } from 'jotai';
+import {
+  ChevronDown,
+  ChevronRight,
+  Circle,
+  Ellipsis,
+  Plus,
+  Square,
+} from 'lucide-react';
+import pluralize from 'pluralize';
+import * as React from 'react';
+
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -19,17 +30,19 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
-import {
-  ChevronDown,
-  ChevronRight,
-  Circle,
-  Ellipsis,
-  Plus,
-  Square,
-} from 'lucide-react';
-import pluralize from 'pluralize';
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 import { cn } from '@/lib/utils';
+import {
+  ProjectTaskSettingListRow,
+  useGetProjectTaskSettingList,
+} from '@/services/get-project-task-setting-list';
+import {
+  deleteProjectDialogStateAtom,
+  deleteTaskDialogStateAtom,
+  projectDialogStateAtom,
+  taskDialogStateAtom,
+} from '@/stores/dialogs';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -37,18 +50,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
-import { useSetAtom } from 'jotai';
-import {
-  deleteProjectDialogStateAtom,
-  deleteTaskDialogStateAtom,
-  projectDialogStateAtom,
-  taskDialogStateAtom,
-} from '@/stores/dialogs';
 import { LoadingSpinner } from '../ui/loading-spinner';
-import {
-  ProjectTaskSettingListRow,
-  useGetProjectTaskSettingList,
-} from '@/services/get-project-task-setting-list';
 
 export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
   {
@@ -84,7 +86,7 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
     size: 40,
     cell: ({ getValue }) => {
       return (
-        <div className="text-xs text-slate-500 flex justify-center">
+        <div className="flex justify-center text-xs text-slate-500">
           {getValue<string>()}
         </div>
       );
@@ -99,63 +101,62 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
       if (rowData.type === 'task') {
         return (
           <div className="flex items-center gap-2">
-            <div className="text-sm pl-8">
+            <div className="pl-8 text-sm">
               {getValue<string>() || 'Untitled'}
             </div>
           </div>
         );
-      } else {
-        return (
-          <div className="flex items-center gap-2">
-            {row.getCanExpand() ? (
-              row.getIsExpanded() ? (
-                <ChevronDown
-                  size={16}
-                  color={getTailwindColorValue('slate-950')}
-                />
-              ) : (
-                <ChevronRight
-                  size={16}
-                  color={getTailwindColorValue('slate-950')}
-                />
-              )
-            ) : (
-              <div className="w-4 flex justify-center items-center">
-                <Circle
-                  size={5}
-                  color={getTailwindColorValue('slate-950')}
-                  fill={getTailwindColorValue('slate-950')}
-                />
-              </div>
-            )}
-            <Square size={10} color={rowData.color} fill={rowData.color} />
-            <div className="text-sm">{getValue<string>() || 'Untitled'}</div>
-            <div className="text-slate-400 text-xs">{`(${pluralize(
-              'task',
-              rowData.subRows.length,
-              true
-            )})`}</div>
-          </div>
-        );
       }
+      return (
+        <div className="flex items-center gap-2">
+          {row.getCanExpand() ? (
+            row.getIsExpanded() ? (
+              <ChevronDown
+                size={16}
+                color={getTailwindColorValue('slate-950')}
+              />
+            ) : (
+              <ChevronRight
+                size={16}
+                color={getTailwindColorValue('slate-950')}
+              />
+            )
+          ) : (
+            <div className="flex w-4 items-center justify-center">
+              <Circle
+                size={5}
+                color={getTailwindColorValue('slate-950')}
+                fill={getTailwindColorValue('slate-950')}
+              />
+            </div>
+          )}
+          <Square size={10} color={rowData.color} fill={rowData.color} />
+          <div className="text-sm">{getValue<string>() || 'Untitled'}</div>
+          <div className="text-xs text-slate-400">{`(${pluralize(
+            'task',
+            rowData.subRows.length,
+            true,
+          )})`}</div>
+        </div>
+      );
     },
   },
   {
     id: 'actions',
     header: '',
     size: 116,
-    cell: ({ row }) => {
+    cell: function ActionCell({ row }) {
       const setProjectDialogState = useSetAtom(projectDialogStateAtom);
       const setTaskDialogState = useSetAtom(taskDialogStateAtom);
       const setDeleteProjectDialogState = useSetAtom(
-        deleteProjectDialogStateAtom
+        deleteProjectDialogStateAtom,
       );
       const setDeleteTaskDialogState = useSetAtom(deleteTaskDialogStateAtom);
 
       const rowData = row.original;
 
       return (
-        <div className="flex gap-1 justify-end">
+        <div className="flex justify-end gap-1">
           {rowData.type === 'project' && (
             <div
               onClick={(e) => {
@@ -287,10 +288,10 @@ export default function TasksList() {
 
   React.useEffect(() => {
     table.toggleAllRowsExpanded();
-  }, []);
+  }, [table]);
 
   return (
-    <div className="flex flex-col h-full overflow-auto">
+    <div className="flex h-full flex-col overflow-auto">
       <Table className="border-b">
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -307,7 +308,7 @@ export default function TasksList() {
                       ? null
                       : flexRender(
                           header.column.columnDef.header,
-                          header.getContext()
+                          header.getContext(),
                         )}
                   </TableHead>
                 );
@@ -349,7 +350,7 @@ export default function TasksList() {
                   className={cn(
                     !!rowOnClick && 'cursor-pointer',
                     row.original.type === 'project' && 'bg-slate-50',
-                    row.original.type === 'task' && 'hover:bg-slate-50/40'
+                    row.original.type === 'task' && 'hover:bg-slate-50/40',
                   )}
                   onClick={rowOnClick}
                 >
@@ -362,7 +363,7 @@ export default function TasksList() {
                     >
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}

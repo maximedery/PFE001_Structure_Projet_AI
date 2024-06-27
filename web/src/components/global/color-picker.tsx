@@ -1,5 +1,7 @@
 'use client';
 
+import { Paintbrush } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -8,7 +10,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
-import { Paintbrush } from 'lucide-react';
 
 export function ColorPicker({
   color,
@@ -39,31 +40,29 @@ export function ColorPicker({
           className={cn(
             'w-[220px] justify-start text-left font-normal py-px',
             !color && 'text-muted-foreground',
-            className
+            className,
           )}
         >
-          <div className="w-full flex items-center gap-2">
+          <div className="flex w-full items-center gap-2">
             {color ? (
               <div
-                className="h-4 w-4 rounded !bg-center !bg-cover transition-all"
+                className="size-4 rounded !bg-cover !bg-center transition-all"
                 style={{ background: color }}
               ></div>
             ) : (
-              <Paintbrush className="h-4 w-4" />
+              <Paintbrush className="size-4" />
             )}
-            <div className="truncate flex-1">
-              {color ? color : 'Pick a color'}
-            </div>
+            <div className="flex-1 truncate">{color || 'Pick a color'}</div>
           </div>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64">
-        <div className="flex flex-wrap gap-1 mt-0">
+        <div className="mt-0 flex flex-wrap gap-1">
           {solids.map((s) => (
             <div
               key={s}
               style={{ background: s }}
-              className="rounded-md h-6 w-6 cursor-pointer active:scale-105"
+              className="size-6 cursor-pointer rounded-md active:scale-105"
               onClick={() => setColor(s)}
             />
           ))}
@@ -71,7 +70,7 @@ export function ColorPicker({
         <Input
           id="custom"
           value={color}
-          className="col-span-2 h-8 mt-4"
+          className="col-span-2 mt-4 h-8"
           onChange={(e) => setColor(e.currentTarget.value)}
         />
       </PopoverContent>

@@ -1,7 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
+
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
-import { useQuery } from '@tanstack/react-query';
+
 import { getQueryKey } from './_query-keys';
 
 export type ProjectTaskSettingListRow =
@@ -22,7 +24,7 @@ export type ProjectTaskSettingListTaskRow = {
 } & Database['public']['Tables']['Task']['Row'];
 
 async function getProjectTaskSettingList(
-  client: TypedSupabaseClient
+  client: TypedSupabaseClient,
 ): Promise<ProjectTaskSettingListRow[]> {
   // Fetch projects and tasks separately
   const { data: projects, error: projectError } = await client
@@ -70,7 +72,7 @@ async function getProjectTaskSettingList(
       code: projectCode.toString(),
       subRows: [],
     };
-    projectCode++;
+    projectCode += 1;
   });
 
   tasks.forEach((task) => {
@@ -87,7 +89,7 @@ async function getProjectTaskSettingList(
         code: projectCode.toString(),
         subRows: [],
       };
-      projectCode++;
+      projectCode += 1;
     }
 
     const taskCode = projectMap[project.id].subRows.length + 1;
@@ -97,7 +99,7 @@ async function getProjectTaskSettingList(
       id: task.id,
       name: task.name,
       code: `${projectMap[project.id].code}-${taskCode}`,
-      duration: task.duration,
+      manHours: task.manHours,
       start: task.start,
       end: task.end,
       cost: task.cost,

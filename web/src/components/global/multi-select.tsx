@@ -1,15 +1,8 @@
+import { CheckIcon, ChevronDown, X, XIcon } from 'lucide-react';
 import * as React from 'react';
-import { CheckIcon, X, ChevronDown, XIcon } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
-import { Separator } from '@/components/ui/separator';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
@@ -19,6 +12,13 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
+import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 interface MultiSelectProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
@@ -48,11 +48,10 @@ export const MultiSelect = React.forwardRef<
       placeholder = 'Select options',
       animation = 0,
       maxCount = 3,
-      asChild = false,
       className,
       ...props
     },
-    ref
+    ref,
   ) => {
     const [selectedValues, setSelectedValues] =
       React.useState<string[]>(defaultValue);
@@ -65,7 +64,7 @@ export const MultiSelect = React.forwardRef<
     }, [defaultValue, selectedValues]);
 
     const handleInputKeyDown = (
-      event: React.KeyboardEvent<HTMLInputElement>
+      event: React.KeyboardEvent<HTMLInputElement>,
     ) => {
       if (event.key === 'Enter') {
         setIsPopoverOpen(true);
@@ -109,11 +108,11 @@ export const MultiSelect = React.forwardRef<
             onClick={handleTogglePopover}
             className={cn(
               'flex w-full p-1 rounded-md border min-h-9 h-auto items-center justify-between bg-inherit hover:bg-inherit',
-              className
+              className,
             )}
           >
             {selectedValues.length > 0 ? (
-              <div className="flex justify-between items-center w-full">
+              <div className="flex w-full items-center justify-between">
                 <div className="flex flex-wrap items-center">
                   {selectedValues.slice(0, maxCount).map((value) => {
                     const option = options.find((o) => o.value === value);
@@ -122,16 +121,16 @@ export const MultiSelect = React.forwardRef<
                       <Badge
                         key={value}
                         className={
-                          'm-1 text-foreground bg-slate-100 hover:bg-slate-200 rounded-md p-2'
+                          'm-1 rounded-md bg-slate-100 p-2 text-foreground hover:bg-slate-200'
                         }
                         style={{ animationDuration: `${animation}s` }}
                       >
                         {IconComponent && (
-                          <IconComponent className="h-4 w-4 mr-2" />
+                          <IconComponent className="mr-2 size-4" />
                         )}
                         {option?.label}
                         <X
-                          className="ml-2 h-4 w-4 cursor-pointer"
+                          className="ml-2 size-4 cursor-pointer"
                           onClick={(event) => {
                             event.stopPropagation();
                             toggleOption(value);
@@ -143,13 +142,13 @@ export const MultiSelect = React.forwardRef<
                   {selectedValues.length > maxCount && (
                     <Badge
                       className={
-                        'm-1 text-foreground border border-slate-300 bg-white hover:bg-slate-50 rounded-md p-2'
+                        'm-1 rounded-md border border-slate-300 bg-white p-2 text-foreground hover:bg-slate-50'
                       }
                       style={{ animationDuration: `${animation}s` }}
                     >
                       {`+ ${selectedValues.length - maxCount} more`}
                       <X
-                        className="ml-2 h-4 w-4 cursor-pointer"
+                        className="ml-2 size-4 cursor-pointer"
                         onClick={(event) => {
                           event.stopPropagation();
                           clearExtraOptions();
@@ -160,7 +159,7 @@ export const MultiSelect = React.forwardRef<
                 </div>
                 <div className="flex items-center justify-between">
                   <XIcon
-                    className="h-4 mx-2 cursor-pointer text-muted-foreground"
+                    className="mx-2 h-4 cursor-pointer text-muted-foreground"
                     onClick={(event) => {
                       event.stopPropagation();
                       handleClear();
@@ -168,17 +167,17 @@ export const MultiSelect = React.forwardRef<
                   />
                   <Separator
                     orientation="vertical"
-                    className="flex min-h-6 h-full"
+                    className="flex h-full min-h-6"
                   />
-                  <ChevronDown className="h-4 mx-2 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-between w-full mx-auto">
-                <span className="text-sm text-muted-foreground mx-3">
+              <div className="mx-auto flex w-full items-center justify-between">
+                <span className="mx-3 text-sm text-muted-foreground">
                   {placeholder}
                 </span>
-                <ChevronDown className="h-4 cursor-pointer text-muted-foreground mx-2" />
+                <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
               </div>
             )}
           </Button>
@@ -210,13 +209,13 @@ export const MultiSelect = React.forwardRef<
                           'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
                           isSelected
                             ? 'bg-primary text-primary-foreground'
-                            : 'opacity-50 [&_svg]:invisible'
+                            : 'opacity-50 [&_svg]:invisible',
                         )}
                       >
-                        <CheckIcon className="h-4 w-4" />
+                        <CheckIcon className="size-4" />
                       </div>
                       {option.icon && (
-                        <option.icon className="mr-2 h-4 w-4 text-muted-foreground" />
+                        <option.icon className="mr-2 size-4 text-muted-foreground" />
                       )}
                       <span>{option.label}</span>
                     </CommandItem>
@@ -231,13 +230,13 @@ export const MultiSelect = React.forwardRef<
                       <CommandItem
                         onSelect={handleClear}
                         style={{ pointerEvents: 'auto', opacity: 1 }}
-                        className="flex-1 justify-center cursor-pointer"
+                        className="flex-1 cursor-pointer justify-center"
                       >
                         Clear
                       </CommandItem>
                       <Separator
                         orientation="vertical"
-                        className="flex min-h-6 h-full"
+                        className="flex h-full min-h-6"
                       />
                     </>
                   )}
@@ -245,7 +244,7 @@ export const MultiSelect = React.forwardRef<
                   <CommandItem
                     onSelect={() => setIsPopoverOpen(false)}
                     style={{ pointerEvents: 'auto', opacity: 1 }}
-                    className="flex-1 justify-center cursor-pointer"
+                    className="flex-1 cursor-pointer justify-center"
                   >
                     Close
                   </CommandItem>
@@ -256,7 +255,7 @@ export const MultiSelect = React.forwardRef<
         </PopoverContent>
       </Popover>
     );
-  }
+  },
 );
 
 MultiSelect.displayName = 'MultiSelect';

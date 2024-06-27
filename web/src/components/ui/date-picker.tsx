@@ -1,9 +1,9 @@
 'use client';
 
-import * as React from 'react';
+import dayjs from 'dayjs';
 import { CalendarDays } from 'lucide-react';
+import * as React from 'react';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import {
@@ -11,7 +11,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import dayjs from 'dayjs';
+import { cn } from '@/lib/utils';
 
 interface Props {
   value: string | null;
@@ -35,7 +35,7 @@ export function DatePicker(props: Props) {
           size="sm"
           className={cn(
             'w-[200px] justify-between text-left',
-            !props.value && 'text-muted-foreground'
+            !props.value && 'text-muted-foreground',
           )}
         >
           {props.value ? (
@@ -43,7 +43,7 @@ export function DatePicker(props: Props) {
           ) : (
             <span className="font-normal">Pick a date</span>
           )}
-          <CalendarDays className="mr-2 h-4 w-4" />
+          <CalendarDays className="mr-2 size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0">

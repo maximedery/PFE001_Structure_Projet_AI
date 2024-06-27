@@ -1,10 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { usePathname } from "next/navigation"; 
-import { cn } from "@/lib/utils";
 import { Sparkles } from 'lucide-react';
-import { getTailwindColorValue } from "@/helpers/getTailwindColorValue";
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
+
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { cn } from '@/lib/utils';
 
 const Routes = [
   {
@@ -22,7 +24,6 @@ const Routes = [
   },
 ];
 
-
 export function MainNav({
   className,
   ...props
@@ -30,10 +31,7 @@ export function MainNav({
   const pathname = usePathname();
 
   return (
-    <nav
-      className={cn("flex items-center", className)}
-      {...props}
-    >
+    <nav className={cn('flex items-center', className)} {...props}>
       {Routes.map((route) => {
         const isActive = pathname === route.href;
 
@@ -42,8 +40,10 @@ export function MainNav({
             key={route.href}
             href={route.href}
             className={cn(
-              "text-sm font-medium transition-colors flex items-center gap-1 py-2 px-4 border-b-2",
-              isActive? " border-cyan-500 text-primary" : "text-muted-foreground hover:text-primary border-transparent",
+              'text-sm font-medium transition-colors flex items-center gap-1 py-2 px-4 border-b-2',
+              isActive
+                ? ' border-cyan-500 text-primary'
+                : 'text-muted-foreground hover:text-primary border-transparent',
             )}
           >
             {route.name}

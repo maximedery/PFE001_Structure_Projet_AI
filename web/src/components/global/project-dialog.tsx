@@ -1,6 +1,19 @@
 'use client';
 
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useAtom, useSetAtom } from 'jotai';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { useCreateProject } from '@/services/create-project';
+import { useUpdateProject } from '@/services/update-project';
+import {
+  deleteProjectDialogStateAtom,
+  projectDialogStateAtom,
+} from '@/stores/dialogs';
+
 import { Button } from '../ui/button';
 import {
   Dialog,
@@ -11,21 +24,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '../ui/dialog';
+import { Form, FormField, FormItem, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Form, FormField, FormItem, FormMessage } from '../ui/form';
-import { useEffect } from 'react';
-import { useCreateProject } from '@/services/create-project';
-import { useAtom, useSetAtom } from 'jotai';
-import {
-  deleteProjectDialogStateAtom,
-  projectDialogStateAtom,
-} from '@/stores/dialogs';
-import { useUpdateProject } from '@/services/update-project';
 import { ColorPicker } from './color-picker';
-import { getTailwindColorValue } from '@/helpers/getTailwindColorValue';
 
 const formSchema = z.object({
   name: z.string().nullable(),
@@ -41,7 +43,7 @@ const initialValues: ProjectDialogDefaultValues = {
 
 export default function ProjectDialog() {
   const [projectDialogState, setProjectDialogState] = useAtom(
-    projectDialogStateAtom
+    projectDialogStateAtom,
   );
   const setDeleteProjectDialogState = useSetAtom(deleteProjectDialogStateAtom);
 
@@ -59,13 +61,13 @@ export default function ProjectDialog() {
     } else {
       form.reset(initialValues);
     }
-  }, [projectDialogState]);
+  }, [projectDialogState, form]);
 
   if (!projectDialogState.isOpen) return null;
   const isUpdate = 'id' in projectDialogState;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!projectDialogState.isOpen) return null;
+    if (!projectDialogState.isOpen) return;
 
     if (!isUpdate) {
       createProject.mutate(values);
