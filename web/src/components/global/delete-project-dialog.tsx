@@ -1,17 +1,9 @@
 'use client';
 
-import { Button } from '../ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogContentArea,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '../ui/dialog';
 import { useAtom } from 'jotai';
 import { deleteProjectDialogStateAtom } from '@/stores/dialogs';
 import { useDeleteProject } from '@/services/delete-project';
+import { DeleteDialog } from './delete-dialog';
 
 export default function DeleteProjectDialog() {
   const [deleteProjectDialogState, setDeleteProjectDialogState] = useAtom(
@@ -25,7 +17,7 @@ export default function DeleteProjectDialog() {
 
   function handleDelete() {
     if (!deleteProjectDialogState.isOpen) {
-      return null;
+      return;
     }
 
     const projectId = deleteProjectDialogState.id;
@@ -39,46 +31,15 @@ export default function DeleteProjectDialog() {
   }
 
   return (
-    <Dialog
-      open={deleteProjectDialogState.isOpen}
+    <DeleteDialog
+      isOpen={deleteProjectDialogState.isOpen}
       onOpenChange={(newIsOpen) => {
         if (newIsOpen === false) {
           setDeleteProjectDialogState({ isOpen: false });
         }
       }}
-    >
-      <DialogContent className="max-w-[400px]">
-        <DialogHeader>
-          <DialogTitle>Confirm Deletion</DialogTitle>
-        </DialogHeader>
-        <DialogContentArea>
-          <span>
-            Are you sure you want to delete{' '}
-            <span className="font-semibold ">
-              {deleteProjectDialogState.name || 'Untitled'}
-            </span>{' '}
-            ?
-          </span>
-        </DialogContentArea>
-        <DialogFooter>
-          <Button
-            variant="ghost"
-            size={'sm'}
-            type="button"
-            onClick={() => setDeleteProjectDialogState({ isOpen: false })}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="destructive"
-            size={'sm'}
-            type="button"
-            onClick={handleDelete}
-          >
-            Delete
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+      itemName={deleteProjectDialogState.name}
+      onDelete={handleDelete}
+    />
   );
 }

@@ -19,6 +19,7 @@ import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 import dayjs from 'dayjs';
+import DeleteTaskDialog from '@/components/global/delete-task-dialog';
 dayjs.extend(LocalizedFormat);
 dayjs.extend(relativeTime);
 
@@ -115,8 +116,9 @@ export default function SettingsPage() {
       </div>
       {/* TODO: Move to layout for all the app */}
       <ProjectDialog />
-      <DeleteProjectDialog />
       <TaskDialog />
+      <DeleteProjectDialog />
+      <DeleteTaskDialog />
     </>
   );
 }

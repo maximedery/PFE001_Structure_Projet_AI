@@ -32,8 +32,8 @@ model Task {
 model TaskHierarchy {
   predecessorId String
   successorId   String
-  predecessor   Task            @relation("PredecessorRelation", fields: [predecessorId], references: [id])
-  successor     Task            @relation("SuccessorRelation", fields: [successorId], references: [id])
+  predecessor   Task            @relation("PredecessorRelation", fields: [predecessorId], references: [id], onDelete: Cascade)
+  successor     Task            @relation("SuccessorRelation", fields: [successorId], references: [id], onDelete: Cascade)
 
   @@id([predecessorId, successorId])
 }

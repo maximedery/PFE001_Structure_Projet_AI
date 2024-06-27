@@ -40,6 +40,7 @@ import {
 import { useSetAtom } from 'jotai';
 import {
   deleteProjectDialogStateAtom,
+  deleteTaskDialogStateAtom,
   projectDialogStateAtom,
   taskDialogStateAtom,
 } from '@/stores/dialogs';
@@ -149,6 +150,7 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
       const setDeleteProjectDialogState = useSetAtom(
         deleteProjectDialogStateAtom
       );
+      const setDeleteTaskDialogState = useSetAtom(deleteTaskDialogStateAtom);
 
       const rowData = row.original;
 
@@ -233,13 +235,13 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
                       });
                     }}
                   >
-                    Edit Project
+                    Edit Task
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem
                     onClick={(e) => {
                       e.stopPropagation();
-                      setDeleteProjectDialogState({
+                      setDeleteTaskDialogState({
                         isOpen: true,
                         id: rowData.id,
                         name: rowData.name,
@@ -247,7 +249,7 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
                     }}
                     className="text-red-500"
                   >
-                    Delete Project
+                    Delete Task
                   </DropdownMenuItem>
                 </>
               )}

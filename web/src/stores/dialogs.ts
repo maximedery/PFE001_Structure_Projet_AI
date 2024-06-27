@@ -35,6 +35,19 @@ export const deleteProjectDialogStateAtom = atom<
   isOpen: false,
 });
 
+export const deleteTaskDialogStateAtom = atom<
+  | {
+      isOpen: false;
+    }
+  | {
+      isOpen: true;
+      id: string;
+      name: string | null;
+    }
+>({
+  isOpen: false,
+});
+
 export const taskDialogStateAtom = atom<
   | {
       // Closed
