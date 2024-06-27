@@ -7,11 +7,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model WorkSpace {
+  id          String       @id @default(cuid())
+  name        String
+  projects    Project[]
+  tasks       Task[]
+  start       DateTime?    @db.Date
+  end         DateTime?    @db.Date
+  workingDays WorkingDay[]
+}
+
 model Project {
-  id    String @id @default(cuid())
-  name  String?
-  color String
-  tasks Task[]
+  id          String    @id @default(cuid())
+  name        String?
+  color       String
+  workspace   WorkSpace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  tasks       Task[]
 }
 
 model Task {
@@ -19,25 +31,26 @@ model Task {
   name          String?
   project       Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId     String
-  start         DateTime?
-  end           DateTime?
+  start         DateTime?       @db.Date
+  end           DateTime?       @db.Date
   manHours      Float?
   cost          Float?
-  predecessors  TaskHierarchy[] @relation("PredecessorRelation")
-  successors    TaskHierarchy[] @relation("SuccessorRelation")
+  workspace     WorkSpace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId   String
   importance    Importance      @default(medium)
   weatherEffect WeatherEffect   @default(none)
+  predecessors  TaskHierarchy[] @relation("PredecessorRelation")
+  successors    TaskHierarchy[] @relation("SuccessorRelation")
 }
 
 model TaskHierarchy {
   predecessorId String
   successorId   String
-  predecessor   Task            @relation("PredecessorRelation", fields: [predecessorId], references: [id], onDelete: Cascade)
-  successor     Task            @relation("SuccessorRelation", fields: [successorId], references: [id], onDelete: Cascade)
+  predecessor   Task   @relation("PredecessorRelation", fields: [predecessorId], references: [id], onDelete: Cascade)
+  successor     Task   @relation("SuccessorRelation", fields: [successorId], references: [id], onDelete: Cascade)
 
   @@id([predecessorId, successorId])
 }
-
 
 enum Importance {
   asap
@@ -51,4 +64,14 @@ enum WeatherEffect {
   slight
   significant
   impossible
+}
+
+enum WorkingDay {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
 }

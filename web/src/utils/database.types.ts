@@ -47,18 +47,29 @@ export type Database = {
           color: string
           id: string
           name: string | null
+          workspaceId: string
         }
         Insert: {
           color: string
           id: string
           name?: string | null
+          workspaceId: string
         }
         Update: {
           color?: string
           id?: string
           name?: string | null
+          workspaceId?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Project_workspaceId_fkey"
+            columns: ["workspaceId"]
+            isOneToOne: false
+            referencedRelation: "WorkSpace"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Task: {
         Row: {
@@ -71,6 +82,7 @@ export type Database = {
           projectId: string
           start: string | null
           weatherEffect: Database["public"]["Enums"]["WeatherEffect"]
+          workspaceId: string
         }
         Insert: {
           cost?: number | null
@@ -82,6 +94,7 @@ export type Database = {
           projectId: string
           start?: string | null
           weatherEffect?: Database["public"]["Enums"]["WeatherEffect"]
+          workspaceId: string
         }
         Update: {
           cost?: number | null
@@ -93,6 +106,7 @@ export type Database = {
           projectId?: string
           start?: string | null
           weatherEffect?: Database["public"]["Enums"]["WeatherEffect"]
+          workspaceId?: string
         }
         Relationships: [
           {
@@ -100,6 +114,13 @@ export type Database = {
             columns: ["projectId"]
             isOneToOne: false
             referencedRelation: "Project"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "Task_workspaceId_fkey"
+            columns: ["workspaceId"]
+            isOneToOne: false
+            referencedRelation: "WorkSpace"
             referencedColumns: ["id"]
           },
         ]
@@ -134,6 +155,30 @@ export type Database = {
           },
         ]
       }
+      WorkSpace: {
+        Row: {
+          end: string | null
+          id: string
+          name: string
+          start: string | null
+          workingDays: Database["public"]["Enums"]["WorkingDay"][] | null
+        }
+        Insert: {
+          end?: string | null
+          id: string
+          name: string
+          start?: string | null
+          workingDays?: Database["public"]["Enums"]["WorkingDay"][] | null
+        }
+        Update: {
+          end?: string | null
+          id?: string
+          name?: string
+          start?: string | null
+          workingDays?: Database["public"]["Enums"]["WorkingDay"][] | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
@@ -144,6 +189,14 @@ export type Database = {
     Enums: {
       Importance: "asap" | "high" | "medium" | "low"
       WeatherEffect: "none" | "slight" | "significant" | "impossible"
+      WorkingDay:
+        | "monday"
+        | "tuesday"
+        | "wednesday"
+        | "thursday"
+        | "friday"
+        | "saturday"
+        | "sunday"
     }
     CompositeTypes: {
       [_ in never]: never

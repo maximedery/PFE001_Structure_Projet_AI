@@ -3,11 +3,31 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 async function main() {
+  // Create WorkSpaces
+  const workSpace1 = await prisma.workSpace.create({
+    data: {
+      name: "WorkSpace One",
+      start: new Date("2024-01-01"),
+      end: new Date("2024-12-31"),
+      workingDays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+    },
+  });
+
+  const workSpace2 = await prisma.workSpace.create({
+    data: {
+      name: "WorkSpace Two",
+      start: new Date("2024-01-01"),
+      end: new Date("2024-12-31"),
+      workingDays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+    },
+  });
+
   // Create Projects
   const project1 = await prisma.project.create({
     data: {
       name: "Project Alpha",
       color: "#FF5733",
+      workspaceId: workSpace1.id, // Associate with WorkSpace One
     },
   });
 
@@ -15,6 +35,7 @@ async function main() {
     data: {
       name: "Project Beta",
       color: "#33FF57",
+      workspaceId: workSpace2.id, // Associate with WorkSpace Two
     },
   });
 
@@ -23,8 +44,9 @@ async function main() {
     data: {
       name: "Task 1",
       projectId: project1.id,
-      start: new Date("2024-06-10T08:00:00Z"),
-      end: new Date("2024-06-10T12:00:00Z"),
+      workspaceId: workSpace1.id, // Associate with WorkSpace One
+      start: new Date("2024-06-10"),
+      end: new Date("2024-06-10"),
       manHours: 240,
       cost: 100.0,
       importance: "high",
@@ -36,8 +58,9 @@ async function main() {
     data: {
       name: "Task 2",
       projectId: project1.id,
-      start: new Date("2024-06-11T08:00:00Z"),
-      end: new Date("2024-06-11T12:00:00Z"),
+      workspaceId: workSpace1.id, // Associate with WorkSpace One
+      start: new Date("2024-06-11"),
+      end: new Date("2024-06-11"),
       manHours: 240,
       cost: 150.0,
       importance: "medium",
@@ -50,8 +73,9 @@ async function main() {
     data: {
       name: "Task 3",
       projectId: project2.id,
-      start: new Date("2024-06-12T08:00:00Z"),
-      end: new Date("2024-06-12T12:00:00Z"),
+      workspaceId: workSpace2.id, // Associate with WorkSpace Two
+      start: new Date("2024-06-12"),
+      end: new Date("2024-06-12"),
       manHours: 240,
       cost: 200.0,
       importance: "low",
@@ -63,8 +87,9 @@ async function main() {
     data: {
       name: "Task 4",
       projectId: project2.id,
-      start: new Date("2024-06-13T08:00:00Z"),
-      end: new Date("2024-06-13T12:00:00Z"),
+      workspaceId: workSpace2.id, // Associate with WorkSpace Two
+      start: new Date("2024-06-13"),
+      end: new Date("2024-06-13"),
       manHours: 240,
       cost: 250.0,
       importance: "asap",
