@@ -1,5 +1,3 @@
-import { useSetAtom } from 'jotai';
-
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,10 +9,10 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { isConnectedAtom } from '@/stores/general';
+import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 
 export function UserNavigation() {
-  const setIsConnected = useSetAtom(isConnectedAtom);
+  const supabase = useSupabaseBrowser();
 
   return (
     <DropdownMenu>
@@ -44,7 +42,7 @@ export function UserNavigation() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            setIsConnected(false);
+            supabase.auth.signOut();
           }}
         >
           Log out

@@ -13,7 +13,7 @@ import DeleteProjectDialog from '@/components/global/delete-project-dialog';
 import DeleteTaskDialog from '@/components/global/delete-task-dialog';
 import ProjectDialog from '@/components/global/project-dialog';
 import TaskDialog from '@/components/global/task-dialog';
-import { isConnectedAtom } from '@/stores/general';
+import { isAuthenticatedAtom } from '@/stores/general';
 
 dayjs.extend(LocalizedFormat);
 dayjs.extend(relativeTime);
@@ -25,13 +25,17 @@ export default function MainLayout({
 }>) {
   const router = useRouter();
   const pathname = usePathname();
-  const isConnected = useAtomValue(isConnectedAtom);
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
   useEffect(() => {
-    if (pathname.startsWith('/workspace') && !isConnected) {
+    if (
+      pathname.startsWith('/workspace') &&
+      !isAuthenticated.isLoading &&
+      !isAuthenticated.value
+    ) {
       router.push('/');
     }
-  }, [isConnected, pathname, router]);
+  }, [isAuthenticated.isLoading, isAuthenticated.value, pathname, router]);
 
   return (
     <>

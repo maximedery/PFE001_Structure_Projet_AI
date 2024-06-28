@@ -7,6 +7,7 @@ import React from 'react';
 
 import { AppHeader } from '@/components/global/app-header';
 import { ReactQueryClientProvider } from '@/lib/react-query/react-query-client-provider';
+import { SupabaseAuthProvider } from '@/lib/supabase/supabase-auth-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -21,15 +22,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ReactQueryClientProvider>
-      <html lang="en">
-        <body className={inter.className} suppressHydrationWarning={true}>
-          <div className="flex h-screen flex-col">
-            <AppHeader />
-            <main className="h-full overflow-hidden">{children}</main>
-          </div>
-        </body>
-      </html>
-    </ReactQueryClientProvider>
+    <SupabaseAuthProvider>
+      <ReactQueryClientProvider>
+        <html lang="en">
+          <body className={inter.className} suppressHydrationWarning={true}>
+            <div className="flex h-screen flex-col">
+              <AppHeader />
+              <main className="h-full overflow-hidden">{children}</main>
+            </div>
+          </body>
+        </html>
+      </ReactQueryClientProvider>
+    </SupabaseAuthProvider>
   );
 }

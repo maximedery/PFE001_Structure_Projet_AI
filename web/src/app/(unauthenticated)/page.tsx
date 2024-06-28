@@ -1,19 +1,14 @@
 'use client';
 
-import { useSetAtom } from 'jotai';
 import { CircleChevronRight } from 'lucide-react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
 import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
-import { isConnectedAtom } from '@/stores/general';
 
 export default function LandingPage() {
-  const setIsConnected = useSetAtom(isConnectedAtom);
-
-  const handleConnect = () => {
-    setIsConnected(true);
-  };
+  const router = useRouter();
 
   return (
     <div className="flex h-full flex-1 items-center gap-8 px-16 pb-16 pt-4">
@@ -38,14 +33,14 @@ export default function LandingPage() {
           <Button
             variant="default"
             className="rounded-none"
-            onClick={handleConnect}
+            onClick={() => router.push('/login')}
           >
             Plan my projects
           </Button>
           <Button
             variant="ghost"
-            onClick={handleConnect}
             className="rounded-none font-semibold"
+            onClick={() => router.push('/login')}
           >
             How it works
             <CircleChevronRight

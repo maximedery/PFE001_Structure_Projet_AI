@@ -1,11 +1,11 @@
 'use client';
 
-import { useAtom } from 'jotai';
+import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
-import { isConnectedAtom } from '@/stores/general';
+import { isAuthenticatedAtom } from '@/stores/general';
 
 import { Button } from '../ui/button';
 import {
@@ -21,16 +21,16 @@ import { UserNavigation } from './user-navigation';
 export function AppHeader() {
   const router = useRouter();
   const { data: workspaces } = useGetWorkspaceList();
-  const [isConnected, setIsConnected] = useAtom(isConnectedAtom);
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
   const workspaceId = undefined;
 
   const handleConnect = () => {
-    setIsConnected(true);
+    router.push('/login');
   };
 
   const handleLogoOnClick = () => {
-    if (isConnected) {
+    if (isAuthenticated.value) {
       router.push('/workspaces');
     } else {
       router.push('/');
@@ -41,11 +41,14 @@ export function AppHeader() {
     <div
       className={cn(
         'flex items-center border-b px-2 py-2',
-        isConnected ? 'px-2' : 'px-16',
+        isAuthenticated.value ? 'px-2' : 'px-16',
       )}
     >
-      <Logo size={isConnected ? 'default' : 'lg'} onClick={handleLogoOnClick} />
-      {isConnected && !!workspaceId && (
+      <Logo
+        size={isAuthenticated.value ? 'default' : 'lg'}
+        onClick={handleLogoOnClick}
+      />
+      {isAuthenticated.value && !!workspaceId && (
         <Select
           value={workspaceId || undefined}
           onValueChange={(newValue) => {
@@ -65,8 +68,8 @@ export function AppHeader() {
         </Select>
       )}
       <span className="flex-1" />
-      {isConnected && <UserNavigation />}
-      {!isConnected && (
+      {isAuthenticated.value && <UserNavigation />}
+      {!isAuthenticated.value && (
         <div className="flex gap-2">
           <Button variant="ghost" size={'sm'} onClick={handleConnect}>
             Sign in

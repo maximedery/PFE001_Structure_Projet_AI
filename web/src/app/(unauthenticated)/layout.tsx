@@ -4,7 +4,7 @@ import { useAtomValue } from 'jotai';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 
-import { isConnectedAtom } from '@/stores/general';
+import { isAuthenticatedAtom } from '@/stores/general';
 
 export default function UnauthenticatedLayout({
   children,
@@ -13,13 +13,17 @@ export default function UnauthenticatedLayout({
 }>) {
   const router = useRouter();
   const pathname = usePathname();
-  const isConnected = useAtomValue(isConnectedAtom);
+  const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
   useEffect(() => {
-    if (pathname === '/' && isConnected) {
+    if (
+      (pathname === '/' || pathname === '/login') &&
+      !isAuthenticated.isLoading &&
+      isAuthenticated.value
+    ) {
       router.push('/workspaces');
     }
-  }, [isConnected, pathname, router]);
+  }, [isAuthenticated.isLoading, isAuthenticated.value, pathname, router]);
 
   return children;
 }
