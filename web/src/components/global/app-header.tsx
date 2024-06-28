@@ -1,12 +1,12 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import Image from 'next/image';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
-import { currentWorkspaceIdAtom } from '@/stores/general';
+import { currentWorkspaceIdAtom, isConnectedAtom } from '@/stores/general';
 
+import { Button } from '../ui/button';
 import {
   Select,
   SelectContent,
@@ -14,47 +14,64 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
+import { Logo } from './logo';
+import { UserNavigation } from './user-navigation';
 
 export function AppHeader() {
   const { data: workspaces } = useGetWorkspaceList();
+  const [isConnected, setIsConnected] = useAtom(isConnectedAtom);
   const [currentWorkspaceId, setCurrentWorkspaceId] = useAtom(
     currentWorkspaceIdAtom,
   );
 
+  const handleConnect = () => {
+    setIsConnected(true);
+  };
+
   return (
-    <div className="flex items-center border-b px-2 py-1.5">
-      <Image
-        src="/logo.svg"
-        alt="Tanzim"
-        width={32}
-        height={32}
-        className="h-8 w-auto"
-      />
-      <div className="mt-px text-center text-xl font-semibold leading-none text-primary">
-        Tanzim
-      </div>
-      <Select
-        value={currentWorkspaceId || undefined}
-        onValueChange={(newValue) => {
-          setCurrentWorkspaceId(newValue);
-        }}
-      >
-        <SelectTrigger className="ml-4 w-[180px]">
-          <SelectValue placeholder="Select a workspace" />
-        </SelectTrigger>
-        <SelectContent>
-          {workspaces?.map((workspace) => (
-            <SelectItem key={workspace.id} value={workspace.id}>
-              {workspace.name}
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <div
+      className={cn(
+        'flex items-center border-b px-2 py-2',
+        isConnected ? 'px-2' : 'px-16',
+      )}
+    >
+      <Logo />
+      {isConnected && (
+        <Select
+          value={currentWorkspaceId || undefined}
+          onValueChange={(newValue) => {
+            setCurrentWorkspaceId(newValue);
+          }}
+        >
+          <SelectTrigger className="ml-4 w-[180px]">
+            <SelectValue placeholder="Select a workspace" />
+          </SelectTrigger>
+          <SelectContent>
+            {workspaces?.map((workspace) => (
+              <SelectItem key={workspace.id} value={workspace.id}>
+                {workspace.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      )}
       <span className="flex-1" />
-      <Avatar className="size-8 cursor-pointer">
-        <AvatarImage src="https://ui.shadcn.com/avatars/01.png" />
-        <AvatarFallback>CN</AvatarFallback>
-      </Avatar>
+      {isConnected && <UserNavigation />}
+      {!isConnected && (
+        <div className="flex gap-2">
+          <Button variant="ghost" size={'sm'} onClick={handleConnect}>
+            Sign in
+          </Button>
+          <Button
+            variant="default"
+            size={'sm'}
+            className="rounded-none"
+            onClick={handleConnect}
+          >
+            Plan my projects
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

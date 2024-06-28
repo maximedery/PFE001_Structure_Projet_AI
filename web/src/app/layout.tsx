@@ -6,7 +6,6 @@ import { Inter } from 'next/font/google';
 import React from 'react';
 
 import { AppHeader } from '@/components/global/app-header';
-import { MainNav } from '@/components/global/main-nav';
 import { ReactQueryClientProvider } from '@/lib/react-query/react-query-client-provider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -27,7 +26,6 @@ export default function RootLayout({
         <body className={inter.className} suppressHydrationWarning={true}>
           <div className="flex h-screen flex-col">
             <AppHeader />
-            <MainNav className="border-b px-2" />
             <main className="h-full overflow-hidden">{children}</main>
           </div>
         </body>
