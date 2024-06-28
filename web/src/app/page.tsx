@@ -1,21 +1,23 @@
 'use client';
 
-import { useAtom } from 'jotai';
+import { useSetAtom } from 'jotai';
 import { CircleChevronRight } from 'lucide-react';
+import Image from 'next/image';
 
 import { Button } from '@/components/ui/button';
 import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 import { isConnectedAtom } from '@/stores/general';
 
 export default function LandingPage() {
-  const [isConnected, setIsConnected] = useAtom(isConnectedAtom);
+  const setIsConnected = useSetAtom(isConnectedAtom);
 
   const handleConnect = () => {
     setIsConnected(true);
   };
 
   return (
-    <div className="flex h-full flex-1 items-center px-16">
+    <div className="flex h-full flex-1 items-center gap-4 px-16 pb-16 pt-4">
+      {/* Left Content */}
       <div className="flex w-[550px] flex-col">
         <div className="text-6xl font-semibold tracking-tight">
           Plan months in <br />
@@ -51,6 +53,36 @@ export default function LandingPage() {
               color={getTailwindColorValue('slate-800')}
             />
           </Button>
+        </div>
+      </div>
+      {/* Right Content */}
+      <div className="flex flex-1 items-center justify-center gap-5">
+        <div className="mb-16">
+          <Image
+            src="/screenshot-1.png"
+            alt="screenshot-1"
+            width={240}
+            height={480}
+            style={{ boxShadow: '0px 8px 64px 0px rgba(143, 143, 143, 0.16)' }}
+          />
+        </div>
+        <div>
+          <Image
+            src="/screenshot-2.png"
+            alt="screenshot-2"
+            width={240}
+            height={480}
+            style={{ boxShadow: '0px 8px 64px 0px rgba(143, 143, 143, 0.16)' }}
+          />
+        </div>
+        <div className="mt-16">
+          <Image
+            src="/screenshot-3.png"
+            alt="screenshot-3"
+            width={240}
+            height={480}
+            style={{ boxShadow: '0px 8px 64px 0px rgba(143, 143, 143, 0.16)' }}
+          />
         </div>
       </div>
     </div>
