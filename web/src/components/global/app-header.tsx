@@ -35,7 +35,7 @@ export function AppHeader() {
         isConnected ? 'px-2' : 'px-16',
       )}
     >
-      <Logo />
+      <Logo size={isConnected ? 'default' : 'lg'} />
       {isConnected && (
         <Select
           value={currentWorkspaceId || undefined}
