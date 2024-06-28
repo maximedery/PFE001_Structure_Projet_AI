@@ -1,10 +1,11 @@
 'use client';
 
 import { useAtom } from 'jotai';
+import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
-import { currentWorkspaceIdAtom, isConnectedAtom } from '@/stores/general';
+import { isConnectedAtom } from '@/stores/general';
 
 import { Button } from '../ui/button';
 import {
@@ -18,14 +19,22 @@ import { Logo } from './logo';
 import { UserNavigation } from './user-navigation';
 
 export function AppHeader() {
+  const router = useRouter();
   const { data: workspaces } = useGetWorkspaceList();
   const [isConnected, setIsConnected] = useAtom(isConnectedAtom);
-  const [currentWorkspaceId, setCurrentWorkspaceId] = useAtom(
-    currentWorkspaceIdAtom,
-  );
+
+  const workspaceId = undefined;
 
   const handleConnect = () => {
     setIsConnected(true);
+  };
+
+  const handleLogoOnClick = () => {
+    if (isConnected) {
+      router.push('/workspaces');
+    } else {
+      router.push('/');
+    }
   };
 
   return (
@@ -35,12 +44,12 @@ export function AppHeader() {
         isConnected ? 'px-2' : 'px-16',
       )}
     >
-      <Logo size={isConnected ? 'default' : 'lg'} />
-      {isConnected && (
+      <Logo size={isConnected ? 'default' : 'lg'} onClick={handleLogoOnClick} />
+      {isConnected && !!workspaceId && (
         <Select
-          value={currentWorkspaceId || undefined}
+          value={workspaceId || undefined}
           onValueChange={(newValue) => {
-            setCurrentWorkspaceId(newValue);
+            // setCurrentWorkspaceId(newValue);
           }}
         >
           <SelectTrigger className="ml-4 w-[180px]">

@@ -6,10 +6,11 @@ import { cn } from '@/lib/utils';
 
 interface Props {
   size: 'default' | 'lg';
+  onClick?: () => void;
 }
 
 export function Logo(props: Props) {
-  const { size = 'default' } = props;
+  const { size = 'default', onClick } = props;
 
   const sizeMap = {
     default: {
@@ -23,7 +24,10 @@ export function Logo(props: Props) {
   };
 
   return (
-    <div className="flex items-center">
+    <div
+      className={cn('flex items-center', !!onClick && 'cursor-pointer')}
+      onClick={onClick}
+    >
       <Image
         src="/logo.svg"
         alt="Tanzim"
