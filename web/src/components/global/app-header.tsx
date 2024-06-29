@@ -1,7 +1,7 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
@@ -20,10 +20,12 @@ import { UserNavigation } from './user-navigation';
 
 export function AppHeader() {
   const router = useRouter();
+  const params = useParams();
   const { data: workspaces } = useGetWorkspaceList();
   const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
-  const workspaceId = undefined;
+  const workspaceId =
+    typeof params.workspaceId === 'string' ? params.workspaceId : null;
 
   const handleConnect = () => {
     router.push('/login');
@@ -52,7 +54,7 @@ export function AppHeader() {
         <Select
           value={workspaceId || undefined}
           onValueChange={(newValue) => {
-            // setCurrentWorkspaceId(newValue);
+            router.push(`/workspace/${newValue}/settings`);
           }}
         >
           <SelectTrigger className="ml-4 w-[180px]">

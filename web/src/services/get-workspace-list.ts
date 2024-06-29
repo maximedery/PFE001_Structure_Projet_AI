@@ -8,13 +8,18 @@ import { getQueryKey } from './_query-keys';
 async function getWorkspaceList(client: TypedSupabaseClient) {
   const { data, error } = await client
     .from('Workspace')
-    .select()
+    .select('*, Task(count)')
     .throwOnError();
 
   if (error) throw new Error('Error fetching workspaces');
   if (!data) throw new Error('No data found');
 
-  return data;
+  const workspaces = data.map((workspace) => ({
+    ...workspace,
+    taskCount: workspace.Task.length,
+  }));
+
+  return workspaces;
 }
 
 export const useGetWorkspaceList = () => {
