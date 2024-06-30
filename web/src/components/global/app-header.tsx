@@ -42,11 +42,13 @@ export function AppHeader() {
     <div
       className={cn(
         'flex items-center border-b px-2 py-2',
-        isAuthenticated.value ? 'px-2' : 'px-16',
+        isAuthenticated.isLoading || isAuthenticated.value ? 'px-2' : 'px-16',
       )}
     >
       <Logo
-        size={isAuthenticated.value ? 'default' : 'lg'}
+        size={
+          isAuthenticated.isLoading || isAuthenticated.value ? 'default' : 'lg'
+        }
         onClick={handleLogoOnClick}
       />
       {isAuthenticated.value && !!workspaceId && (
@@ -69,8 +71,10 @@ export function AppHeader() {
         </Select>
       )}
       <span className="flex-1" />
-      {isAuthenticated.value && <UserNavigation />}
-      {!isAuthenticated.value && (
+      {!isAuthenticated.isLoading && isAuthenticated.value && (
+        <UserNavigation />
+      )}
+      {!isAuthenticated.isLoading && !isAuthenticated.value && (
         <div className="flex gap-2">
           <Button variant="ghost" size={'sm'} onClick={handleConnect}>
             Sign in
