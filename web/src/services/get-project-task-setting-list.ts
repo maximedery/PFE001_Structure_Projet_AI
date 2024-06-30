@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { useQueryParam } from '@/helpers/use-query-params';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
@@ -25,11 +26,15 @@ export type ProjectTaskSettingListTaskRow = {
 
 async function getProjectTaskSettingList(
   client: TypedSupabaseClient,
+  workspaceId: string | null,
 ): Promise<ProjectTaskSettingListRow[]> {
+  if (!workspaceId) throw new Error('Workspace ID is required');
+
   // Fetch projects and tasks separately
   const { data: projects, error: projectError } = await client
     .from('Project')
     .select()
+    .eq('workspaceId', workspaceId)
     .order('name', { ascending: true });
 
   if (projectError) throw new Error(projectError.message);
@@ -38,6 +43,7 @@ async function getProjectTaskSettingList(
   const { data: tasks, error: taskError } = await client
     .from('Task')
     .select('*, Project(*)')
+    .eq('workspaceId', workspaceId)
     .order('name', { ascending: true });
 
   if (taskError) throw new Error(taskError.message);
@@ -70,6 +76,7 @@ async function getProjectTaskSettingList(
       color: project.color,
       name: project.name,
       code: projectCode.toString(),
+      workspaceId: project.workspaceId,
       subRows: [],
     };
     projectCode += 1;
@@ -87,6 +94,7 @@ async function getProjectTaskSettingList(
         color: project.color,
         name: project.name,
         code: projectCode.toString(),
+        workspaceId: project.workspaceId,
         subRows: [],
       };
       projectCode += 1;
@@ -108,6 +116,7 @@ async function getProjectTaskSettingList(
       projectId: task.projectId,
       projectName: project.name,
       predecessorIds: predecessorMap[task.id] || [],
+      workspaceId: task.workspaceId,
     };
 
     projectMap[project.id].subRows.push(taskRow);
@@ -118,9 +127,11 @@ async function getProjectTaskSettingList(
 
 export const useGetProjectTaskSettingList = () => {
   const client = useSupabaseBrowser();
+  const workspaceId = useQueryParam('workspaceId');
 
   return useQuery({
-    queryKey: getQueryKey('project-task-setting-list'),
-    queryFn: () => getProjectTaskSettingList(client),
+    queryKey: getQueryKey({ workspaceId }, 'project-task-setting-list'),
+    queryFn: () => getProjectTaskSettingList(client, workspaceId),
+    enabled: !!workspaceId,
   });
 };

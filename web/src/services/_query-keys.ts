@@ -1,7 +1,10 @@
+type WorkspaceIdObject = { workspaceId: string | null };
+
 type QueryKeyCombinations =
-  | ['projects']
-  | ['projects', 'list']
-  | ['project-task-setting-list']
+  | [WorkspaceIdObject]
+  | [WorkspaceIdObject, 'projects']
+  | [WorkspaceIdObject, 'projects', 'list']
+  | [WorkspaceIdObject, 'project-task-setting-list']
   | ['workspaces']
   | ['workspaces', 'list'];
 

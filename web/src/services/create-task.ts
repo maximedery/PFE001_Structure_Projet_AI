@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import cuid from 'cuid';
 
+import { useQueryParam } from '@/helpers/use-query-params';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
@@ -16,7 +17,10 @@ type CreateTaskInput = {
 async function createTask(
   client: TypedSupabaseClient,
   inputValues: CreateTaskInput,
+  workspaceId: string | null,
 ) {
+  if (!workspaceId) throw new Error('Workspace ID is required');
+
   const { data, error } = await client
     .from('Task')
     .insert({
@@ -29,6 +33,7 @@ async function createTask(
       importance: inputValues.importance,
       weatherEffect: inputValues.weatherEffect,
       projectId: inputValues.projectId,
+      workspaceId,
     })
     .select();
 
@@ -55,13 +60,14 @@ async function createTask(
 export const useCreateTask = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
+  const workspaceId = useQueryParam('workspaceId');
 
   return useMutation({
     mutationFn: (inputValues: CreateTaskInput) =>
-      createTask(client, inputValues),
+      createTask(client, inputValues, workspaceId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('project-task-setting-list'),
+        queryKey: getQueryKey({ workspaceId }, 'project-task-setting-list'),
       });
     },
   });

@@ -1,8 +1,9 @@
 'use client';
 
 import { useAtomValue } from 'jotai';
-import { useParams, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
+import { useQueryParam } from '@/helpers/use-query-params';
 import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
 import { isAuthenticatedAtom } from '@/stores/general';
@@ -20,12 +21,10 @@ import { UserNavigation } from './user-navigation';
 
 export function AppHeader() {
   const router = useRouter();
-  const params = useParams();
   const { data: workspaces } = useGetWorkspaceList();
   const isAuthenticated = useAtomValue(isAuthenticatedAtom);
 
-  const workspaceId =
-    typeof params.workspaceId === 'string' ? params.workspaceId : null;
+  const workspaceId = useQueryParam('workspaceId');
 
   const handleConnect = () => {
     router.push('/login');

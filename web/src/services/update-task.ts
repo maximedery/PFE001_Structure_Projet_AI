@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
+import { useQueryParam } from '@/helpers/use-query-params';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
@@ -46,7 +47,7 @@ async function updateTask(
       name: inputValues.name,
       start: inputValues.start,
       end: inputValues.end,
-      duration: inputValues.duration,
+      manHours: inputValues.manHours,
       cost: inputValues.cost,
       importance: inputValues.importance,
       weatherEffect: inputValues.weatherEffect,
@@ -63,13 +64,14 @@ async function updateTask(
 export const useUpdateTask = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
+  const workspaceId = useQueryParam('workspaceId');
 
   return useMutation({
     mutationFn: (inputValues: UpdateTaskInput) =>
       updateTask(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey('project-task-setting-list'),
+        queryKey: getQueryKey({ workspaceId }, 'project-task-setting-list'),
       });
     },
   });
