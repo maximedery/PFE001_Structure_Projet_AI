@@ -142,7 +142,7 @@ export default function TaskDialog() {
                 />
               </DialogContentRow>
               <DialogContentRow>
-                <Label>Start</Label>
+                <Label>Start date</Label>
                 <FormField
                   control={form.control}
                   name="start"
@@ -152,7 +152,7 @@ export default function TaskDialog() {
                 />
               </DialogContentRow>
               <DialogContentRow>
-                <Label>End</Label>
+                <Label>End date</Label>
                 <FormField
                   control={form.control}
                   name="end"

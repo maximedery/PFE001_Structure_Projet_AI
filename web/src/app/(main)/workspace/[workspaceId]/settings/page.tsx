@@ -1,18 +1,24 @@
 'use client';
 
 import { useSetAtom } from 'jotai';
-import { CalendarDays, Plus, Search } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 
 import TasksList from '@/components/global/tasks-list';
 import WeekdaysPicker from '@/components/global/weekdays-picker';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
-import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
+import { getDurationString } from '@/helpers/get-duration-string';
 import { projectDialogStateAtom } from '@/stores/dialogs';
 
 export default function SettingsPage() {
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+
+  const start = '2022-09-31';
+  const end = '2022-12-02';
+
+  const duration = start && end ? getDurationString(start, end) : undefined;
 
   return (
     <>
@@ -39,30 +45,22 @@ export default function SettingsPage() {
                 Desired start date
               </div>
               <div>
-                <Button variant="outline_black" size={'sm'}>
-                  <CalendarDays
-                    size={18}
-                    color={getTailwindColorValue('slate-950')}
-                  />
-                  12 mars. 2024
-                </Button>
+                <DatePicker value={start} onChange={() => {}} />
               </div>
               <div className="flex items-center text-sm text-slate-500">
                 Desired end date
               </div>
               <div>
-                <Button variant="outline_black" size={'sm'}>
-                  <CalendarDays
-                    size={18}
-                    color={getTailwindColorValue('slate-950')}
-                  />
-                  05 nov. 2024
-                </Button>
+                <DatePicker value={end} onChange={() => {}} />
               </div>
-              <div className="flex items-center text-sm text-slate-500">
-                Duration
-              </div>
-              <div className="text-sm text-slate-500">7 month and 23 days</div>
+              {duration && (
+                <>
+                  <div className="flex items-center text-sm text-slate-500">
+                    Duration
+                  </div>
+                  <div className="text-sm text-slate-500">{duration}</div>
+                </>
+              )}
               <div className="flex items-center text-sm text-slate-500">
                 Working days
               </div>
