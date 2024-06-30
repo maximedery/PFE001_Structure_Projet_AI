@@ -1,42 +1,44 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-import { useQueryParam } from '@/helpers/use-query-param';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';
 
 import { getQueryKey } from './_query-keys';
 
-type DeleteTaskInput = {
-  id: Database['public']['Tables']['Task']['Row']['id'];
-};
+type UpdateOptions = Database['public']['Tables']['Workspace']['Update'];
 
-async function deleteTask(
+type UpdateWorkspaceInput = {
+  id: string;
+} & UpdateOptions;
+
+async function updateWorkspace(
   client: TypedSupabaseClient,
-  inputValues: DeleteTaskInput,
+  inputValues: UpdateWorkspaceInput,
 ) {
   const { data, error } = await client
-    .from('Task')
-    .delete()
+    .from('Workspace')
+    .update({
+      name: inputValues.name,
+    })
     .eq('id', inputValues.id)
     .select();
 
-  if (error) throw new Error('Error deleting task');
+  if (error) throw new Error('Error updating workspace');
 
   return data;
 }
 
-export const useDeleteTask = () => {
+export const useUpdateWorkspace = () => {
   const client = useSupabaseBrowser();
   const queryClient = useQueryClient();
-  const workspaceId = useQueryParam('workspaceId');
 
   return useMutation({
-    mutationFn: (inputValues: DeleteTaskInput) =>
-      deleteTask(client, inputValues),
+    mutationFn: (inputValues: UpdateWorkspaceInput) =>
+      updateWorkspace(client, inputValues),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: getQueryKey({ workspaceId }, 'project-task-setting-list'),
+        queryKey: getQueryKey('workspaces', 'list'),
       });
     },
   });

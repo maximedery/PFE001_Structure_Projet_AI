@@ -9,7 +9,7 @@ datasource db {
 
 model Workspace {
   id          String       @id @default(cuid())
-  name        String
+  name        String?
   projects    Project[]
   tasks       Task[]
   start       DateTime?    @db.Date

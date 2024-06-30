@@ -3,7 +3,7 @@
 import { useAtomValue } from 'jotai';
 import { useRouter } from 'next/navigation';
 
-import { useQueryParam } from '@/helpers/use-query-params';
+import { useQueryParam } from '@/helpers/use-query-param';
 import { cn } from '@/lib/utils';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
 import { isAuthenticatedAtom } from '@/stores/general';

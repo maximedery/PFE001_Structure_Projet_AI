@@ -9,6 +9,7 @@ async function getWorkspaceList(client: TypedSupabaseClient) {
   const { data, error } = await client
     .from('Workspace')
     .select('*, Task(count)')
+    .order('name', { ascending: true })
     .throwOnError();
 
   if (error) throw new Error('Error fetching workspaces');
@@ -16,7 +17,7 @@ async function getWorkspaceList(client: TypedSupabaseClient) {
 
   const workspaces = data.map((workspace) => ({
     ...workspace,
-    taskCount: workspace.Task.length,
+    taskCount: workspace.Task[0].count,
   }));
 
   return workspaces;

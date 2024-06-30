@@ -1,13 +1,31 @@
 'use client';
 
-import { ChevronRight } from 'lucide-react';
+import { useSetAtom } from 'jotai';
+import { Ellipsis } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { getTailwindColorValue } from '@/helpers/get-tailwind-color-value';
 import { useGetWorkspaceList } from '@/services/get-workspace-list';
+import {
+  deleteWorkspaceDialogStateAtom,
+  workspaceDialogStateAtom,
+} from '@/stores/dialogs';
 
 export default function WorkspacesPage() {
+  const setWorkspaceDialogState = useSetAtom(workspaceDialogStateAtom);
+  const setDeleteWorkspaceDialogState = useSetAtom(
+    deleteWorkspaceDialogStateAtom,
+  );
+
   const router = useRouter();
   const { data: workspaces, isLoading } = useGetWorkspaceList();
 
@@ -20,7 +38,14 @@ export default function WorkspacesPage() {
       <div className="flex items-center">
         <div className="text-xl font-semibold">Your Workspaces</div>
         <span className="flex-1" />
-        <Button size={'sm'}>New workspace</Button>
+        <Button
+          size={'sm'}
+          onClick={() => {
+            setWorkspaceDialogState({ isOpen: true });
+          }}
+        >
+          New workspace
+        </Button>
       </div>
       <div className="mt-4 grid grid-cols-3 gap-4">
         {isLoading ? (
@@ -31,22 +56,58 @@ export default function WorkspacesPage() {
           workspaces.map((workspace) => (
             <div
               key={workspace.id}
-              className="group h-[175px] cursor-pointer rounded-lg border p-4 hover:bg-slate-50"
+              className="group flex h-[175px] cursor-pointer flex-col rounded-lg border px-4 py-2 hover:bg-slate-50"
               onClick={() => handleWorkspaceClick(workspace.id)}
             >
               <div className="flex items-center">
-                <div className="font-medium">{workspace.name}</div>
-                <span className="flex-1" />
-                <div className="relative transition-all duration-300 group-hover:translate-x-1">
-                  <ChevronRight
-                    size={18}
-                    className="text-slate-400 transition-all duration-300 group-hover:text-slate-500"
-                  />
+                <div className="font-medium">
+                  {workspace.name || 'Untitled'}
                 </div>
+                <span className="flex-1" />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size={'icon'}>
+                      <Ellipsis
+                        size={18}
+                        color={getTailwindColorValue('slate-950')}
+                      />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent side="bottom">
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setWorkspaceDialogState({
+                          isOpen: true,
+                          id: workspace.id,
+                          defaultValues: {
+                            ...workspace,
+                          },
+                        });
+                      }}
+                    >
+                      Edit Workspace
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setDeleteWorkspaceDialogState({
+                          isOpen: true,
+                          id: workspace.id,
+                          name: workspace.name,
+                        });
+                      }}
+                      className="text-red-500"
+                    >
+                      Delete Workspace
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
               </div>
               <div className="mt-1 text-xs">
                 {workspace.taskCount === 0
-                  ? 'No tasks added. Get started by creating one!'
+                  ? 'No tasks created.'
                   : workspace.taskCount === 1
                     ? '1 task created.'
                     : `${workspace.taskCount} tasks created.`}

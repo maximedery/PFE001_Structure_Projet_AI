@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useQueryParam } from '@/helpers/use-query-params';
+import { useQueryParam } from '@/helpers/use-query-param';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 import { Database } from '@/utils/database.types';

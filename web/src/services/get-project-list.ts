@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import { useQueryParam } from '@/helpers/use-query-params';
+import { useQueryParam } from '@/helpers/use-query-param';
 import useSupabaseBrowser from '@/lib/supabase/supabase-client';
 import { TypedSupabaseClient } from '@/lib/supabase/types';
 
@@ -16,6 +16,7 @@ async function getProjectList(
     .from('Project')
     .select()
     .eq('workspaceId', workspaceId)
+    .order('name', { ascending: true })
     .throwOnError();
 
   if (!data) throw new Error('No data found');
