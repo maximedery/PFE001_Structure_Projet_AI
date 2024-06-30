@@ -17,6 +17,7 @@ export default function SettingsPage() {
 
   const start = '2022-09-31';
   const end = '2022-12-02';
+  const workingDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
 
   const duration = start && end ? getDurationString(start, end) : undefined;
 
@@ -64,7 +65,7 @@ export default function SettingsPage() {
               <div className="flex items-center text-sm text-slate-500">
                 Working days
               </div>
-              <WeekdaysPicker />
+              <WeekdaysPicker value={workingDays} onChange={() => {}} />
             </div>
           </div>
         </div>
