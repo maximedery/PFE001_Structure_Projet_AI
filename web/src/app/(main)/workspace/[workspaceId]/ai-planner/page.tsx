@@ -71,6 +71,7 @@ export default function AiPlannerPage() {
             startIcon={Search}
             placeholder="Search"
             className="w-[250px]"
+            value={''}
             onChange={() => {
               // TODO: Implement search
             }}

@@ -35,7 +35,7 @@ export const deleteProjectDialogStateAtom = atom<
 
 export const taskDialogStateAtom = atom<
   | ClosedState
-  | CreateDialogState
+  | (CreateDialogState & { projectId: string })
   | (UpdateDialogState<TaskDialogDefaultValues> & { projectId: string })
 >({
   isOpen: false,

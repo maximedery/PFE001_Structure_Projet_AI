@@ -12,7 +12,7 @@ type InsertOptions = Database['public']['Tables']['Task']['Insert'];
 
 type CreateTaskInput = {
   predecessorIds?: string[];
-} & Omit<InsertOptions, 'id'>;
+} & Omit<InsertOptions, 'id' | 'workspaceId'>;
 
 async function createTask(
   client: TypedSupabaseClient,
