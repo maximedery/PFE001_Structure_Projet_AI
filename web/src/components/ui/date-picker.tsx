@@ -19,6 +19,16 @@ interface Props {
 }
 
 export function DatePicker(props: Props) {
+  const [month, setMonth] = React.useState<Date | undefined>(
+    props.value ? dayjs(props.value).toDate() : undefined,
+  );
+
+  React.useEffect(() => {
+    if (props.value) {
+      setMonth(dayjs(props.value).toDate());
+    }
+  }, [props.value]);
+
   const handleOnSelect = (date?: Date) => {
     props.onChange(dayjs(date).toISOString());
   };
@@ -28,7 +38,15 @@ export function DatePicker(props: Props) {
   };
 
   return (
-    <Popover>
+    <Popover
+      onOpenChange={() => {
+        if (props.value) {
+          setMonth(dayjs(props.value).toDate());
+        } else {
+          setMonth(undefined);
+        }
+      }}
+    >
       <PopoverTrigger asChild>
         <Button
           variant={'outline_black'}
@@ -51,6 +69,8 @@ export function DatePicker(props: Props) {
           mode="single"
           selected={props.value ? dayjs(props.value).toDate() : undefined}
           onSelect={handleOnSelect}
+          month={month}
+          onMonthChange={setMonth}
           initialFocus
         />
         {props.value && (
