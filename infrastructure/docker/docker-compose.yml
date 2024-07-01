@@ -1,0 +1,64 @@
+version: "3.8"
+services: 
+  frontend:
+    container_name: frontend
+    build:
+      context: ../../web/
+      target: dev
+    restart: always
+    command: npm run dev
+    environment:
+      - NODE_ENV=development
+      - WATCHPACK_POLLING=true # FOR WINDOWS
+    volumes:
+      - ../../web:/web
+      - /web/node_modules
+      - /web/.next
+    ports:
+      - 3000:3000
+  backend:
+    container_name: backend
+    build:
+      context: ../../api/
+    volumes:
+      - ../../api/app/:/app
+    command: >
+      uvicorn main:app --host 0.0.0.0 --port 3001 --reload
+    ports:
+      - 3001:3001
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb 
+    ports:
+      - "27017:27017"
+    secrets:
+      - mongo_pwd
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD_FILE: /run/secrets/mongo_pwd
+    volumes:
+      - mongodb_data:/data/db
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongodb-express
+    restart: always
+    depends_on:
+      - mongodb
+    ports:
+      - 8081:8081
+    secrets:
+      - mongo_pwd
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: admin
+      ME_CONFIG_MONGODB_ADMINPASSWORD_FILE: /run/secrets/mongo_pwd
+      ME_CONFIG_MONGODB_SERVER: mongodb
+
+secrets:
+  mongo_pwd:
+    file: ./secrets/mongo_pwd.txt
+
+volumes:
+  mongodb_data:
+    driver: local  # Use the local driver for the volume
