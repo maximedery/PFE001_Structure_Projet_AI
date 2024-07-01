@@ -1,0 +1,78 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  id            String       @id @default(cuid())
+  name          String?
+  projects      Project[]
+  tasks         Task[]
+  start         DateTime?    @db.Date
+  end           DateTime?    @db.Date
+  workingDays   WorkingDay[] @default([monday, tuesday, wednesday, thursday, friday])
+  nbOfEmployees Int          @default(1)
+}
+
+model Project {
+  id          String    @id @default(cuid())
+  name        String?
+  color       String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId String
+  tasks       Task[]
+}
+
+model Task {
+  id            String          @id @default(cuid())
+  name          String?
+  project       Project         @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId     String
+  start         DateTime?       @db.Date
+  end           DateTime?       @db.Date
+  manHours      Float?
+  cost          Float?
+  workspace     Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspaceId   String
+  importance    Importance      @default(medium)
+  weatherEffect WeatherEffect   @default(none)
+  predecessors  TaskHierarchy[] @relation("PredecessorRelation")
+  successors    TaskHierarchy[] @relation("SuccessorRelation")
+}
+
+model TaskHierarchy {
+  predecessorId String
+  successorId   String
+  predecessor   Task   @relation("PredecessorRelation", fields: [predecessorId], references: [id], onDelete: Cascade)
+  successor     Task   @relation("SuccessorRelation", fields: [successorId], references: [id], onDelete: Cascade)
+
+  @@id([predecessorId, successorId])
+}
+
+enum Importance {
+  asap
+  high
+  medium
+  low
+}
+
+enum WeatherEffect {
+  none
+  slight
+  significant
+  impossible
+}
+
+enum WorkingDay {
+  monday
+  tuesday
+  wednesday
+  thursday
+  friday
+  saturday
+  sunday
+}

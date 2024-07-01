@@ -8,3 +8,8 @@ Lien du Notion: https://www.notion.so/civalgo/IA-Civalgo-Projet-de-fin-d-tudes-b
 - [API - Documentation](api/README.md)
 - [AI - Documentation](ai/README.md)
 - [Infrastructure - Documentation](infrastructure/README.md)
+
+
+## Resources
+
+https://supabase.com/blog/react-query-nextjs-app-router-cache-helpers

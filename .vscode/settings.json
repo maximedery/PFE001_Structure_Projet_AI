@@ -4,7 +4,8 @@
   "search.exclude": {
     "yarn.lock": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "eslint.workingDirectories": ["./web"],
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
   "editor.formatOnSave": true,
   "typescript.tsdk": "node_modules/typescript/lib",
   "eslint.format.enable": true,
@@ -15,17 +16,32 @@
       "source.fixAll.eslint"
     ]
   },
-  "[json][jsonc]": {
+  "[prisma]": {
+    "editor.defaultFormatter": "Prisma.prisma"
+  },
+  "[json][jsonc][yaml]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
+  "prettier.ignorePath": ".gitignore",
   "cSpell.words": [
     "chartjs",
     "Civalgo",
+    "classname",
     "clsx",
+    "cmdk",
     "datalabels",
+    "fkey",
     "gantt",
+    "hookform",
     "lucide",
-    "tailwindcss"
+    "plusplus",
+    "postgrest",
+    "randomcolor",
+    "Supa",
+    "supabase",
+    "tailwindcss",
+    "tanstack",
+    "Tanzim"
   ]
 }

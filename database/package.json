@@ -1,0 +1,27 @@
+{
+  "name": "tanzim-database",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "format": "npx prisma format",
+    "migrate-dev": "npx prisma migrate dev",
+    "seed": "npx prisma db seed",
+    "supabase-1-login": "npx supabase login",
+    "supabase-2-init": "npx supabase init",
+    "supabase-3-link": "npx supabase link",
+    "supabase-4-gen-types": "npx supabase gen types typescript --linked --schema=public > ../web/src/utils/database.types.ts"
+  },
+  "devDependencies": {
+    "@types/node": "20.14.2",
+    "prisma": "5.15.0",
+    "supabase": "^1.176.4",
+    "ts-node": "10.9.2",
+    "typescript": "5.4.5"
+  },
+  "dependencies": {
+    "@prisma/client": "5.15.0"
+  },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  }
+}
