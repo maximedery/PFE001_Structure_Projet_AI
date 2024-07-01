@@ -12,7 +12,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.9'
+          python-version: "3.9"
 
       - name: Install dependencies
         run: |
@@ -38,9 +38,12 @@ jobs:
       - name: Build Docker image
         run: docker build -t my-fastapi-app .
         working-directory: ./api
-  
+
   build-web:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: "https://iffxifjlkhzfaawacgcc.supabase.co"
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlmZnhpZmpsa2h6ZmFhd2FjZ2NjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTk4NTM3OTcsImV4cCI6MjAzNTQyOTc5N30.rrzXbtyoCO4tfMiWeHr4FonLvzgnfqy2yNWXJHNqr8I"
 
     steps:
       - name: Checkout code
@@ -55,10 +58,13 @@ jobs:
         run: npm install
         working-directory: ./web
 
-      # Deactivated for the moment.
-      # - name: Lint code
-      #   run: npm run lint
-      #   working-directory: ./web
+      - name: Lint code
+        run: npm run lint
+        working-directory: ./web
+
+      - name: Typescript check
+        run: npm run tsc
+        working-directory: ./web
 
       - name: Run tests
         run: npm test
