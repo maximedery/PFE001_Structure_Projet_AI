@@ -24,6 +24,7 @@ async function updateWorkspace(
       start: inputValues.start,
       end: inputValues.end,
       workingDays: inputValues.workingDays,
+      nbOfEmployees: inputValues.nbOfEmployees,
     })
     .eq('id', inputValues.id)
     .select();

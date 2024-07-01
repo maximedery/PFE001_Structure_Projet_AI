@@ -8,13 +8,14 @@ datasource db {
 }
 
 model Workspace {
-  id          String       @id @default(cuid())
-  name        String?
-  projects    Project[]
-  tasks       Task[]
-  start       DateTime?    @db.Date
-  end         DateTime?    @db.Date
-  workingDays WorkingDay[] @default([monday, tuesday, wednesday, thursday, friday])
+  id            String       @id @default(cuid())
+  name          String?
+  projects      Project[]
+  tasks         Task[]
+  start         DateTime?    @db.Date
+  end           DateTime?    @db.Date
+  workingDays   WorkingDay[] @default([monday, tuesday, wednesday, thursday, friday])
+  nbOfEmployees Int          @default(1)
 }
 
 model Project {

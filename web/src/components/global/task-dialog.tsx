@@ -99,6 +99,9 @@ export default function TaskDialog() {
   const start = form.watch('start');
   const end = form.watch('end');
   const duration = start && end ? getDurationString(start, end) : undefined;
+  const manHours = form.watch('manHours');
+  const cost = form.watch('cost');
+  const totalCost = manHours && cost ? manHours * cost : undefined;
 
   return (
     <Dialog
@@ -164,9 +167,7 @@ export default function TaskDialog() {
               {duration && (
                 <DialogContentRow>
                   <Label>Duration</Label>
-                  <div className="col-span-2">
-                    <div className="text-sm text-slate-500">{duration}</div>
-                  </div>
+                  <Label size={'sm'}>{duration}</Label>
                 </DialogContentRow>
               )}
               <DialogContentRow>
@@ -205,7 +206,7 @@ export default function TaskDialog() {
                 />
               </DialogContentRow>
               <DialogContentRow>
-                <Label>Cost</Label>
+                <Label>Cost per man-hours</Label>
                 <FormField
                   control={form.control}
                   name="cost"
@@ -220,6 +221,12 @@ export default function TaskDialog() {
                   )}
                 />
               </DialogContentRow>
+              {totalCost && (
+                <DialogContentRow>
+                  <Label>Total cost</Label>
+                  <Label size={'sm'}>{`${totalCost} $`}</Label>
+                </DialogContentRow>
+              )}
               <DialogContentRow>
                 <Label>Importance</Label>
                 <FormField
@@ -263,7 +270,7 @@ export default function TaskDialog() {
                 />
               </DialogContentRow>
               <DialogContentRow>
-                <Label>Weather Effect</Label>
+                <Label>Weather effect</Label>
                 <FormField
                   control={form.control}
                   name="weatherEffect"

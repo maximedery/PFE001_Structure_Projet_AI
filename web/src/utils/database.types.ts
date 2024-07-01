@@ -160,6 +160,7 @@ export type Database = {
           end: string | null
           id: string
           name: string | null
+          nbOfEmployees: number | null
           start: string | null
           workingDays: Database["public"]["Enums"]["WorkingDay"][] | null
         }
@@ -167,6 +168,7 @@ export type Database = {
           end?: string | null
           id: string
           name?: string | null
+          nbOfEmployees?: number | null
           start?: string | null
           workingDays?: Database["public"]["Enums"]["WorkingDay"][] | null
         }
@@ -174,6 +176,7 @@ export type Database = {
           end?: string | null
           id?: string
           name?: string | null
+          nbOfEmployees?: number | null
           start?: string | null
           workingDays?: Database["public"]["Enums"]["WorkingDay"][] | null
         }

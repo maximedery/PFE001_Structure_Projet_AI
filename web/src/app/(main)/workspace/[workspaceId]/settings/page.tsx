@@ -9,6 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { getDurationString } from '@/helpers/get-duration-string';
 import { useGetWorkspace } from '@/services/get-workspace';
@@ -52,7 +53,7 @@ export default function SettingsPage() {
               </div>
             )}
             {!isLoading && data && (
-              <div className=" grid grid-cols-[200px,auto] gap-x-6 gap-y-3 px-2 py-4">
+              <div className="grid grid-cols-[200px,auto] gap-x-6 gap-y-3 px-2 py-4">
                 {/* TODO: Add OccupationTable */}
                 {/* <div className="text-sm text-slate-500">
                 Number of employees available in the company
@@ -62,45 +63,47 @@ export default function SettingsPage() {
                 Number of equipments available in the company
               </div>
               <EquipmentTypeTable /> */}
-                <div className="flex items-center text-sm text-slate-500">
-                  Desired start date
-                </div>
-                <div>
-                  <DatePicker
-                    value={data.start}
-                    onChange={(value) => {
-                      updateWorkspace.mutate({
-                        id: data.id,
-                        start: value,
-                      });
-                    }}
-                  />
-                </div>
-                <div className="flex items-center text-sm text-slate-500">
-                  Desired end date
-                </div>
-                <div>
-                  <DatePicker
-                    value={data.end}
-                    onChange={(value) => {
-                      updateWorkspace.mutate({
-                        id: data.id,
-                        end: value,
-                      });
-                    }}
-                  />
-                </div>
+                <Label size="sm">Desired start date</Label>
+                <DatePicker
+                  value={data.start}
+                  onChange={(value) => {
+                    updateWorkspace.mutate({
+                      id: data.id,
+                      start: value,
+                    });
+                  }}
+                />
+                <Label size="sm">Desired end date</Label>
+                <DatePicker
+                  value={data.end}
+                  onChange={(value) => {
+                    updateWorkspace.mutate({
+                      id: data.id,
+                      end: value,
+                    });
+                  }}
+                />
                 {duration && (
                   <>
-                    <div className="flex items-center text-sm text-slate-500">
-                      Duration
-                    </div>
-                    <div className="text-sm text-slate-500">{duration}</div>
+                    <Label size="sm">Duration</Label>
+                    <Label size="sm">{duration}</Label>
                   </>
                 )}
-                <div className="flex items-center text-sm text-slate-500">
-                  Working days
-                </div>
+
+                <Label size="sm">Number of Employees</Label>
+                <Input
+                  className="w-36"
+                  suffix={'employees'}
+                  type="number"
+                  value={data.nbOfEmployees || '0'}
+                  onChange={(event) => {
+                    updateWorkspace.mutate({
+                      id: data.id,
+                      nbOfEmployees: +event.target.value,
+                    });
+                  }}
+                />
+                <Label size="sm">Working days</Label>
                 <WeekdaysPicker
                   value={data.workingDays || []}
                   onChange={(value) => {
