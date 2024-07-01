@@ -4,7 +4,7 @@
     "next/core-web-vitals",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["unicorn"],
+  "plugins": ["unicorn", "jest"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -58,6 +58,7 @@
             "officialSorting": true
           }
         ],
+        "jest/globals": true,
         "no-use-before-define": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-nested-ternary": "off",

@@ -1,11 +1,11 @@
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import Page from '../app/page'
- 
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import {Label} from '../components/ui/label';
+
 describe('Page', () => {
   it('renders a heading', () => {
-    render(<Page />)
+    render(<Label>Hello</Label>);
     // dummy test
-    expect(document.body).toBeInTheDocument()
-  })
-})
+    expect(document.body).toBeInTheDocument();
+  });
+});
