@@ -1,6 +1,12 @@
 name: ci
 
-on: [push]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   build-api:
@@ -73,3 +79,26 @@ jobs:
       - name: Build application
         run: npm run build
         working-directory: ./web
+
+  prisma-migrate:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js 18.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./database
+
+      - name: Run Prisma migrations
+        run: npx prisma migrate deploy
+        working-directory: ./database
+        env:
+          DATABASE_URL: postgresql://postgres.iffxifjlkhzfaawacgcc:H7hYv7NPJvZ1KLiF@aws-0-ca-central-1.pooler.supabase.com:5432/postgres
