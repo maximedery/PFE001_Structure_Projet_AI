@@ -1,6 +1,9 @@
 import '@testing-library/jest-dom';
-import { render, screen } from '@testing-library/react';
-import {Label} from '../components/ui/label';
+
+import { describe, expect, it } from '@jest/globals';
+import { render } from '@testing-library/react';
+
+import { Label } from '../components/ui/label';
 
 describe('Page', () => {
   it('renders a heading', () => {

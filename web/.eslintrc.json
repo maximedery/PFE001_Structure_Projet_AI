@@ -4,7 +4,7 @@
     "next/core-web-vitals",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["unicorn", "jest"],
+  "plugins": ["unicorn"],
   "rules": {
     "prettier/prettier": [
       "error",
@@ -23,12 +23,13 @@
   },
   "overrides": [
     {
-      "files": ["**/*.ts", "**/*.tsx", "**/*.js"],
+      "files": ["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx"],
       "plugins": [
         "@typescript-eslint",
         "unused-imports",
         "tailwindcss",
-        "simple-import-sort"
+        "simple-import-sort",
+        "jest"
       ],
       "extends": [
         "plugin:tailwindcss/recommended",
@@ -58,7 +59,6 @@
             "officialSorting": true
           }
         ],
-        "jest/globals": true,
         "no-use-before-define": "off",
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
         "no-nested-ternary": "off",
