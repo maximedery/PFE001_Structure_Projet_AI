@@ -14,7 +14,7 @@ model Workspace {
   tasks       Task[]
   start       DateTime?    @db.Date
   end         DateTime?    @db.Date
-  workingDays WorkingDay[]
+  workingDays WorkingDay[] @default([monday, tuesday, wednesday, thursday, friday])
 }
 
 model Project {

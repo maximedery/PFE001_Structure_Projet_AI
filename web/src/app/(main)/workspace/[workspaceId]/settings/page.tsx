@@ -9,17 +9,22 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DatePicker } from '@/components/ui/date-picker';
 import { Input } from '@/components/ui/input';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { getDurationString } from '@/helpers/get-duration-string';
+import { useGetWorkspace } from '@/services/get-workspace';
+import { useUpdateWorkspace } from '@/services/update-workspace';
 import { projectDialogStateAtom } from '@/stores/dialogs';
 
 export default function SettingsPage() {
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
 
-  const start = '2022-09-31';
-  const end = '2022-12-02';
-  const workingDays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
+  const { data, isLoading } = useGetWorkspace();
+  const updateWorkspace = useUpdateWorkspace();
 
-  const duration = start && end ? getDurationString(start, end) : undefined;
+  const duration =
+    data?.start && data?.end
+      ? getDurationString(data?.start, data?.end)
+      : undefined;
 
   return (
     <>
@@ -32,9 +37,20 @@ export default function SettingsPage() {
             </Badge>
           </div>
           <div className="flex h-full flex-col overflow-y-auto">
-            <div className=" grid grid-cols-[200px,auto] gap-x-6 gap-y-3 px-2 py-4">
-              {/* TODO: Add OccupationTable */}
-              {/* <div className="text-sm text-slate-500">
+            {isLoading && (
+              <div className="flex flex-1 items-center justify-center">
+                <LoadingSpinner className="text-gray-300" />
+              </div>
+            )}
+            {!isLoading && !data && (
+              <div className="flex flex-1 items-center justify-center text-sm text-slate-500">
+                Workspace not found
+              </div>
+            )}
+            {!isLoading && data && (
+              <div className=" grid grid-cols-[200px,auto] gap-x-6 gap-y-3 px-2 py-4">
+                {/* TODO: Add OccupationTable */}
+                {/* <div className="text-sm text-slate-500">
                 Number of employees available in the company
               </div>
               <OccupationTable />
@@ -42,31 +58,56 @@ export default function SettingsPage() {
                 Number of equipments available in the company
               </div>
               <EquipmentTypeTable /> */}
-              <div className="flex items-center text-sm text-slate-500">
-                Desired start date
+                <div className="flex items-center text-sm text-slate-500">
+                  Desired start date
+                </div>
+                <div>
+                  <DatePicker
+                    value={data.start}
+                    onChange={(value) => {
+                      updateWorkspace.mutate({
+                        id: data.id,
+                        start: value,
+                      });
+                    }}
+                  />
+                </div>
+                <div className="flex items-center text-sm text-slate-500">
+                  Desired end date
+                </div>
+                <div>
+                  <DatePicker
+                    value={data.end}
+                    onChange={(value) => {
+                      updateWorkspace.mutate({
+                        id: data.id,
+                        end: value,
+                      });
+                    }}
+                  />
+                </div>
+                {duration && (
+                  <>
+                    <div className="flex items-center text-sm text-slate-500">
+                      Duration
+                    </div>
+                    <div className="text-sm text-slate-500">{duration}</div>
+                  </>
+                )}
+                <div className="flex items-center text-sm text-slate-500">
+                  Working days
+                </div>
+                <WeekdaysPicker
+                  value={data.workingDays || []}
+                  onChange={(value) => {
+                    updateWorkspace.mutate({
+                      id: data.id,
+                      workingDays: value,
+                    });
+                  }}
+                />
               </div>
-              <div>
-                <DatePicker value={start} onChange={() => {}} />
-              </div>
-              <div className="flex items-center text-sm text-slate-500">
-                Desired end date
-              </div>
-              <div>
-                <DatePicker value={end} onChange={() => {}} />
-              </div>
-              {duration && (
-                <>
-                  <div className="flex items-center text-sm text-slate-500">
-                    Duration
-                  </div>
-                  <div className="text-sm text-slate-500">{duration}</div>
-                </>
-              )}
-              <div className="flex items-center text-sm text-slate-500">
-                Working days
-              </div>
-              <WeekdaysPicker value={workingDays} onChange={() => {}} />
-            </div>
+            )}
           </div>
         </div>
         <div className="flex h-full flex-1 flex-col overflow-hidden">

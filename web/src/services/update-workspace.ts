@@ -20,6 +20,9 @@ async function updateWorkspace(
     .from('Workspace')
     .update({
       name: inputValues.name,
+      start: inputValues.start,
+      end: inputValues.end,
+      workingDays: inputValues.workingDays,
     })
     .eq('id', inputValues.id)
     .select();
@@ -36,7 +39,12 @@ export const useUpdateWorkspace = () => {
   return useMutation({
     mutationFn: (inputValues: UpdateWorkspaceInput) =>
       updateWorkspace(client, inputValues),
-    onSuccess: () => {
+    onSuccess: (workspaces) => {
+      workspaces.forEach((data) => {
+        queryClient.invalidateQueries({
+          queryKey: getQueryKey('workspaces', { workspaceId: data.id }),
+        });
+      });
       queryClient.invalidateQueries({
         queryKey: getQueryKey('workspaces', 'list'),
       });

@@ -6,6 +6,7 @@ type QueryKeyCombinations =
   | [WorkspaceIdObject, 'projects', 'list']
   | [WorkspaceIdObject, 'project-task-setting-list']
   | ['workspaces']
+  | ['workspaces', WorkspaceIdObject]
   | ['workspaces', 'list'];
 
 export const getQueryKey = (

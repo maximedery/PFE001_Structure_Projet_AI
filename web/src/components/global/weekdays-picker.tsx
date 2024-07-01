@@ -12,9 +12,18 @@ const options = [
   { value: 'saturday', label: 'S' },
 ];
 
+type Day =
+  | 'sunday'
+  | 'monday'
+  | 'tuesday'
+  | 'wednesday'
+  | 'thursday'
+  | 'friday'
+  | 'saturday';
+
 interface Props {
-  value: string[];
-  onChange: (days: string[]) => void;
+  value: Day[];
+  onChange: (days: Day[]) => void;
 }
 
 export default function WeekdaysPicker(props: Props) {
@@ -23,7 +32,7 @@ export default function WeekdaysPicker(props: Props) {
   return (
     <ToggleGroup
       type="multiple"
-      value={value}
+      value={value || []}
       onValueChange={onChange}
       className="flex gap-1.5"
     >
