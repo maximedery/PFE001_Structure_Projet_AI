@@ -11,3 +11,5 @@ export const isAuthenticatedAtom = atom((get) => {
     value: !!session,
   };
 });
+
+export const taskListSearchQueryAtom = atom('');

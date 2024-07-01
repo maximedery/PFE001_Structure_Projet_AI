@@ -3,12 +3,14 @@
 import {
   ColumnDef,
   ExpandedState,
+  FilterFn,
   flexRender,
   getCoreRowModel,
   getExpandedRowModel,
+  getFilteredRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useSetAtom } from 'jotai';
+import { useAtomValue, useSetAtom } from 'jotai';
 import {
   ChevronDown,
   ChevronRight,
@@ -42,6 +44,7 @@ import {
   projectDialogStateAtom,
   taskDialogStateAtom,
 } from '@/stores/dialogs';
+import { taskListSearchQueryAtom } from '@/stores/general';
 
 import {
   DropdownMenu,
@@ -264,22 +267,45 @@ export const columns: ColumnDef<ProjectTaskSettingListRow>[] = [
   },
 ];
 
+const filterData: FilterFn<ProjectTaskSettingListRow> = (
+  row,
+  id,
+  filterValue,
+) => {
+  const lowercaseFilter = filterValue.toLowerCase();
+  const rowData = row.original;
+
+  if (rowData.type === 'project') {
+    return (
+      (rowData.name || 'untitled').toLowerCase().includes(lowercaseFilter) ||
+      rowData.subRows.some((task) =>
+        (task.name || 'untitled').toLowerCase().includes(lowercaseFilter),
+      )
+    );
+  }
+  return (rowData.name || 'untitled').toLowerCase().includes(lowercaseFilter);
+};
+
 export default function TasksList() {
   const { data: settingTasks, isLoading } = useGetProjectTaskSettingList();
   const setTaskDialogState = useSetAtom(taskDialogStateAtom);
+  const taskListSearchQuery = useAtomValue(taskListSearchQueryAtom);
 
   const [expanded, setExpanded] = React.useState<ExpandedState>({});
 
   const table = useReactTable({
     data: settingTasks || [],
+    globalFilterFn: filterData,
     state: {
       expanded,
+      globalFilter: taskListSearchQuery,
     },
     onExpandedChange: setExpanded,
     getSubRows: (row) => (row.type === 'project' ? row.subRows : undefined),
     columns,
     getCoreRowModel: getCoreRowModel(),
     getExpandedRowModel: getExpandedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
     defaultColumn: {
       minSize: 0,
       size: 0,

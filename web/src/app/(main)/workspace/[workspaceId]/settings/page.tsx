@@ -1,6 +1,6 @@
 'use client';
 
-import { useSetAtom } from 'jotai';
+import { useAtom, useSetAtom } from 'jotai';
 import { Plus, Search } from 'lucide-react';
 
 import TasksList from '@/components/global/tasks-list';
@@ -14,9 +14,13 @@ import { getDurationString } from '@/helpers/get-duration-string';
 import { useGetWorkspace } from '@/services/get-workspace';
 import { useUpdateWorkspace } from '@/services/update-workspace';
 import { projectDialogStateAtom } from '@/stores/dialogs';
+import { taskListSearchQueryAtom } from '@/stores/general';
 
 export default function SettingsPage() {
   const setProjectDialogState = useSetAtom(projectDialogStateAtom);
+  const [taskListSearchQuery, setTaskListSearchQuery] = useAtom(
+    taskListSearchQueryAtom,
+  );
 
   const { data, isLoading } = useGetWorkspace();
   const updateWorkspace = useUpdateWorkspace();
@@ -122,10 +126,8 @@ export default function SettingsPage() {
               startIcon={Search}
               placeholder="Search"
               className="w-[250px]"
-              value={null}
-              onChange={() => {
-                // TODO: Implement search
-              }}
+              value={taskListSearchQuery}
+              onChange={(e) => setTaskListSearchQuery(e.target.value)}
             />
             <span className="flex-1" />
             <Button
